@@ -1,13 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {{ .Title }} </title>
-    <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-    <h1> {{ .Heading }} </h1>
-    <p> {{ .Message }} </p>
-</body>
-</html>
+{{define "title"}}Home - My Blog{{end}}
+
+{{define "content"}}
+    <h1> Recent Posts </h1>
+    {{range .}}
+        <article class="card">
+            {{if .ImageURL}}
+                <img src="static/{{.ImageURL}}" />
+            {{end}}
+            <p>{{.Content}}</p>
+            <a>{{.ID}}</a>
+        </article>
+    {{else}}
+        <p>No posts yet. </p>
+    {{end}}
+{{end}}

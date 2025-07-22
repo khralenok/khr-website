@@ -1,25 +1,39 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
-	"text/template"
+
+	"github.com/joho/godotenv"
+	"github.com/khralenok/khr-website/db"
+	"github.com/khralenok/khr-website/store"
 )
 
 func main() {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatalf("Error loading .env file %v", err)
+	}
+
+	if err := db.Connect(); err != nil {
+		log.Fatalf("Database connection failed: %v", err)
+	}
+
+	defer db.DB.Close()
+
+	posts, err := store.GetPosts()
+
+	if err != nil {
+		log.Fatal("Can't load posts", err)
+	}
+
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	tmpl := template.Must(template.ParseGlob("templates/*.html"))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tmpl := template.Must(template.ParseFiles("templates/index.html"))
-
-		data := map[string]interface{}{
-			"Title":   "Khralenok Dev",
-			"Heading": "Hello from Go",
-			"Message": "This page is rendered server-side with Go template",
-		}
-
-		if err := tmpl.Execute(w, data); err != nil {
+		if err := tmpl.ExecuteTemplate(w, "base.html", posts); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
