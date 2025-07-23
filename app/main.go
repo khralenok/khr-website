@@ -1,10 +1,11 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/khralenok/khr-website/db"
 	"github.com/khralenok/khr-website/store"
@@ -15,29 +16,38 @@ func main() {
 		log.Fatalf("Error loading .env file %v", err)
 	}
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
 	if err := db.Connect(); err != nil {
 		log.Fatalf("Database connection failed: %v", err)
 	}
 
 	defer db.DB.Close()
 
+	r := gin.Default()
+
+	r.LoadHTMLGlob("templates/*.html")
+	r.Static("/static/", "./static")
+
+	r.GET("/", showHome)
+
+	log.Println("Server running at http:localhost:" + port)
+
+	if err := r.Run(":" + port); err != nil {
+		log.Fatal("Server error:", err)
+	}
+}
+
+func showHome(c *gin.Context) {
 	posts, err := store.GetPosts()
 
 	if err != nil {
-		log.Fatal("Can't load posts", err)
+		c.String(http.StatusInternalServerError, "Error loading posts")
+		return
 	}
 
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-	tmpl := template.Must(template.ParseGlob("templates/*.html"))
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if err := tmpl.ExecuteTemplate(w, "base.html", posts); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	})
-
-	log.Println("Go server running at :3000...")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	c.HTML(http.StatusOK, "base.html", posts)
 }

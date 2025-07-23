@@ -1,14 +1,29 @@
 {{define "title"}}Home - My Blog{{end}}
 
 {{define "content"}}
-    <h1> Recent Posts </h1>
+
+
+    <div class="profile">
+        <div class="profile-description">
+            <h1>Grigorii Khralenok</h1>
+            <p>Hand-drawn illustrations & updates from my indie software developer journey</p>
+            <p><a href="https://github.com/khralenok">github.com/khralenok</a></p>
+        </div>
+        <img class="avatar" src="static/img/avatar.jpg">
+    </div>
+    <h2> Recent Posts </h2>
+    <ul class="toolbox">
+        <li>Add new</li>
+    </ul>
     {{range .}}
-        <article class="card">
-            {{if .ImageURL}}
-                <img src="static/{{.ImageURL}}" />
-            {{end}}
+        <article class="post">
+            <div class="post-data"><a><b>ID:</b> {{.ID}}</a><a><b>Published At:</b> {{.CreatedAt}}</a></div>
+            
             <p>{{.Content}}</p>
-            <a>{{.ID}}</a>
+
+            {{if .ImageURL}}
+                <img width="864" height="864" src="static/{{.ImageURL}}" />
+            {{end}}
         </article>
     {{else}}
         <p>No posts yet. </p>

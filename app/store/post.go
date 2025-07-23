@@ -1,6 +1,8 @@
 package store
 
 import (
+	"time"
+
 	"github.com/khralenok/khr-website/db"
 	"github.com/khralenok/khr-website/models"
 )
@@ -20,11 +22,15 @@ func GetPosts() ([]models.Post, error) {
 
 	for rows.Next() {
 		var nextPost models.Post
-		err := rows.Scan(&nextPost.ID, &nextPost.Content, &nextPost.ImageURL, &nextPost.CreatedAt)
+		var rawTime time.Time
+
+		err := rows.Scan(&nextPost.ID, &nextPost.Content, &nextPost.ImageURL, &rawTime)
 
 		if err != nil {
 			return []models.Post{}, err
 		}
+
+		nextPost.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
 
 		posts = append(posts, nextPost)
 	}
