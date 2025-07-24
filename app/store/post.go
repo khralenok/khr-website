@@ -10,7 +10,7 @@ import (
 func GetPosts() ([]models.Post, error) {
 	var posts []models.Post
 
-	query := "SELECT * FROM posts"
+	query := "SELECT * FROM posts ORDER BY created_at DESC"
 
 	rows, err := db.DB.Query(query)
 
@@ -36,4 +36,16 @@ func GetPosts() ([]models.Post, error) {
 	}
 
 	return posts, nil
+}
+
+func AddPost(content, filename string) error {
+	query := "INSERT INTO posts(content, image_url) VALUES ($1, $2)"
+
+	_, err := db.DB.Exec(query, content, filename)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

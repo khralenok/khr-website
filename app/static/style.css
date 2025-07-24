@@ -13,18 +13,18 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: lightgray;
     height: 5rem;
 }
 
 .logo-letter{
+    stroke: white;
     stroke-width: 2px;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .logo-back{
-    fill: coral
+    fill: black
 }
 
 main{
@@ -47,15 +47,22 @@ main{
     border-radius: 2rem;
 }
 
-.toolbox{
-    list-style: none;
+.post-workshop{
     width: var(--container-width);
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     border: 1px solid gray;
     padding: 3rem;
     gap: 2rem;
     border-radius: 2rem;
+}
+
+#post-content{
+    flex-grow: 1;
+    padding: 1rem;
+    background-color: #f3f3f3;
+    border: 0px;
+    border-radius: 1rem;
 }
 
 .toolbox li{
