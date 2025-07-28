@@ -2,14 +2,12 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
-	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/khralenok/khr-website/db"
-	"github.com/khralenok/khr-website/store"
+	"github.com/khralenok/khr-website/handlers"
 )
 
 func main() {
@@ -33,66 +31,32 @@ func main() {
 	r.LoadHTMLGlob("templates/*.html")
 	r.Static("/static/", "./static")
 
-	r.GET("/", showHome)
+	// Indexed pages
+	r.GET("/", handlers.ShowHome)
+	r.GET("/workshop", handlers.ShowWorkshop) // For tests only
+	//r.GET("/signin", func(ctx *gin.Context) {})
+	//r.GET("/login", func(ctx *gin.Context) {})
+	r.GET("/post/:id", handlers.ShowPost)
 
-	r.POST("/create-post", createPost)
+	// Not indexed pages
+	//r.GET("workshop/post", func(ctx *gin.Context) {})        //Create new post
+	//r.GET("workshop/comment", func(ctx *gin.Context) {})     //Create new comment
+	//r.GET("workshop/reply", func(ctx *gin.Context) {})       //Create new reply
+	//r.GET("workshop/post/:id", func(ctx *gin.Context) {})    //Edit post
+	//r.GET("workshop/comment/:id", func(ctx *gin.Context) {}) //Edit comment
+	//r.GET("workshop/reply/:id", func(ctx *gin.Context) {})   //Edit reply
+
+	// Endpoints
+	r.POST("/workshop/post", handlers.CreatePost)
+	//r.POST("/workshop/comment", func(ctx *gin.Context) {})
+	//r.POST("/workshop/reply", func(ctx *gin.Context) {})
+	//r.PUT("/workshop/post", func(ctx *gin.Context) {})
+	//r.PUT("/workshop/comment", func(ctx *gin.Context) {})
+	//r.PUT("/workshop/reply", func(ctx *gin.Context) {})
 
 	log.Println("Server running at http:localhost:" + port)
 
 	if err := r.Run(":" + port); err != nil {
 		log.Fatal("Server error:", err)
 	}
-}
-
-func showHome(c *gin.Context) {
-	posts, err := store.GetPosts()
-
-	if err != nil {
-		c.String(http.StatusInternalServerError, "Error loading posts")
-		return
-	}
-
-	c.HTML(http.StatusOK, "base.html", posts)
-}
-
-func createPost(c *gin.Context) {
-	// 1. Get input
-	content := c.PostForm("content")
-
-	image, err := c.FormFile("image")
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Image upload failed", "error": err.Error()})
-		return
-	}
-
-	// 2. Validate input (TO DO)
-
-	// 3. Store file in img folder
-	savePath := filepath.Join("static", "img", filepath.Base(image.Filename))
-
-	if err := c.SaveUploadedFile(image, savePath); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not save file",
-			"error":   err.Error(),
-		})
-		return
-	}
-
-	// 4. Store content and link in db
-	imageURL := "img/" + image.Filename
-	if err := store.AddPost(content, imageURL); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not save new post to DB",
-			"error":   err.Error(),
-		})
-		return
-	}
-
-	// 5. Return success/failure message
-	c.JSON(http.StatusOK, gin.H{
-		"message":  "File uploaded successfully",
-		"filename": imageURL,
-		"content":  content,
-	})
 }

@@ -8,7 +8,7 @@ const handleNewPost = function(e){
 
 
         try{
-            const response = await fetch("http://localhost:8080/create-post", {
+            const response = await fetch("workshop/post", {
                 method: "POST",
                 body: formData,
             })

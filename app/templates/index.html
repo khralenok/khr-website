@@ -1,8 +1,4 @@
-{{define "title"}}Home - My Blog{{end}}
-
-{{define "content"}}
-
-
+{{ define "feed"}}
     <div class="profile">
         <div class="profile-description">
             <h1>Grigorii Khralenok</h1>
@@ -12,24 +8,29 @@
         <img class="avatar" src="static/img/avatar.jpg">
     </div>
     <h2> Recent Posts </h2>
-    <form class="post-workshop" id="post-workshop">
-        <label for="post-content">Add new post</label>
-        <textarea id="post-content" name="post-content" rows="12" placeholder="Type here..."></textarea>
-        <label for="post-image">Select an image:</label>
-        <input type="file" id="post-image" name="post-image" />
-        <input type="submit" value="Add New" />
-    </form>
-    {{range .}}
+    {{range .posts}}
         <article class="post">
             <div class="post-data"><a><b>ID:</b> {{.ID}}</a><a><b>Published At:</b> {{.CreatedAt}}</a></div>
             
             <p>{{.Content}}</p>
 
             {{if .ImageURL}}
-                <img width="864" height="864" src="static/{{.ImageURL}}" />
+                <img width="864" height="864" src="/static/{{.ImageURL}}" />
             {{end}}
         </article>
     {{else}}
         <p>No posts yet. </p>
     {{end}}
 {{end}}
+
+{{ define "post" }}
+    <article class="post">
+        <div class="post-data"><a><b>ID:</b> {{ .post.ID }}</a><a><b>Published At:</b> {{ .post.CreatedAt }}</a></div>
+            
+            <p>{{ .post.Content}}</p>
+
+            {{if .post.ImageURL}}
+                <img width="864" height="864" src="/static/{{ .post.ImageURL}}" />
+            {{end}}
+    </article>
+{{ end }}
