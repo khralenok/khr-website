@@ -24,6 +24,7 @@ services:
     volumes:
       - ./app/templates:/app/templates
       - ./app/static:/app/static
+      - ./app/uploads:/app/uploads
       - ./.env:/app/.env
 
   db:

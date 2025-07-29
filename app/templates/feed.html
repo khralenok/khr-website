@@ -1,0 +1,27 @@
+{{ define "feed"}}
+    <div class="profile">
+        <div class="profile-description">
+            <h1>Grigorii Khralenok</h1>
+            <p>Hand-drawn illustrations & updates from my indie software developer journey</p>
+            <p><a href="https://github.com/khralenok">github.com/khralenok</a></p>
+            <p><a class="btn" href="/workshop/post">Create new post</a></p>
+        </div>
+        <img class="avatar" src="static/img/avatar.jpg">
+    </div>
+    <h2> Recent Posts </h2>
+    {{range .posts}}
+        <article class="post">
+            <div class="post-data"><a><b>ID:</b> {{.ID}}</a><a><b>Published At:</b> {{.CreatedAt}}</a></div>
+            
+            <p>{{.Content}}</p>
+
+            {{if .ImageURL}}
+                <img width="864" height="864" src="/uploads/{{.ImageURL}}" />
+            {{end}}
+
+            <a href="/post/{{.ID}}">View post</a>
+        </article>
+    {{else}}
+        <p>No posts yet. </p>
+    {{end}}
+{{end}}

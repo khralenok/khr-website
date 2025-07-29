@@ -4,21 +4,23 @@ const handleNewPost = function(e){
     const sentData = async function(content, image) {
         const formData = new FormData();
         formData.append("content", content)
-        formData.append("image", image)
 
+        if (image.type.startsWith("image/")) {
+           formData.append("image", image)
+        }
 
         try{
-            const response = await fetch("workshop/post", {
+            const response = await fetch("/workshop/post", {
                 method: "POST",
                 body: formData,
-            })
+            });
 
             if (!response.ok){
                 throw new Error(`Server error: ${response.status}`);   
             }
 
-            const data = await response.json()
-            console.log(data)
+            const data = await response.json();
+            window.location.href = "/";
         } catch(error) {
             console.error('Fetch error', error)
         }
@@ -30,11 +32,6 @@ const handleNewPost = function(e){
 
     const content = formData.get("post-content");
     const image = formData.get("post-image");
-
-    if (!image.type.startsWith("image/")) {
-        console.log("Input file should be an image")
-        return
-    }
 
     sentData(content, image)
 }

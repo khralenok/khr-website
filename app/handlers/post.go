@@ -34,32 +34,24 @@ func ShowPost(c *gin.Context) {
 
 // Handle request for creating a new post. If success, create new row in DB and store related files on the server.
 func CreatePost(c *gin.Context) {
-	// 1. Get input
 	content := c.PostForm("content")
-
 	image, err := c.FormFile("image")
+	filename := ""
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Image upload failed", "error": err.Error()})
-		return
+	if err == nil {
+		savePath := filepath.Join("uploads", filepath.Base(image.Filename))
+
+		if err := c.SaveUploadedFile(image, savePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Could not save file",
+				"error":   err.Error(),
+			})
+			return
+		}
+		filename = image.Filename
 	}
 
-	// 2. Validate input (TO DO)
-
-	// 3. Store file in img folder
-	savePath := filepath.Join("static", "img", filepath.Base(image.Filename))
-
-	if err := c.SaveUploadedFile(image, savePath); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not save file",
-			"error":   err.Error(),
-		})
-		return
-	}
-
-	// 4. Store content and link in db
-	imageURL := "img/" + image.Filename
-	if err := store.AddPost(content, imageURL); err != nil {
+	if err := store.AddPost(content, filename); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not save new post to DB",
 			"error":   err.Error(),
@@ -70,7 +62,7 @@ func CreatePost(c *gin.Context) {
 	// 5. Return success/failure message
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "File uploaded successfully",
-		"filename": imageURL,
+		"filename": filename,
 		"content":  content,
 	})
 }

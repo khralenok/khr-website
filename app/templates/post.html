@@ -1,0 +1,11 @@
+{{ define "post" }}
+    <article class="post">
+        <div class="post-data"><a><b>ID:</b> {{ .post.ID }}</a><a><b>Published At:</b> {{ .post.CreatedAt }}</a></div>
+            
+            <p>{{ .post.Content}}</p>
+
+            {{if .post.ImageURL}}
+                <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
+            {{end}}
+    </article>
+{{ end }}

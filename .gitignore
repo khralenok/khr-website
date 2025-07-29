@@ -6,3 +6,5 @@
 *.out
 .env
 vendor/
+/app/uploads/*
+*.drawio.bkp

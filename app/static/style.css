@@ -83,6 +83,14 @@ main{
     border-radius: 1000px;
 }
 
+.btn{
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    background-color: black;
+    border-radius: 1rem;
+}
+
 .post{
     width: var(--container-width);
     display: flex;

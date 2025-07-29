@@ -30,16 +30,16 @@ func main() {
 
 	r.LoadHTMLGlob("templates/*.html")
 	r.Static("/static/", "./static")
+	r.Static("/uploads/", "./uploads")
 
 	// Indexed pages
 	r.GET("/", handlers.ShowHome)
-	r.GET("/workshop", handlers.ShowWorkshop) // For tests only
 	//r.GET("/signin", func(ctx *gin.Context) {})
 	//r.GET("/login", func(ctx *gin.Context) {})
 	r.GET("/post/:id", handlers.ShowPost)
 
 	// Not indexed pages
-	//r.GET("workshop/post", func(ctx *gin.Context) {})        //Create new post
+	r.GET("/workshop/post", handlers.ShowWorkshop) //Create new post
 	//r.GET("workshop/comment", func(ctx *gin.Context) {})     //Create new comment
 	//r.GET("workshop/reply", func(ctx *gin.Context) {})       //Create new reply
 	//r.GET("workshop/post/:id", func(ctx *gin.Context) {})    //Edit post
