@@ -172,7 +172,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="wGL-uTAheGFIrogTyL3E" name="Endpoints">
-    <mxGraphModel dx="775" dy="1115" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="775" dy="1114" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -275,7 +275,7 @@
         <mxCell id="NvTL5torWdIhuVVUIdxV-1" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ntj2i30cRJHrBN7hvtpM-2">
           <mxGeometry y="200" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="NvTL5torWdIhuVVUIdxV-2" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-1">
+        <mxCell id="NvTL5torWdIhuVVUIdxV-2" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-1">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -293,7 +293,7 @@
         <mxCell id="NvTL5torWdIhuVVUIdxV-9" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ntj2i30cRJHrBN7hvtpM-2">
           <mxGeometry y="240" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="NvTL5torWdIhuVVUIdxV-10" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-9">
+        <mxCell id="NvTL5torWdIhuVVUIdxV-10" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-9">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -347,7 +347,7 @@
         <mxCell id="NvTL5torWdIhuVVUIdxV-33" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ntj2i30cRJHrBN7hvtpM-2">
           <mxGeometry y="360" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="NvTL5torWdIhuVVUIdxV-34" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-33">
+        <mxCell id="NvTL5torWdIhuVVUIdxV-34" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-33">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -365,7 +365,7 @@
         <mxCell id="NvTL5torWdIhuVVUIdxV-29" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ntj2i30cRJHrBN7hvtpM-2">
           <mxGeometry y="400" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="NvTL5torWdIhuVVUIdxV-30" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-29">
+        <mxCell id="NvTL5torWdIhuVVUIdxV-30" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-29">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -419,7 +419,7 @@
         <mxCell id="NvTL5torWdIhuVVUIdxV-41" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ntj2i30cRJHrBN7hvtpM-2">
           <mxGeometry y="520" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="NvTL5torWdIhuVVUIdxV-42" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-41">
+        <mxCell id="NvTL5torWdIhuVVUIdxV-42" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-41">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -437,7 +437,7 @@
         <mxCell id="NvTL5torWdIhuVVUIdxV-37" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="ntj2i30cRJHrBN7hvtpM-2">
           <mxGeometry y="560" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="NvTL5torWdIhuVVUIdxV-38" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-37">
+        <mxCell id="NvTL5torWdIhuVVUIdxV-38" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" vertex="1" parent="NvTL5torWdIhuVVUIdxV-37">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
@@ -545,7 +545,7 @@
         <mxCell id="ntj2i30cRJHrBN7hvtpM-31" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="ntj2i30cRJHrBN7hvtpM-2" vertex="1">
           <mxGeometry y="800" width="560" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="ntj2i30cRJHrBN7hvtpM-32" value="UPDATE" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" parent="ntj2i30cRJHrBN7hvtpM-31" vertex="1">
+        <mxCell id="ntj2i30cRJHrBN7hvtpM-32" value="PUT" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;spacingLeft=4;spacingRight=4;align=left;" parent="ntj2i30cRJHrBN7hvtpM-31" vertex="1">
           <mxGeometry width="80" height="40" as="geometry">
             <mxRectangle width="80" height="40" as="alternateBounds" />
           </mxGeometry>
