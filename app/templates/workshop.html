@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>{{ .title }}</title>
+    <title>Workshop</title>
     <link rel="stylesheet" href="/static/style.css" />
     <script defer src="/static/scripts/create-post.js"></script>
 </head>
@@ -12,7 +12,9 @@
     {{ template "header.html" . }}
 
     <main>
-            {{ block "create_post" .}}{{end}}
+            {{ if .isPost}}
+                {{ block "post_workshop" .}}{{end}}             
+            {{ end }}
     </main>
 
     {{ template "footer.html" . }}

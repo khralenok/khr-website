@@ -39,16 +39,16 @@ func main() {
 	r.GET("/post/:id", handlers.ShowPost)
 
 	// Not indexed pages
-	r.GET("/workshop/post", handlers.ShowWorkshop) //Create new post
+	r.GET("/workshop/post", func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })    //Creating workshop
+	r.GET("/workshop/post/:id", func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) }) //Editing workshop
 	//r.GET("workshop/comment", func(ctx *gin.Context) {})     //Create new comment
 	//r.GET("workshop/reply", func(ctx *gin.Context) {})       //Create new reply
-	//r.GET("workshop/post/:id", func(ctx *gin.Context) {})    //Edit post
 	//r.GET("workshop/comment/:id", func(ctx *gin.Context) {}) //Edit comment
 	//r.GET("workshop/reply/:id", func(ctx *gin.Context) {})   //Edit reply
 
 	// Endpoints
-	r.POST("/workshop/post", handlers.CreatePost)
-	//r.POST("/workshop/comment", func(ctx *gin.Context) {})
+	r.POST("/post", handlers.CreatePost)
+	//r.PUT("/post/:id", handlers.UpdatePost)
 	//r.POST("/workshop/reply", func(ctx *gin.Context) {})
 	//r.PUT("/workshop/post", func(ctx *gin.Context) {})
 	//r.PUT("/workshop/comment", func(ctx *gin.Context) {})

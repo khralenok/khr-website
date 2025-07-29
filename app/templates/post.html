@@ -7,5 +7,27 @@
             {{if .post.ImageURL}}
                 <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
             {{end}}
+
+            <div><a class="btn secondary" href="/workshop/post/{{ .post.ID }}">Edit</a></div>
     </article>
 {{ end }}
+
+{{define "post_workshop"}}
+    <form class="post-workshop" id="post-workshop">
+        <label for="post-content">Add new post</label>
+        <textarea id="post-content" name="post-content" rows="12" placeholder="Type here...">{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
+        {{ if .content }}
+            {{ if .content.ImageURL}}
+                <a>Selected image:</a>
+                <div class="mol h">
+                <img width="72" height="72" src="/uploads/{{ .content.ImageURL}}"/>
+                <div><a class="btn secondary">Edit</a></div>
+                </div>
+            {{end}}
+        {{ else }}
+            <label for="post-image">Select an image:</label>
+            <input type="file" id="post-image" name="post-image" />
+        {{ end }}
+                <input type="submit" value="Submit" />
+    </form>
+{{end}}

@@ -91,6 +91,14 @@ main{
     border-radius: 1rem;
 }
 
+.btn.secondary{
+    color: black;
+    background-color: white;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
 .post{
     width: var(--container-width);
     display: flex;
@@ -124,3 +132,13 @@ footer{
     background-color: lightgray;
     height: 5rem;
 }
+
+.mol{
+    display: flex;
+    gap: 1rem;
+}
+
+.mol.h{
+    flex-direction: row;
+    align-items: center;
+} 
