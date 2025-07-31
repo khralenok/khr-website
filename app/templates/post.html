@@ -1,33 +1,31 @@
 {{ define "post" }}
     <article class="post">
-        <div class="post-data"><a><b>ID:</b> {{ .post.ID }}</a><a><b>Published At:</b> {{ .post.CreatedAt }}</a></div>
+        <div class="post-data"><div class="mol h"><a><b>ID:</b> {{ .post.ID }}</a><a><b>Published At:</b> {{ .post.CreatedAt }}</a></div><div class="mol h"><a class="btn secondary" href="/workshop/post/{{ .post.ID }}">Edit</a><a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a></div></div>
             
             <p>{{ .post.Content}}</p>
 
             {{if .post.ImageURL}}
                 <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
             {{end}}
-
-            <div><a class="btn secondary" href="/workshop/post/{{ .post.ID }}">Edit</a></div>
     </article>
 {{ end }}
 
 {{define "post_workshop"}}
-    <form class="post-workshop" id="post-workshop">
+    <form class="post-workshop" id="post-workshop" {{ if .content }} data-post-id="{{ .content.ID }}" {{ end }} >
         <label for="post-content">Add new post</label>
         <textarea id="post-content" name="post-content" rows="12" placeholder="Type here...">{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         {{ if .content }}
             {{ if .content.ImageURL}}
-                <a>Selected image:</a>
-                <div class="mol h">
-                <img width="72" height="72" src="/uploads/{{ .content.ImageURL}}"/>
-                <div><a class="btn secondary">Edit</a></div>
+                <div>
+                    <figure class="img-with-caption">
+                        <img width="72" height="72" src="/uploads/{{ .content.ImageURL}}"/>
+                        <figcaption>Selected image</figcaption>
+                    </figure>
                 </div>
             {{end}}
-        {{ else }}
-            <label for="post-image">Select an image:</label>
-            <input type="file" id="post-image" name="post-image" />
         {{ end }}
-                <input type="submit" value="Submit" />
+            <label for="post-image">(OPTIONAL) Select an image:</label>
+            <input type="file" id="post-image" name="post-image" />
+            <input type="submit" value="Submit" />
     </form>
 {{end}}

@@ -60,9 +60,74 @@ func CreatePost(c *gin.Context) {
 	}
 
 	// 5. Return success/failure message
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"message":  "File uploaded successfully",
 		"filename": filename,
 		"content":  content,
+	})
+}
+
+// Handle request for updating a post. If success, update row in DB and store related files on the server.
+func UpdatePost(c *gin.Context) {
+	postId, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
+		return
+	}
+
+	content := c.PostForm("content")
+	filename := ""
+
+	image, err := c.FormFile("image")
+
+	if err == nil {
+		savePath := filepath.Join("uploads", filepath.Base(image.Filename))
+
+		if err := c.SaveUploadedFile(image, savePath); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Could not save file",
+				"error":   err.Error(),
+			})
+			return
+		}
+		filename = image.Filename
+	}
+
+	if err := store.UpdatePost(content, filename, postId); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not save new post to DB",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// 5. Return success/failure message
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Post updated successfully",
+		"content": content,
+	})
+}
+
+// Handle request for deleting a post. If success, update is_deleted column value in db.
+func DeletePost(c *gin.Context) {
+	postId, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
+		return
+	}
+
+	if err := store.DeletePost(postId); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not delete post",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// 5. Return success/failure message
+	c.JSON(http.StatusNoContent, gin.H{
+		"message": "Post deleted successfully",
 	})
 }

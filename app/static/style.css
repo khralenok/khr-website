@@ -99,6 +99,14 @@ main{
     border-radius: 0.5rem;
 }
 
+.btn.delete{
+    color: red;
+    background-color: white;
+    padding: 0.5rem;
+    border: 1px solid red;
+    border-radius: 0.5rem;
+}
+
 .post{
     width: var(--container-width);
     display: flex;
@@ -118,8 +126,9 @@ main{
 .post-data{
     width: 100%;
     display: flex;
+    justify-content: space-between;
     gap: 1rem;
-    line-height: 3rem;
+    height: 3rem;
     color: grey;
     border-bottom: 1px solid lightgray;
 }
@@ -136,9 +145,25 @@ footer{
 .mol{
     display: flex;
     gap: 1rem;
+    flex: 0 0 auto;
 }
 
 .mol.h{
     flex-direction: row;
     align-items: center;
 } 
+
+.mol.h.c{
+    justify-items: center;
+} 
+
+.img-with-caption{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+}
+figcaption{
+    font-size: 1rem;
+    font-style: italic;
+}

@@ -1,22 +1,30 @@
 'use srict'
 
+/**
+ * Handle new post creation request. 
+ * Contain logic for getting data from form which called this function, and async function that sent this data to server.
+ */
 const handleNewPost = function(e){
-    const sentData = async function(content, image) {
-        const formData = new FormData();
-        formData.append("content", content)
+    e.preventDefault()
 
-        if (image.type.startsWith("image/")) {
-           formData.append("image", image)
+    const sentData = async function(input) {
+        const formData = new FormData();
+        formData.append("content", input.get("content"))
+
+        if (input.get("image") && input.get("image").type.startsWith("image/")) {
+           formData.append("image", input.get("image"))
         }
 
         try{
-            const response = await fetch("/workshop/post", {
+            const response = await fetch("/post", {
                 method: "POST",
                 body: formData,
             });
 
             if (!response.ok){
-                throw new Error(`Server error: ${response.status}`);   
+                return response.json().then(errorData => {
+                    throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
+                });  
             }
 
             const data = await response.json();
@@ -26,20 +34,25 @@ const handleNewPost = function(e){
         }
     }
 
-    e.preventDefault()
-
     formData = new FormData(document.getElementById('post-workshop'));
+    const input = new Map();
 
-    const content = formData.get("post-content");
-    const image = formData.get("post-image");
+    input.set("content", formData.get("post-content"));
 
-    sentData(content, image)
+    if (formData.get("post-image")) {
+        input.set("image", formData.get("post-image"));
+    }
+
+    sentData(input)
 }
 
-const registerTheForm = function(){
+/**
+ * Get elements from the page and add corresponsing event listeners to them
+ */
+const registerInteracriveElements = function(){
     const form = document.getElementById('post-workshop')
 
     form.addEventListener('submit', handleNewPost)
 }
 
-document.addEventListener('DOMContentLoaded', registerTheForm)
+document.addEventListener('DOMContentLoaded', registerInteracriveElements)

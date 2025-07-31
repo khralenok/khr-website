@@ -48,7 +48,8 @@ func main() {
 
 	// Endpoints
 	r.POST("/post", handlers.CreatePost)
-	//r.PUT("/post/:id", handlers.UpdatePost)
+	r.PUT("/post/:id", handlers.UpdatePost)
+	r.PUT("/post/delete/:id", handlers.DeletePost)
 	//r.POST("/workshop/reply", func(ctx *gin.Context) {})
 	//r.PUT("/workshop/post", func(ctx *gin.Context) {})
 	//r.PUT("/workshop/comment", func(ctx *gin.Context) {})
