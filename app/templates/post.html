@@ -1,19 +1,27 @@
 {{ define "post" }}
     <article class="post">
-        <div class="post-data"><div class="mol h"><a><b>ID:</b> {{ .post.ID }}</a><a><b>Published At:</b> {{ .post.CreatedAt }}</a></div><div class="mol h"><a class="btn secondary" href="/workshop/post/{{ .post.ID }}">Edit</a><a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a></div></div>
+        <div class="post-data">
+            <div class="mol h">
+                <div><a><b>Published At:</b></a><a class="date">{{ .post.CreatedAt }}</a></div>
+            </div>
+            <div class="mol h">
+                <a class="btn secondary" href="/workshop/post/{{ .post.ID }}">Edit</a>
+                <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
+            </div>
+        </div>
             
-            <p>{{ .post.Content}}</p>
+        <p>{{ .post.Content}}</p>
 
-            {{if .post.ImageURL}}
-                <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
-            {{end}}
+        {{if .post.ImageURL}}
+            <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
+        {{end}}
     </article>
 {{ end }}
 
 {{define "post_workshop"}}
     <form class="post-workshop" id="post-workshop" {{ if .content }} data-post-id="{{ .content.ID }}" {{ end }} >
-        <label for="post-content">Add new post</label>
-        <textarea id="post-content" name="post-content" rows="12" placeholder="Type here...">{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
+        <label for="post-content">Type post text here:</label>
+        <textarea id="post-content" name="post-content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         {{ if .content }}
             {{ if .content.ImageURL}}
                 <div>
@@ -24,8 +32,8 @@
                 </div>
             {{end}}
         {{ end }}
-            <label for="post-image">(OPTIONAL) Select an image:</label>
+            <label for="post-image">Select an image:</label>
             <input type="file" id="post-image" name="post-image" />
-            <input type="submit" value="Submit" />
+            <input class="btn" type="submit" value="Submit" />
     </form>
 {{end}}

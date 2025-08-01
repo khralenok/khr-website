@@ -89,6 +89,11 @@ main{
     padding: 1rem;
     background-color: black;
     border-radius: 1rem;
+    transition: transform 250ms;
+}
+
+.btn:hover{
+ transform: scale(1.05);
 }
 
 .btn.secondary{
@@ -166,4 +171,17 @@ footer{
 figcaption{
     font-size: 1rem;
     font-style: italic;
+}
+
+label:has(+ textarea:required)::after{
+    content: "*";
+    color: red;
+}
+
+input[type="file"]::file-selector-button{
+    color: black;
+    background-color: white;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
 }
