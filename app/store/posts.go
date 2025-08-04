@@ -11,7 +11,7 @@ import (
 func GetPosts() ([]models.Post, error) {
 	var posts []models.Post
 
-	query := "SELECT id, content, image_url, created_at FROM posts WHERE is_deleted=FALSE ORDER BY created_at DESC"
+	query := "SELECT p.* FROM posts p WHERE NOT EXISTS (SELECT 1 FROM deleted_posts d WHERE d.id = p.id) ORDER BY p.created_at DESC"
 
 	rows, err := db.DB.Query(query)
 
@@ -94,17 +94,4 @@ func UpdatePost(content, filename string, postId int) error {
 
 	return nil
 
-}
-
-// Delete post with specific ID
-func DeletePost(postId int) error {
-	query := "UPDATE posts SET is_deleted=TRUE WHERE id = $1"
-
-	_, err := db.DB.Exec(query, postId)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

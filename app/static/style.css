@@ -47,7 +47,7 @@ main{
     border-radius: 2rem;
 }
 
-.post-workshop{
+.post-workshop, .workshop{
     width: var(--container-width);
     display: flex;
     flex-direction: column;
@@ -57,7 +57,7 @@ main{
     border-radius: 2rem;
 }
 
-#post-content{
+#post-content, #content{
     flex-grow: 1;
     padding: 1rem;
     background-color: #f3f3f3;
@@ -112,7 +112,7 @@ main{
     border-radius: 0.5rem;
 }
 
-.post{
+.post, .comment{
     width: var(--container-width);
     display: flex;
     flex-direction: column;

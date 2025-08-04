@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Workshop</title>
+    <title>{{ .title }}</title>
     <link rel="stylesheet" href="/static/style.css" />
     {{ if .content }}
-        <script defer src="/static/scripts/edit-post.js"></script>
+        {{ if .isPost }}<script defer src="/static/scripts/edit-post.js"></script>{{ end }}
+        {{ if .isComment }}<script defer src="/static/scripts/edit-comment.js"></script>{{ end }}
     {{ else }}
-        <script defer src="/static/scripts/create-post.js"></script>
+        {{ if .isPost }}<script defer src="/static/scripts/create-post.js"></script>{{ end }}
+        {{ if .isComment }}<script defer src="/static/scripts/create-comment.js"></script>{{ end }}
     {{ end }}
 
 </head>
@@ -19,6 +21,10 @@
     <main>
             {{ if .isPost}}
                 {{ block "post_workshop" .}}{{end}}             
+            {{ end }}
+
+            {{ if .isComment}}
+                {{ block "comment_workshop" .}}{{end}}             
             {{ end }}
     </main>
 

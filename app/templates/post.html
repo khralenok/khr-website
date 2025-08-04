@@ -9,13 +9,30 @@
                 <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
             </div>
         </div>
-            
+  
         <p>{{ .post.Content}}</p>
 
         {{if .post.ImageURL}}
             <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
-        {{end}}
+        {{ end }}
+
+        <div class="mol h"><a class="btn secondary" href="/workshop/comment?post_id={{ .post.ID }}">Add comment</a>  </div>
     </article>
+
+    {{range .comments}}
+        <article class="comment">
+            <div class="comment-data">
+                <div class="mol h">
+                    <div><a><b>Created at:</b></a><a class="date">{{.CreatedAt}}</a></div>
+                </div>
+            </div>
+            
+            <p>{{ .Content }}</p>
+        </article>
+        
+    {{else}}
+        <p>No comments yet. </p>
+    {{end}}
 {{ end }}
 
 {{define "post_workshop"}}

@@ -21,14 +21,28 @@ func ShowPost(c *gin.Context) {
 	post, err := store.GetPost(postId)
 
 	if err != nil {
-		c.String(http.StatusInternalServerError, "Error loading post")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Can't load post data",
+			"error":   err.Error(),
+		})
 		return
 	}
 
+	comments, err := store.GetComments(postId)
+
+	/* 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Can't load comments",
+			"error":   err.Error(),
+		})
+		return
+	} */
+
 	c.HTML(http.StatusOK, "base.html", gin.H{
-		"title":   "Khralenok Blog",
-		"post":    post,
-		"isIndex": false,
+		"title":    "Khralenok - Post",
+		"post":     post,
+		"comments": comments,
+		"isIndex":  false,
 	})
 }
 
@@ -59,9 +73,8 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
-	// 5. Return success/failure message
 	c.JSON(http.StatusCreated, gin.H{
-		"message":  "File uploaded successfully",
+		"message":  "New post added successfully",
 		"filename": filename,
 		"content":  content,
 	})
