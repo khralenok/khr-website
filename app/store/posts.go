@@ -1,6 +1,7 @@
 package store
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/khralenok/khr-website/db"
@@ -22,16 +23,11 @@ func GetPosts() ([]models.Post, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var nextPost models.Post
-		var rawTime time.Time
-
-		err := rows.Scan(&nextPost.ID, &nextPost.Content, &nextPost.ImageURL, &rawTime)
+		nextPost, err := newPost(rows)
 
 		if err != nil {
 			return []models.Post{}, err
 		}
-
-		nextPost.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
 
 		posts = append(posts, nextPost)
 	}
@@ -42,17 +38,28 @@ func GetPosts() ([]models.Post, error) {
 // Return post with specified ID
 func GetPost(postId int) (models.Post, error) {
 	var post models.Post
-	var rawTime time.Time
 
 	query := "SELECT id, content, image_url, created_at FROM posts WHERE id=$1"
 
-	err := db.DB.QueryRow(query, postId).Scan(&post.ID, &post.Content, &post.ImageURL, &rawTime)
+	rows, err := db.DB.Query(query, postId)
 
 	if err != nil {
 		return models.Post{}, err
 	}
 
-	post.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
+	defer rows.Close()
+
+	for rows.Next() {
+		post, err = newPost(rows)
+
+		if err == sql.ErrNoRows {
+			break
+		}
+
+		if err != nil {
+			return models.Post{}, err
+		}
+	}
 
 	return post, nil
 }
@@ -94,4 +101,37 @@ func UpdatePost(content, filename string, postId int) error {
 
 	return nil
 
+}
+
+// This function construct new Post struct from result of SQL query
+func newPost(row *sql.Rows) (models.Post, error) {
+	var newPost models.Post
+	var rawTime time.Time
+
+	err := row.Scan(&newPost.ID, &newPost.Content, &newPost.ImageURL, &rawTime)
+
+	if err != nil {
+		return models.Post{}, err
+	}
+
+	newPost.NumOfComments = countPostComments(newPost.ID)
+	newPost.NumOfLikes = CountLikes(newPost.ID)
+
+	newPost.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
+
+	return newPost, nil
+}
+
+func countPostComments(postID int64) int {
+	var numOfComments int
+
+	query := "SELECT COUNT(*) FROM comments WHERE post_id = $1"
+
+	err := db.DB.QueryRow(query, postID).Scan(&numOfComments)
+
+	if err != nil {
+		return 0
+	}
+
+	return numOfComments
 }

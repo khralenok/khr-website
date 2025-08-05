@@ -30,13 +30,13 @@ func ShowPost(c *gin.Context) {
 
 	comments, err := store.GetComments(postId)
 
-	/* 	if err != nil {
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Can't load comments",
 			"error":   err.Error(),
 		})
 		return
-	} */
+	}
 
 	c.HTML(http.StatusOK, "base.html", gin.H{
 		"title":    "Khralenok - Post",

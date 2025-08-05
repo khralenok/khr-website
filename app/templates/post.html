@@ -10,13 +10,12 @@
             </div>
         </div>
   
-        <p>{{ .post.Content}}</p>
+        <p>{{ .post.Content }}</p>
 
-        {{if .post.ImageURL}}
+        {{ if .post.ImageURL }}
             <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
         {{ end }}
-
-        <div class="mol h"><a class="btn secondary" href="/workshop/comment?post_id={{ .post.ID }}">Add comment</a>  </div>
+        <div class="mol h"><a href="/workshop/comment?post_id={{ .post.ID }}" style="text-decoration: none;">💬 {{ .post.NumOfComments }}</a><a class="like" data-post-id="{{ .post.ID }}">🩶 {{ .post.NumOfLikes }}</a></div>
     </article>
 
     {{range .comments}}
@@ -31,7 +30,7 @@
         </article>
         
     {{else}}
-        <p>No comments yet. </p>
+        <p>No comments yet.</p>
     {{end}}
 {{ end }}
 

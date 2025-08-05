@@ -1,6 +1,7 @@
 package store
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/khralenok/khr-website/db"
@@ -14,6 +15,10 @@ func GetComments(postId int) ([]models.Comment, error) {
 	query := "SELECT * FROM comments WHERE post_id = $1 ORDER BY created_at DESC"
 
 	rows, err := db.DB.Query(query, postId)
+
+	if err == sql.ErrNoRows {
+		return []models.Comment{}, nil
+	}
 
 	if err != nil {
 		return []models.Comment{}, err

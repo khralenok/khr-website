@@ -29,7 +29,7 @@
                 <img width="864" height="864" src="/uploads/{{.ImageURL}}" />
             {{end}}
 
-
+            <div class="mol h"><a>💬 {{ .NumOfComments }}</a><a class="like" data-post-id="{{ .ID }}">🩶 {{ .NumOfLikes }}</a></div>
         </article>
     {{else}}
         <p>No posts yet. </p>

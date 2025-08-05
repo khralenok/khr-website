@@ -51,6 +51,8 @@ func main() {
 	r.PUT("/post/:id", handlers.UpdatePost)
 	r.PUT("/post/delete/:id", handlers.DeletePost)
 	r.POST("/comment/:post_id", handlers.CreateComment)
+	r.POST("/like/:post_id", handlers.LikePost)
+	r.PUT("/like/:post_id", handlers.UnlikePost)
 	//r.POST("/workshop/reply", func(ctx *gin.Context) {})
 	//r.PUT("/workshop/post", func(ctx *gin.Context) {})
 	//r.PUT("/workshop/comment", func(ctx *gin.Context) {})

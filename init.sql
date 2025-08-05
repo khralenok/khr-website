@@ -35,6 +35,8 @@ CREATE TABLE deleted_replies (
 );
 
 CREATE TABLE likes (
-  post_id INT PRIMARY KEY REFERENCES posts(id),
-  user_id INT DEFAULT 1
+  post_id INT REFERENCES posts(id),
+  user_id INT,
+  is_unliked BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (post_id, user_id)
 )
