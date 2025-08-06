@@ -1,8 +1,8 @@
 'use srict'
 
 /**
- * Handle new post creation request. 
- * Contain logic for getting data from form which called this function, and async function that sent this data to server.
+ * Handle new comment creation request. 
+ * Contain logic for getting data from the form which called this function, and async function that sent this data to server.
  */
 const handleNewComment = function(e){
     e.preventDefault()

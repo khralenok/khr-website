@@ -8,7 +8,7 @@ import (
 	"github.com/khralenok/khr-website/models"
 )
 
-// Return array of comments for specific post ordered from latest to oldest
+// This function return an array of comments for specific post ordered from latest to oldest
 func GetComments(postId int) ([]models.Comment, error) {
 	var comments []models.Comment
 
@@ -44,7 +44,7 @@ func GetComments(postId int) ([]models.Comment, error) {
 	return comments, nil
 }
 
-// Return a comment with specified ID
+// This function return a comment with specified ID
 func GetComment(postId int) (models.Comment, error) {
 	var post models.Comment
 	var rawTime time.Time
@@ -62,7 +62,7 @@ func GetComment(postId int) (models.Comment, error) {
 	return post, nil
 }
 
-// Insert new comment to DB
+// This function insert new comment to database
 func AddComment(content string, postId int) error {
 	query := "INSERT INTO comments(content, post_id) VALUES ($1, $2)"
 
@@ -73,4 +73,19 @@ func AddComment(content string, postId int) error {
 	}
 
 	return nil
+}
+
+// This function return total amount of comments which belongs to the particular post
+func CountPostComments(postID int) int {
+	var numOfComments int
+
+	query := "SELECT COUNT(*) FROM comments WHERE post_id = $1"
+
+	err := db.DB.QueryRow(query, postID).Scan(&numOfComments)
+
+	if err != nil {
+		return 0
+	}
+
+	return numOfComments
 }

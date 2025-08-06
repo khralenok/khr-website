@@ -7,6 +7,7 @@ import (
 	"github.com/khralenok/khr-website/store"
 )
 
+// This function render an HTML for auth page
 func ShowAuth(c *gin.Context) {
 	posts, err := store.GetPosts()
 

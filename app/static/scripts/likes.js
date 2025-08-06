@@ -1,5 +1,8 @@
 'use strict'
 
+/**
+ * Sent request to add a like to specific post
+ */
 const likePost = async function(postId) {
     const url = "/like/" + postId
 
@@ -20,6 +23,9 @@ const likePost = async function(postId) {
     }
 }
 
+/**
+ * Sent request to remove a like from specific post
+ */
 const unlikePost = async function(postId) {
     const url = "/like/" + postId
 
@@ -28,13 +34,9 @@ const unlikePost = async function(postId) {
             method: "PUT",
         });
 
-        if (!response.ok){
-            return response.json().then(errorData => {
-                throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
-            });  
+        if (response.status === 204){
+            console.log('Like was erased')
         }
-
-        const data = await response.json();
     } catch(error) {
         console.error('Fetch error', error)
     }
@@ -48,7 +50,7 @@ const unlikePost = async function(postId) {
 const handleLikes = function(e){
     const btn = e.target
 
-    const parts = btn.innerText.split(" ")
+    const parts = btn.innerText.trim().split(" ")
 
     var emoji = parts[0]
     var amount = parseInt(parts[1])
@@ -59,7 +61,7 @@ const handleLikes = function(e){
         amount ++
         btn.innerText = emoji + " " + amount
         btn.dataset.isChecked = "true"
-    } else {
+    } else if (btn.dataset.isChecked == "true"){
         unlikePost(btn.dataset.postId)
         emoji = "🩶"
         amount --

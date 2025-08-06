@@ -2,7 +2,7 @@
 
 /**
  * Handle new post creation request. 
- * Contain logic for getting data from form which called this function, and async function that sent this data to server.
+ * Contain logic for getting data from the form which called this function, and async function that sent this data to server.
  */
 const handleNewPost = function(e){
     e.preventDefault()

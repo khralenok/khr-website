@@ -29,7 +29,14 @@
                 <img width="864" height="864" src="/uploads/{{.ImageURL}}" />
             {{end}}
 
-            <div class="mol h"><a>💬 {{ .NumOfComments }}</a><a class="like" data-post-id="{{ .ID }}">🩶 {{ .NumOfLikes }}</a></div>
+            <div class="mol h">
+                <a class="counter comments" href="/workshop/comment?post_id={{ .ID }}">💬 {{ .NumOfComments }}</a>
+                {{ if .IsLiked }}
+                    <a class="counter like" data-post-id="{{ .ID }}" data-is-checked="true">❤️ {{ .NumOfLikes }}</a>
+                {{ else }}
+                    <a class="counter like" data-post-id="{{ .ID }}">🩶 {{ .NumOfLikes }}</a>
+                {{ end }}
+            </div>
         </article>
     {{else}}
         <p>No posts yet. </p>

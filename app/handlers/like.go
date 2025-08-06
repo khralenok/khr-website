@@ -8,8 +8,9 @@ import (
 	"github.com/khralenok/khr-website/store"
 )
 
+// This function handle request for adding a like to the post with id provided with context
 func LikePost(c *gin.Context) {
-	userId := 1 //Would be replaced after users implementation
+	userId := 1 // Must be replaced after USER implementation
 
 	postId, err := strconv.Atoi(c.Param("post_id"))
 
@@ -36,8 +37,9 @@ func LikePost(c *gin.Context) {
 
 }
 
+// This function handle request for removing a like from the post with id provided with context
 func UnlikePost(c *gin.Context) {
-	userId := 1 //Would be replaced after users implementation
+	userId := 1 // Must be replaced after USER implementation
 
 	postId, err := strconv.Atoi(c.Param("post_id"))
 
@@ -54,8 +56,5 @@ func UnlikePost(c *gin.Context) {
 		return
 	}
 
-	// 5. Return success/failure message
-	c.JSON(http.StatusNoContent, gin.H{
-		"message": "Like was erased",
-	})
+	c.Status(http.StatusNoContent)
 }

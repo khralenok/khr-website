@@ -1,8 +1,7 @@
 'use srict'
 
 /**
- * Handle new post creation request. 
- * Contain logic for getting data from form which called this function, and async function that sent this data to server.
+ * Handle post deletion request. 
  */
 const deleteThePost = async function(){
     const url = "/post/delete/" + document.getElementById('delete').dataset.postId;

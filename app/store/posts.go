@@ -8,7 +8,7 @@ import (
 	"github.com/khralenok/khr-website/models"
 )
 
-// Return array of posts ordered from latest to oldest
+// This function return array of posts ordered from latest to oldest
 func GetPosts() ([]models.Post, error) {
 	var posts []models.Post
 
@@ -35,7 +35,7 @@ func GetPosts() ([]models.Post, error) {
 	return posts, nil
 }
 
-// Return post with specified ID
+// This function return post with specified ID
 func GetPost(postId int) (models.Post, error) {
 	var post models.Post
 
@@ -64,7 +64,7 @@ func GetPost(postId int) (models.Post, error) {
 	return post, nil
 }
 
-// Insert new post to DB
+// This function insert new post to DB
 func AddPost(content, filename string) error {
 	query := "INSERT INTO posts(content, image_url) VALUES ($1, $2)"
 
@@ -77,7 +77,7 @@ func AddPost(content, filename string) error {
 	return nil
 }
 
-// Update post with specific ID
+// This function update post with specific ID
 func UpdatePost(content, filename string, postId int) error {
 	if filename == "" {
 		query := "UPDATE posts SET content=$1 WHERE id = $2"
@@ -103,8 +103,9 @@ func UpdatePost(content, filename string, postId int) error {
 
 }
 
-// This function construct new Post struct from result of SQL query
+// This function construct new Post struct from a result of database query
 func newPost(row *sql.Rows) (models.Post, error) {
+	userId := 1 // Must be replaced after USER implementation
 	var newPost models.Post
 	var rawTime time.Time
 
@@ -114,24 +115,15 @@ func newPost(row *sql.Rows) (models.Post, error) {
 		return models.Post{}, err
 	}
 
-	newPost.NumOfComments = countPostComments(newPost.ID)
+	newPost.NumOfComments = CountPostComments(newPost.ID)
 	newPost.NumOfLikes = CountLikes(newPost.ID)
+	newPost.IsLiked, err = CheckIfLikeExist(newPost.ID, userId)
+
+	if err != nil {
+		return models.Post{}, err
+	}
 
 	newPost.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
 
 	return newPost, nil
-}
-
-func countPostComments(postID int64) int {
-	var numOfComments int
-
-	query := "SELECT COUNT(*) FROM comments WHERE post_id = $1"
-
-	err := db.DB.QueryRow(query, postID).Scan(&numOfComments)
-
-	if err != nil {
-		return 0
-	}
-
-	return numOfComments
 }

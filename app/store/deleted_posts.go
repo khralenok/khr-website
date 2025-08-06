@@ -2,7 +2,7 @@ package store
 
 import "github.com/khralenok/khr-website/db"
 
-// Delete post with specific ID
+// This function insert deleted post to deleted_posts table
 func DeletePost(id int) error {
 	query := "INSERT INTO deleted_posts(id) VALUES ($1)"
 

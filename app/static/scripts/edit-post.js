@@ -1,7 +1,7 @@
 'use srict'
 
 /**
- * Handle new post creation request. 
+ * Handle post editing request. 
  * Contain logic for getting data from form which called this function, and async function that sent this data to server.
  */
 const handleThePost = function(e){

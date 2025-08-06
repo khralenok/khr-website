@@ -9,7 +9,7 @@ import (
 	"github.com/khralenok/khr-website/store"
 )
 
-// Render page with single post and related comments
+// This function render page with single post and related comments
 func ShowPost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
 
@@ -46,7 +46,7 @@ func ShowPost(c *gin.Context) {
 	})
 }
 
-// Handle request for creating a new post. If success, create new row in DB and store related files on the server.
+// This function handle request for creating a new post. If success, create new row in DB and store related files on the server.
 func CreatePost(c *gin.Context) {
 	content := c.PostForm("content")
 	image, err := c.FormFile("image")
@@ -80,7 +80,7 @@ func CreatePost(c *gin.Context) {
 	})
 }
 
-// Handle request for updating a post. If success, update row in DB and store related files on the server.
+// This function handle request for updating a post. If success, update row in DB and store related files on the server.
 func UpdatePost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
 
@@ -115,14 +115,13 @@ func UpdatePost(c *gin.Context) {
 		return
 	}
 
-	// 5. Return success/failure message
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Post updated successfully",
 		"content": content,
 	})
 }
 
-// Handle request for deleting a post. If success, update is_deleted column value in db.
+// This function handle request for deleting a post. If success, update is_deleted column value in db.
 func DeletePost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
 
@@ -139,7 +138,6 @@ func DeletePost(c *gin.Context) {
 		return
 	}
 
-	// 5. Return success/failure message
 	c.JSON(http.StatusNoContent, gin.H{
 		"message": "Post deleted successfully",
 	})

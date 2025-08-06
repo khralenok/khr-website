@@ -8,11 +8,12 @@ import (
 	"github.com/khralenok/khr-website/store"
 )
 
+// This struct serve as temporary storage for comment data app get from the frontend
 type NewCommentRequest struct {
 	Content string `json:"content"`
 }
 
-// Handle request for creating a new comment.
+// This function handle request for creating a new comment.
 func CreateComment(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("post_id"))
 

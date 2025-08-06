@@ -15,7 +15,14 @@
         {{ if .post.ImageURL }}
             <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
         {{ end }}
-        <div class="mol h"><a href="/workshop/comment?post_id={{ .post.ID }}" style="text-decoration: none;">💬 {{ .post.NumOfComments }}</a><a class="like" data-post-id="{{ .post.ID }}">🩶 {{ .post.NumOfLikes }}</a></div>
+        <div class="mol h">
+            <a class="counter comments" href="/workshop/comment?post_id={{ .post.ID }}">💬 {{ .post.NumOfComments }}</a>
+            {{ if .post.IsLiked }}
+                <a class="counter like" data-post-id="{{ .post.ID }}" data-is-checked="true">❤️ {{ .post.NumOfLikes }}</a>
+            {{ else }}
+                <a class="counter like" data-post-id="{{ .post.ID }}">🩶 {{ .post.NumOfLikes }}</a>
+            {{ end }}
+        </div>    
     </article>
 
     {{range .comments}}

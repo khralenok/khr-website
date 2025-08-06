@@ -1,5 +1,8 @@
 'use srict'
 
+/**
+ * Split an input string and format it in a human readable way
+ */
 function parseDateString(string) {
   const [day, mon, year, hm] = string.split(' ');
   const [hour, min] = hm.split(':');
@@ -8,12 +11,19 @@ function parseDateString(string) {
   return new Date(Date.UTC(year, months[mon], day, hour, min));
 }
 
+/**
+ * Replace original string by formated one
+ */
 const formatTheDate = function(date, options){
         const rawDate = parseDateString(date.innerHTML)
         const formatedDate = new Intl.DateTimeFormat('en-GB', options).format(rawDate);
         date.innerHTML = " " + formatedDate
 }
 
+
+/**
+ * Get elements from the page and call formatting funcion for each of them
+ */
 const registerDates = function(){
     const dates = document.querySelectorAll('.date');
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;

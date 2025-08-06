@@ -8,6 +8,7 @@ import (
 	"github.com/khralenok/khr-website/store"
 )
 
+// This function render an HTML for workshop pages
 func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 	switch contentType {
 	case "post":
