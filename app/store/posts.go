@@ -39,7 +39,7 @@ func GetPosts() ([]models.Post, error) {
 func GetPost(postId int) (models.Post, error) {
 	var post models.Post
 
-	query := "SELECT id, content, image_url, created_at FROM posts WHERE id=$1"
+	query := "SELECT * FROM posts WHERE id=$1"
 
 	rows, err := db.DB.Query(query, postId)
 
@@ -115,7 +115,7 @@ func newPost(row *sql.Rows) (models.Post, error) {
 		return models.Post{}, err
 	}
 
-	newPost.NumOfComments = CountPostComments(newPost.ID)
+	newPost.NumOfComments = CountPostComments(newPost.ID) + CountPostReplies(newPost.ID)
 	newPost.NumOfLikes = CountLikes(newPost.ID)
 	newPost.IsLiked, err = CheckIfLikeExist(newPost.ID, userId)
 

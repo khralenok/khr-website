@@ -9,9 +9,11 @@
     {{ if .content }}
         {{ if .isPost }}<script defer src="/static/scripts/edit-post.js"></script>{{ end }}
         {{ if .isComment }}<script defer src="/static/scripts/edit-comment.js"></script>{{ end }}
+        {{ if .isReply }}<script defer src="/static/scripts/edit-reply.js"></script>{{ end }}
     {{ else }}
         {{ if .isPost }}<script defer src="/static/scripts/create-post.js"></script>{{ end }}
         {{ if .isComment }}<script defer src="/static/scripts/create-comment.js"></script>{{ end }}
+        {{ if .isReply }}<script defer src="/static/scripts/create-reply.js"></script>{{ end }}
     {{ end }}
 
 </head>
@@ -25,6 +27,10 @@
 
             {{ if .isComment}}
                 {{ block "comment_workshop" .}}{{end}}             
+            {{ end }}
+
+            {{ if .isReply }}
+                {{ block "reply_workshop" .}}{{end}}             
             {{ end }}
     </main>
 

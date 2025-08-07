@@ -15,6 +15,7 @@ type NewCommentRequest struct {
 
 // This function handle request for creating a new comment.
 func CreateComment(c *gin.Context) {
+	commentatorId := 1 // Must be replaced after USER implementation
 	postId, err := strconv.Atoi(c.Param("post_id"))
 
 	if err != nil {
@@ -35,7 +36,7 @@ func CreateComment(c *gin.Context) {
 		return
 	}
 
-	if err := store.AddComment(newCommentRequest.Content, postId); err != nil {
+	if err := store.AddComment(newCommentRequest.Content, postId, commentatorId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not save new comment to DB",
 			"error":   err.Error(),
@@ -45,5 +46,41 @@ func CreateComment(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"content": newCommentRequest.Content,
+	})
+}
+
+// This function render page with single post and related comments
+func ShowComment(c *gin.Context) {
+	commentId, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
+		return
+	}
+
+	comment, err := store.GetComment(commentId)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Can't load comments",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	replies, err := store.GetReplies(commentId)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Can't load replies",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.HTML(http.StatusOK, "base.html", gin.H{
+		"title":   "Khralenok - Comment",
+		"comment": comment,
+		"replies": replies,
 	})
 }

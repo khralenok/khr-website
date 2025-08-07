@@ -14,6 +14,7 @@ CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
   content TEXT NOT NULL,
   post_id INT REFERENCES posts(id),
+  commentator_id INT,
   created_at TIMESTAMP DEFAULT now()
 );
 
@@ -26,6 +27,7 @@ CREATE TABLE replies (
   id SERIAL PRIMARY KEY,
   content TEXT NOT NULL,
   comment_id INT REFERENCES comments(id),
+  commentator_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT now()
 );
 

@@ -37,26 +37,22 @@ func main() {
 	//r.GET("/signin", func(ctx *gin.Context) {})
 	//r.GET("/login", func(ctx *gin.Context) {})
 	r.GET("/post/:id", handlers.ShowPost)
+	r.GET("/comment/:id", handlers.ShowComment)
 
 	// Not indexed pages
 	r.GET("/workshop/post", func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })      //Creating workshop
 	r.GET("/workshop/post/:id", func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) })   //Editing workshop
 	r.GET("workshop/comment", func(c *gin.Context) { handlers.ShowWorkshop("comment", false, c) }) //Create new comment
-	//r.GET("workshop/reply", func(ctx *gin.Context) {})       //Create new reply
-	//r.GET("workshop/comment/:id", func(ctx *gin.Context) {}) //Edit comment
-	//r.GET("workshop/reply/:id", func(ctx *gin.Context) {})   //Edit reply
+	r.GET("workshop/reply", func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })     //Create new reply
 
 	// Endpoints
 	r.POST("/post", handlers.CreatePost)
 	r.PUT("/post/:id", handlers.UpdatePost)
 	r.PUT("/post/delete/:id", handlers.DeletePost)
 	r.POST("/comment/:post_id", handlers.CreateComment)
+	r.POST("/reply/:comment_id", handlers.CreateReply)
 	r.POST("/like/:post_id", handlers.LikePost)
 	r.PUT("/like/:post_id", handlers.UnlikePost)
-	//r.POST("/workshop/reply", func(ctx *gin.Context) {})
-	//r.PUT("/workshop/post", func(ctx *gin.Context) {})
-	//r.PUT("/workshop/comment", func(ctx *gin.Context) {})
-	//r.PUT("/workshop/reply", func(ctx *gin.Context) {})
 
 	log.Println("Server running at http:localhost:" + port)
 

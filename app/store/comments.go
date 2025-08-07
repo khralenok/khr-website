@@ -27,16 +27,11 @@ func GetComments(postId int) ([]models.Comment, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var nextComment models.Comment
-		var rawTime time.Time
-
-		err := rows.Scan(&nextComment.ID, &nextComment.Content, &nextComment.PostId, &rawTime)
+		nextComment, err := newComment(rows)
 
 		if err != nil {
 			return []models.Comment{}, err
 		}
-
-		nextComment.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
 
 		comments = append(comments, nextComment)
 	}
@@ -45,28 +40,39 @@ func GetComments(postId int) ([]models.Comment, error) {
 }
 
 // This function return a comment with specified ID
-func GetComment(postId int) (models.Comment, error) {
-	var post models.Comment
-	var rawTime time.Time
+func GetComment(commentId int) (models.Comment, error) {
+	var comment models.Comment
 
-	query := "SELECT id, content, image_url, created_at FROM posts WHERE id=$1"
+	query := "SELECT * FROM comments WHERE id=$1"
 
-	err := db.DB.QueryRow(query, postId).Scan(&post.ID, &post.Content, &rawTime)
+	rows, err := db.DB.Query(query, commentId)
 
 	if err != nil {
 		return models.Comment{}, err
 	}
 
-	post.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
+	defer rows.Close()
 
-	return post, nil
+	for rows.Next() {
+		comment, err = newComment(rows)
+
+		if err == sql.ErrNoRows {
+			break
+		}
+
+		if err != nil {
+			return models.Comment{}, err
+		}
+	}
+
+	return comment, nil
 }
 
 // This function insert new comment to database
-func AddComment(content string, postId int) error {
-	query := "INSERT INTO comments(content, post_id) VALUES ($1, $2)"
+func AddComment(content string, postId, commentator_id int) error {
+	query := "INSERT INTO comments(content, post_id, commentator_id) VALUES ($1, $2, $3)"
 
-	_, err := db.DB.Exec(query, content, postId)
+	_, err := db.DB.Exec(query, content, postId, commentator_id)
 
 	if err != nil {
 		return err
@@ -88,4 +94,22 @@ func CountPostComments(postID int) int {
 	}
 
 	return numOfComments
+}
+
+// This function construct new Post struct from a result of database query
+func newComment(row *sql.Rows) (models.Comment, error) {
+	var newComment models.Comment
+	var rawTime time.Time
+
+	err := row.Scan(&newComment.ID, &newComment.Content, &newComment.PostId, &newComment.CommentatorId, &rawTime)
+
+	if err != nil {
+		return models.Comment{}, err
+	}
+
+	newComment.NumOfReplies = CountCommentReplies(newComment.ID)
+
+	newComment.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
+
+	return newComment, nil
 }

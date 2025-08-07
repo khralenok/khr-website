@@ -17,8 +17,7 @@ func ShowHome(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "base.html", gin.H{
-		"title":   "Khralenok - Feed",
-		"posts":   posts,
-		"isIndex": true,
+		"title": "Khralenok - Feed",
+		"feed":  posts,
 	})
 }

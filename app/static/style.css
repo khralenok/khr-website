@@ -128,7 +128,7 @@ main{
     height: 44rem;
 }
 
-.post-data{
+.post-data, .comment-data{
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -187,6 +187,19 @@ input[type="file"]::file-selector-button{
 }
 
 .counter{
+    text-decoration: none;
+    color: inherit;
+}
+
+.breadcrumbs{
+    display: flex;
+    width: var(--container-width);
+    padding-left: 2rem;
+    gap: 0.5rem;
+    color: gray;
+}
+
+.breadcrumbs * {
     text-decoration: none;
     color: inherit;
 }

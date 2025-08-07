@@ -78,6 +78,39 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 			})
 		}
 	case "reply":
+		if isEditing {
+			commentId, err := strconv.Atoi(c.Param("id"))
+
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error":   "Bad Request",
+					"message": "Id parameter should be integer",
+				})
+				return
+			}
+
+			content, err := store.GetPost(commentId)
+
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error":   "Internal Server Error",
+					"message": "Can't load reply",
+				})
+				return
+			}
+
+			c.HTML(http.StatusOK, "workshop.html", gin.H{
+				"title":   "Khralenok - Edit Reply",
+				"isReply": true,
+				"content": content,
+			})
+		} else {
+			c.HTML(http.StatusOK, "workshop.html", gin.H{
+				"title":   "Khralenok - Create Reply",
+				"isReply": true,
+			})
+		}
+
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Wrong content type value",

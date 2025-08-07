@@ -1,4 +1,4 @@
-{{ define "feed"}}
+{{ define "feed" }}
     <div class="profile">
         <div class="profile-description">
             <h1>Grigorii Khralenok</h1>
@@ -12,20 +12,20 @@
         <a class="btn" href="/workshop/post">Create new post</a>
     </div>
     <h2> Recent Posts </h2>
-    {{range .posts}}
+    {{ range .feed }}
         <article class="post">
             <div class="post-data">
                 <div class="mol h">
-                    <div><a><b>Published At:</b></a><a class="date">{{.CreatedAt}}</a></div>
+                    <div><a><b>Published At:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                 </div>
                 <div>
                     <a class="btn secondary" href="/post/{{.ID}}">View post</a>
                 </div>
             </div>
             
-            <p>{{.Content}}</p>
+            <p>{{ .Content}} </p>
 
-            {{if .ImageURL}}
+            {{ if .ImageURL }}
                 <img width="864" height="864" src="/uploads/{{.ImageURL}}" />
             {{end}}
 
@@ -38,7 +38,7 @@
                 {{ end }}
             </div>
         </article>
-    {{else}}
+    {{ else }}
         <p>No posts yet. </p>
-    {{end}}
-{{end}}
+    {{ end }}
+{{ end }}

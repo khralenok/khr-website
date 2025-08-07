@@ -42,7 +42,6 @@ func ShowPost(c *gin.Context) {
 		"title":    "Khralenok - Post",
 		"post":     post,
 		"comments": comments,
-		"isIndex":  false,
 	})
 }
 

@@ -24,21 +24,27 @@
             {{ end }}
         </div>    
     </article>
-
-    {{range .comments}}
+    <h2> Comments </h2>
+    {{range .comments }}
         <article class="comment">
             <div class="comment-data">
                 <div class="mol h">
-                    <div><a><b>Created at:</b></a><a class="date">{{.CreatedAt}}</a></div>
+                    <div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+                </div>
+                <div>
+                    <a class="btn secondary" href="/comment/{{.ID}}">View comment</a>
                 </div>
             </div>
             
             <p>{{ .Content }}</p>
-        </article>
-        
-    {{else}}
+
+            <div class="mol h">
+            <a class="counter comments" href="/workshop/comment?comment_id={{ .ID }}">💬 {{ .NumOfReplies }}</a>
+        </div>    
+        </article>    
+    {{ else }}
         <p>No comments yet.</p>
-    {{end}}
+    {{ end }}
 {{ end }}
 
 {{define "post_workshop"}}
