@@ -24,6 +24,9 @@
             {{ end }}
         </div>    
     </article>
+    <div class="mol h c">
+        <a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Create new comment</a>
+    </div>
     <h2> Comments </h2>
     {{range .comments }}
         <article class="comment">

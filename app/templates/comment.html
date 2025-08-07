@@ -16,6 +16,9 @@
             <a class="counter comments" href="/workshop/reply?comment_id={{ .comment.ID }}">💬 {{ .comment.NumOfReplies }}</a>
         </div>    
     </article>
+    <div class="mol h c">
+        <a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Create new reply</a>
+    </div>
     <h2> Replies </h2>
     {{ range .replies }}
         <article class="comment">
