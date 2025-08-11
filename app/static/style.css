@@ -27,11 +27,17 @@ header{
     fill: black
 }
 
-main{
-    width: 100%;
+body{
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+}
+
+main{
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 2rem;
     padding: 4rem 0;
@@ -47,7 +53,7 @@ main{
     border-radius: 2rem;
 }
 
-.post-workshop, .workshop{
+.post-workshop, .workshop, .auth{
     width: var(--container-width);
     display: flex;
     flex-direction: column;
@@ -104,6 +110,14 @@ main{
     border-radius: 0.5rem;
 }
 
+.btn.secondary.ds{
+    color: gray;
+    background-color: white;
+    padding: 0;
+    border: none;
+    border-radius: 0.5rem;
+}
+
 .btn.delete{
     color: red;
     background-color: white;
@@ -116,6 +130,12 @@ main{
     width: var(--container-width);
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+}
+
+.leader{
+    width: var(--container-width);
+    display: flex;
     border: 1px solid gray;
     padding: 3rem;
     gap: 2rem;
@@ -143,7 +163,8 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: lightgray;
+    background-color: black;
+    color: white;
     height: 5rem;
 }
 
@@ -160,7 +181,17 @@ footer{
 
 .mol.h.c{
     justify-items: center;
-} 
+}
+
+.section-header{
+    display: flex;
+    flex-direction: row;
+    width: var(--container-width);
+    justify-content: space-between;
+    border-bottom: 2px solid gray;
+    padding-bottom: 1rem;
+    padding-top: 2rem;
+}
 
 .img-with-caption{
     display: flex;
@@ -202,4 +233,14 @@ input[type="file"]::file-selector-button{
 .breadcrumbs * {
     text-decoration: none;
     color: inherit;
+}
+
+.author{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.author img{
+    border-radius: 1000px;
 }

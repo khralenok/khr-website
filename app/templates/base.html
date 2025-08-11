@@ -15,7 +15,7 @@
     {{ template "header.html" . }}
 
     <main>
-            {{ if .feed }}
+            {{ if .is_index }}
             {{ else }}
                 <div class="breadcrumbs">
                     {{if .post }}<a href="/">Feed</a> &rarr; <a href="{{ .post.ID }}">Post {{ .post.ID }} </a>{{ end }}
@@ -23,7 +23,7 @@
                 </div>
             {{ end }}
 
-            {{ if .feed }}
+            {{ if .is_index }}
                 {{ block "feed" . }}{{ end }}
             {{ end }}
 

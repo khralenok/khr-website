@@ -34,8 +34,9 @@ func main() {
 
 	// Indexed pages
 	r.GET("/", handlers.ShowHome)
-	//r.GET("/signin", func(ctx *gin.Context) {})
-	//r.GET("/login", func(ctx *gin.Context) {})
+	r.GET("/signin", func(c *gin.Context) { handlers.ShowAuth("signin", c) })
+	r.GET("/login", func(c *gin.Context) { handlers.ShowAuth("login", c) })
+	r.GET("/logout", func(c *gin.Context) { handlers.ShowAuth("logout", c) })
 	r.GET("/post/:id", handlers.ShowPost)
 	r.GET("/comment/:id", handlers.ShowComment)
 
@@ -46,6 +47,8 @@ func main() {
 	r.GET("workshop/reply", func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })     //Create new reply
 
 	// Endpoints
+	r.POST("/signin", handlers.CreateUser)
+	r.POST("/login", handlers.LoginUser)
 	r.POST("/post", handlers.CreatePost)
 	r.PUT("/post/:id", handlers.UpdatePost)
 	r.PUT("/post/delete/:id", handlers.DeletePost)

@@ -1,5 +1,14 @@
+CREATE TABLE users (
+ id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+ username varchar(255) NOT NULL UNIQUE,
+ pwd_hash char(60) NOT NULL,
+ role varchar(5) DEFAULT 'user',
+ created_at TIMESTAMP DEFAULT now(),
+ CHECK(role IN ('user','admin'))
+);
+
 CREATE TABLE posts (
-  id SERIAL PRIMARY KEY,
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   content TEXT NOT NULL,
   image_url TEXT,
   created_at TIMESTAMP DEFAULT now()
@@ -11,7 +20,7 @@ CREATE TABLE deleted_posts (
 );
 
 CREATE TABLE comments (
-  id SERIAL PRIMARY KEY,
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   content TEXT NOT NULL,
   post_id INT REFERENCES posts(id),
   commentator_id INT,
@@ -24,7 +33,7 @@ CREATE TABLE deleted_comments (
 );
 
 CREATE TABLE replies (
-  id SERIAL PRIMARY KEY,
+  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   content TEXT NOT NULL,
   comment_id INT REFERENCES comments(id),
   commentator_id INT NOT NULL,
@@ -38,7 +47,7 @@ CREATE TABLE deleted_replies (
 
 CREATE TABLE likes (
   post_id INT REFERENCES posts(id),
-  user_id INT,
+  user_id INT REFERENCES users(id),
   is_unliked BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (post_id, user_id)
 )

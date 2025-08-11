@@ -1,5 +1,5 @@
 {{ define "post" }}
-    <article class="post">
+    <article class="post leader">
         <div class="post-data">
             <div class="mol h">
                 <div><a><b>Published At:</b></a><a class="date">{{ .post.CreatedAt }}</a></div>
@@ -24,18 +24,20 @@
             {{ end }}
         </div>    
     </article>
-    <div class="mol h c">
-        <a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Create new comment</a>
+
+    <div class="section-header">
+        <h2> Comments </h2>
+        <div><a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Add a comment</a></div>
     </div>
-    <h2> Comments </h2>
+
     {{range .comments }}
         <article class="comment">
             <div class="comment-data">
                 <div class="mol h">
-                    <div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+                    <div class="author"><img width="32" height="32" src="/static/img/avatar.jpg"><a>khralenok_com</a></div><div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                 </div>
                 <div>
-                    <a class="btn secondary" href="/comment/{{.ID}}">View comment</a>
+                    <a href="/comment/{{.ID}}">View details &rarr;</a>
                 </div>
             </div>
             

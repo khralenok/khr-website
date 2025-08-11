@@ -1,12 +1,11 @@
 {{ define "comment" }}
-    <article class="comment">
+    <article class="comment leader">
         <div class="comment-data">
             <div class="mol h">
                 <div><a><b>Published At:</b></a><a class="date">{{ .comment.CreatedAt }}</a></div>
             </div>
             <div class="mol h">
                 <a class="btn secondary" href="/workshop/comment/{{ .comment.ID }}">Edit</a>
-                <a id="delete" data-comment-id="{{ .comment.ID }}" class="btn delete">Delete</a>
             </div>
         </div>
   
@@ -16,15 +15,17 @@
             <a class="counter comments" href="/workshop/reply?comment_id={{ .comment.ID }}">💬 {{ .comment.NumOfReplies }}</a>
         </div>    
     </article>
-    <div class="mol h c">
-        <a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Create new reply</a>
+
+    <div class="section-header">
+        <h2>Replies</h2>
+        <div><a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Add a reply</a></div>
     </div>
-    <h2> Replies </h2>
+
     {{ range .replies }}
         <article class="comment">
             <div class="comment-data">
                 <div class="mol h">
-                    <div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+                    <div class="author"><img width="32" height="32" src="/static/img/avatar.jpg"><a>khralenok_com</a></div><div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                 </div>
             </div>
             
