@@ -7,6 +7,18 @@ CREATE TABLE users (
  CHECK(role IN ('user','admin'))
 );
 
+CREATE TABLE sessions (
+ id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+ user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ token_hash bytea NOT NULL,
+ created_at TIMESTAMP NOT NULL DEFAULT now(),
+ last_seen_at TIMESTAMP NOT NULL DEFAULT now(),
+ expires_at TIMESTAMP NOT NULL,
+ revoked_at TIMESTAMP,
+ ip inet,
+ user_agent text
+);
+
 CREATE TABLE posts (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   content TEXT NOT NULL,

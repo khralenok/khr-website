@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/khralenok/khr-website/db"
 	"github.com/khralenok/khr-website/handlers"
+	"github.com/khralenok/khr-website/middleware"
 )
 
 func main() {
@@ -41,10 +42,10 @@ func main() {
 	r.GET("/comment/:id", handlers.ShowComment)
 
 	// Not indexed pages
-	r.GET("/workshop/post", func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })      //Creating workshop
-	r.GET("/workshop/post/:id", func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) })   //Editing workshop
-	r.GET("workshop/comment", func(c *gin.Context) { handlers.ShowWorkshop("comment", false, c) }) //Create new comment
-	r.GET("workshop/reply", func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })     //Create new reply
+	r.GET("/workshop/post", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })
+	r.GET("/workshop/post/:id", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) })
+	r.GET("workshop/comment", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("comment", false, c) })
+	r.GET("workshop/reply", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })
 
 	// Endpoints
 	r.POST("/signin", handlers.CreateUser)
