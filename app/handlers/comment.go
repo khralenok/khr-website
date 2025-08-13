@@ -52,10 +52,19 @@ func CreateComment(c *gin.Context) {
 // This function render page with single post and related comments
 func ShowComment(c *gin.Context) {
 	commentId, err := strconv.Atoi(c.Param("id"))
+	userId := c.GetInt("userID")
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
 		return
+	}
+
+	isAuth := true
+
+	user, err := store.GetUserById(userId)
+
+	if err != nil {
+		isAuth = false
 	}
 
 	comment, err := store.GetComment(commentId)
@@ -82,5 +91,7 @@ func ShowComment(c *gin.Context) {
 		"title":   "Khralenok - Comment",
 		"comment": comment,
 		"replies": replies,
+		"user":    user,
+		"is_auth": isAuth,
 	})
 }

@@ -10,8 +10,7 @@ import (
 
 // This function handle request for adding a like to the post with id provided with context
 func LikePost(c *gin.Context) {
-	userId := 1 // Must be replaced after USER implementation
-
+	userId := c.GetInt("userID") //FIX ME
 	postId, err := strconv.Atoi(c.Param("post_id"))
 
 	if err != nil {
@@ -39,8 +38,7 @@ func LikePost(c *gin.Context) {
 
 // This function handle request for removing a like from the post with id provided with context
 func UnlikePost(c *gin.Context) {
-	userId := 1 // Must be replaced after USER implementation
-
+	userId := c.GetInt("userID") //FIX ME
 	postId, err := strconv.Atoi(c.Param("post_id"))
 
 	if err != nil {

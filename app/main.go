@@ -34,18 +34,18 @@ func main() {
 	r.Static("/uploads/", "./uploads")
 
 	// Indexed pages
-	r.GET("/", handlers.ShowHome)
-	r.GET("/signin", func(c *gin.Context) { handlers.ShowAuth("signin", c) })
-	r.GET("/login", func(c *gin.Context) { handlers.ShowAuth("login", c) })
-	r.GET("/logout", func(c *gin.Context) { handlers.ShowAuth("logout", c) })
-	r.GET("/post/:id", handlers.ShowPost)
-	r.GET("/comment/:id", handlers.ShowComment)
+	r.GET("/", middleware.AuthSession(false), handlers.ShowHome)
+	r.GET("/signin", middleware.AuthSession(false), func(c *gin.Context) { handlers.ShowAuth("signin", c) })
+	r.GET("/login", middleware.AuthSession(false), func(c *gin.Context) { handlers.ShowAuth("login", c) })
+	r.GET("/logout", middleware.AuthSession(false), func(c *gin.Context) { handlers.ShowAuth("logout", c) })
+	r.GET("/post/:id", middleware.AuthSession(false), handlers.ShowPost)
+	r.GET("/comment/:id", middleware.AuthSession(false), handlers.ShowComment)
 
 	// Not indexed pages
-	r.GET("/workshop/post", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })
-	r.GET("/workshop/post/:id", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) })
-	r.GET("workshop/comment", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("comment", false, c) })
-	r.GET("workshop/reply", middleware.AuthSession(), func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })
+	r.GET("/workshop/post", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })
+	r.GET("/workshop/post/:id", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) })
+	r.GET("workshop/comment", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("comment", false, c) })
+	r.GET("workshop/reply", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })
 
 	// Endpoints
 	r.POST("/signin", handlers.CreateUser)

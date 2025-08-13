@@ -9,7 +9,16 @@ import (
 
 // This function render an HTML for home page
 func ShowHome(c *gin.Context) {
-	posts, err := store.GetPosts()
+	userId := c.GetInt("userID")
+	isAuth := true
+
+	user, err := store.GetUserById(userId)
+
+	if err != nil {
+		isAuth = false
+	}
+
+	posts, err := store.GetPosts(userId)
 
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Error loading posts")
@@ -19,6 +28,8 @@ func ShowHome(c *gin.Context) {
 	c.HTML(http.StatusOK, "base.html", gin.H{
 		"title":    "Khralenok - Feed",
 		"feed":     posts,
+		"user":     user,
 		"is_index": true,
+		"is_auth":  isAuth,
 	})
 }

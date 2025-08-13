@@ -23,7 +23,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				return
 			}
 
-			content, err := store.GetPost(postId)
+			content, err := store.GetPost(postId, 0) // FIX ME
 
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
@@ -56,7 +56,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				return
 			}
 
-			content, err := store.GetPost(postId)
+			content, err := store.GetPost(postId, 0) // FIX ME
 
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
@@ -89,7 +89,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				return
 			}
 
-			content, err := store.GetPost(commentId)
+			content, err := store.GetPost(commentId, 0) // FIX ME
 
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{

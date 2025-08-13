@@ -4,21 +4,25 @@
             <div class="mol h">
                 <div><a><b>Published At:</b></a><a class="date">{{ .comment.CreatedAt }}</a></div>
             </div>
+            {{ if eq .user.Id .comment.CommentatorId }}
             <div class="mol h">
                 <a class="btn secondary" href="/workshop/comment/{{ .comment.ID }}">Edit</a>
             </div>
+            {{ end }}
         </div>
   
         <p>{{ .comment.Content }}</p>
 
         <div class="mol h">
-            <a class="counter comments" href="/workshop/reply?comment_id={{ .comment.ID }}">💬 {{ .comment.NumOfReplies }}</a>
+            <a class="counter comments" {{ if .is_auth }} href="/workshop/reply?comment_id={{ .comment.ID }}" {{ end }}>💬 {{ .comment.NumOfReplies }}</a>
         </div>    
     </article>
 
     <div class="section-header">
         <h2>Replies</h2>
+        {{ if .is_auth }}
         <div><a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Add a reply</a></div>
+        {{ end }}
     </div>
 
     {{ range .replies }}

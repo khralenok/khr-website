@@ -21,6 +21,20 @@ func AddNewUser(username, pwdHash string) (models.User, error) {
 }
 
 // This function return user sruct in case if user with such username exists.
+func GetUserById(id int) (models.User, error) {
+	var user models.User
+
+	query := "SELECT * FROM users WHERE id=$1"
+	err := db.DB.QueryRow(query, id).Scan(&user.Id, &user.Username, &user.PwdHash, &user.Role, &user.CreatedAt)
+
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return user, nil
+}
+
+// This function return user sruct in case if user with such username exists.
 func GetUserByUsername(username string) (models.User, error) {
 	var user models.User
 

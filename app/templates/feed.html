@@ -1,4 +1,5 @@
 {{ define "feed" }}
+    {{ $global := . }}
     <div class="profile leader">
         <div class="profile-description">
             <h1>Grigorii Khralenok</h1>
@@ -9,9 +10,12 @@
         <img class="avatar" src="static/img/avatar.jpg">
     </div>
 
+
     <div class="section-header">
         <h2> Recent Posts </h2>
-        <div><a class="btn" href="/workshop/post">Add a post</a></div>
+        {{ if eq .user.Role "admin" }}
+            <div><a class="btn" href="/workshop/post">Add a post</a></div>
+        {{ end }}
     </div>
 
     {{ range .feed }}
@@ -32,7 +36,7 @@
             {{end}}
 
             <div class="mol h">
-                <a class="counter comments" href="/workshop/comment?post_id={{ .ID }}">💬 {{ .NumOfComments }}</a>
+                <a class="counter comments" {{ if $global.is_auth }} href="/workshop/comment?post_id={{ .ID }}" {{ end }}>💬 {{ .NumOfComments }}</a>
                 {{ if .IsLiked }}
                     <a class="counter like" data-post-id="{{ .ID }}" data-is-checked="true">❤️ {{ .NumOfLikes }}</a>
                 {{ else }}

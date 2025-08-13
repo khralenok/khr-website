@@ -1,13 +1,16 @@
 {{ define "post" }}
+    {{ $global := . }}
     <article class="post leader">
         <div class="post-data">
             <div class="mol h">
                 <div><a><b>Published At:</b></a><a class="date">{{ .post.CreatedAt }}</a></div>
             </div>
+            {{ if eq .user.Role "admin" }}
             <div class="mol h">
                 <a class="btn secondary" href="/workshop/post/{{ .post.ID }}">Edit</a>
                 <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
             </div>
+            {{ end }}
         </div>
   
         <p>{{ .post.Content }}</p>
@@ -16,7 +19,7 @@
             <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
         {{ end }}
         <div class="mol h">
-            <a class="counter comments" href="/workshop/comment?post_id={{ .post.ID }}">💬 {{ .post.NumOfComments }}</a>
+            <a class="counter comments" {{ if .is_auth }} href="/workshop/comment?post_id={{ .post.ID }}" {{ end }}>💬 {{ .post.NumOfComments }}</a>
             {{ if .post.IsLiked }}
                 <a class="counter like" data-post-id="{{ .post.ID }}" data-is-checked="true">❤️ {{ .post.NumOfLikes }}</a>
             {{ else }}
@@ -27,7 +30,9 @@
 
     <div class="section-header">
         <h2> Comments </h2>
+        {{ if .is_auth }}
         <div><a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Add a comment</a></div>
+        {{ end }}
     </div>
 
     {{range .comments }}
@@ -44,7 +49,7 @@
             <p>{{ .Content }}</p>
 
             <div class="mol h">
-            <a class="counter comments" href="/workshop/comment?comment_id={{ .ID }}">💬 {{ .NumOfReplies }}</a>
+            <a class="counter comments" {{ if $global.is_auth }} href="/workshop/comment?comment_id={{ .ID }}" {{ end }}>💬 {{ .NumOfReplies }}</a>
         </div>    
         </article>    
     {{ else }}

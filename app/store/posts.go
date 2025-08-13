@@ -9,7 +9,7 @@ import (
 )
 
 // This function return array of posts ordered from latest to oldest
-func GetPosts() ([]models.Post, error) {
+func GetPosts(userId int) ([]models.Post, error) {
 	var posts []models.Post
 
 	query := "SELECT p.* FROM posts p WHERE NOT EXISTS (SELECT 1 FROM deleted_posts d WHERE d.id = p.id) ORDER BY p.created_at DESC"
@@ -23,7 +23,7 @@ func GetPosts() ([]models.Post, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		nextPost, err := newPost(rows)
+		nextPost, err := newPost(rows, userId)
 
 		if err != nil {
 			return []models.Post{}, err
@@ -36,7 +36,7 @@ func GetPosts() ([]models.Post, error) {
 }
 
 // This function return post with specified ID
-func GetPost(postId int) (models.Post, error) {
+func GetPost(postId, userId int) (models.Post, error) {
 	var post models.Post
 
 	query := "SELECT * FROM posts WHERE id=$1"
@@ -50,7 +50,7 @@ func GetPost(postId int) (models.Post, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		post, err = newPost(rows)
+		post, err = newPost(rows, userId)
 
 		if err == sql.ErrNoRows {
 			break
@@ -104,8 +104,7 @@ func UpdatePost(content, filename string, postId int) error {
 }
 
 // This function construct new Post struct from a result of database query
-func newPost(row *sql.Rows) (models.Post, error) {
-	userId := 1 // Must be replaced after USER implementation
+func newPost(row *sql.Rows, userId int) (models.Post, error) {
 	var newPost models.Post
 	var rawTime time.Time
 
@@ -117,7 +116,12 @@ func newPost(row *sql.Rows) (models.Post, error) {
 
 	newPost.NumOfComments = CountPostComments(newPost.ID) + CountPostReplies(newPost.ID)
 	newPost.NumOfLikes = CountLikes(newPost.ID)
-	newPost.IsLiked, err = CheckIfLikeExist(newPost.ID, userId)
+
+	if userId == 0 {
+		newPost.IsLiked = false
+	} else {
+		newPost.IsLiked, err = CheckIfLikeExist(newPost.ID, userId)
+	}
 
 	if err != nil {
 		return models.Post{}, err

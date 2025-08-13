@@ -12,7 +12,9 @@ import (
 	"github.com/khralenok/khr-website/utilities"
 )
 
-// This function is middleware specific for API, that set userID to context in case if header include valid JWT token.
+// This function is middleware for API.
+//
+// It set userID to context in case if header include valid JWT token.
 func AuthJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
@@ -50,17 +52,21 @@ func AuthJWT() gin.HandlerFunc {
 	}
 }
 
-// This function is middleware specific for SSR that check if there is an active session in DB, based on session cookies
-func AuthSession() gin.HandlerFunc {
+// This function is middleware for SSR.
+//
+// It check if there is an active session in DB, based on session cookies.
+func AuthSession(isStrict bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		raw, err := c.Cookie("sid")
 
 		if err != nil || raw == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-			c.Abort()
+			if isStrict {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+				c.Abort()
+				return
+			}
+			c.Next()
 			return
-			//c.Next()
-			//return
 		}
 
 		tokenHash := utilities.TokenHash(raw)
@@ -68,24 +74,28 @@ func AuthSession() gin.HandlerFunc {
 		session, err := store.GetSessionByToken(tokenHash)
 
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid session"})
-			c.Abort()
+			if isStrict {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid session"})
+				c.Abort()
+				return
+			}
+			c.Next()
 			return
-			//c.Next()
-			//return
 		}
 
 		if time.Now().Before(session.ExpiresAt) && session.RevokedAt.Valid {
 			err := store.UpdateSession(session.TokenHash)
 
 			if err != nil {
-				c.Next()
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Can't proceed with this session"})
+				c.Abort()
 				return
 			}
-
-			c.Set("userID", session.UserId)
-			c.Set("role", session.Role)
 		}
+
+		c.Set("userID", session.UserId)
+		c.Set("role", session.Role)
+
 		c.Next()
 	}
 }
