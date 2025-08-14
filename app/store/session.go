@@ -20,12 +20,24 @@ func StartNewSession(userID int, tokenHash []byte, expiryDate time.Time, ip, use
 	return nil
 }
 
+func RevokeSession(tokenHash []byte) error {
+	query := "UPDATE sessions SET revoked_at = now() WHERE token_hash=$1"
+
+	_, err := db.DB.Exec(query, tokenHash)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func GetSessionByToken(tokenHash []byte) (models.Session, error) {
 	var session models.Session
 
-	query := "SELECT s.user_id, u.role, s.token_hash, s.expires_at, s.revoked_at FROM sessions s JOIN users u ON u.id = s.user_id WHERE token_hash=$1"
+	query := "SELECT user_id, token_hash, expires_at, revoked_at FROM sessions WHERE token_hash=$1"
 
-	err := db.DB.QueryRow(query, tokenHash).Scan(&session.UserId, &session.Role, &session.TokenHash, &session.ExpiresAt, &session.RevokedAt)
+	err := db.DB.QueryRow(query, tokenHash).Scan(&session.UserId, &session.TokenHash, &session.ExpiresAt, &session.RevokedAt)
 
 	if err != nil {
 		return models.Session{}, err

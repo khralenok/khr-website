@@ -25,5 +25,18 @@
                 <path class="logo-letter" d="M77 11L72 7" stroke="white" stroke-linecap="round"></path>
             </svg>
         </a>
+        {{ if .is_auth }}
+            <div class="user-card">
+                <div class="user-avatar">
+                    <img src="/static/img/avatar-placeholder.jpg" />
+                </div>
+                <div>
+                    <a class="username">{{ .user.Username }}</a><br>
+                    <a>{{ .user.Role }}</a>
+                </div>
+            </div>
+        {{ else }}
+            <div class="mol"><a class="btn" href="/login">Login</a></div>
+        {{ end }}
     </nav>
 </header>

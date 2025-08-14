@@ -14,6 +14,15 @@ header{
     justify-content: center;
     align-items: center;
     height: 5rem;
+    padding: 2rem 2rem;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .logo-letter{
@@ -25,6 +34,23 @@ header{
 
 .logo-back{
     fill: black
+}
+
+.user-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-card .username{
+    font-weight: bold;
+}
+
+.user-avatar>img{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1000px;
 }
 
 body{
@@ -172,6 +198,10 @@ footer{
     display: flex;
     gap: 1rem;
     flex: 0 0 auto;
+}
+
+.mol.v{
+    flex-direction: column;
 }
 
 .mol.h{

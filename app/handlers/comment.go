@@ -15,7 +15,7 @@ type NewCommentRequest struct {
 
 // This function handle request for creating a new comment.
 func CreateComment(c *gin.Context) {
-	commentatorId := 1 // Must be replaced after USER implementation
+	commentatorId := c.GetInt("userID")
 	postId, err := strconv.Atoi(c.Param("post_id"))
 
 	if err != nil {
@@ -51,8 +51,8 @@ func CreateComment(c *gin.Context) {
 
 // This function render page with single post and related comments
 func ShowComment(c *gin.Context) {
-	commentId, err := strconv.Atoi(c.Param("id"))
 	userId := c.GetInt("userID")
+	commentId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})

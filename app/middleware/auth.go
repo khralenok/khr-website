@@ -94,7 +94,6 @@ func AuthSession(isStrict bool) gin.HandlerFunc {
 		}
 
 		c.Set("userID", session.UserId)
-		c.Set("role", session.Role)
 
 		c.Next()
 	}

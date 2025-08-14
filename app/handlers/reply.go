@@ -15,7 +15,7 @@ type NewReplyRequest struct {
 
 // This function handle request for creating a new comment.
 func CreateReply(c *gin.Context) {
-	commentatorId := 1 // Must be replaced after USER implementation
+	commentatorId := c.GetInt("userID")
 	commentId, err := strconv.Atoi(c.Param("comment_id"))
 
 	if err != nil {

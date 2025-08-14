@@ -10,6 +10,18 @@ import (
 
 // This function render an HTML for workshop pages
 func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
+	userId := c.GetInt("userID")
+	isAuth := true
+
+	user, err := store.GetUserById(userId)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "There is no authorized user",
+		})
+		return
+	}
+
 	switch contentType {
 	case "post":
 		if isEditing {
@@ -37,11 +49,15 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				"title":   "Khralenok - Edit Post",
 				"isPost":  true,
 				"content": content,
+				"user":    user,
+				"is_auth": isAuth,
 			})
 		} else {
 			c.HTML(http.StatusOK, "workshop.html", gin.H{
-				"title":  "Khralenok - Create Post",
-				"isPost": true,
+				"title":   "Khralenok - Create Post",
+				"isPost":  true,
+				"user":    user,
+				"is_auth": isAuth,
 			})
 		}
 	case "comment":
@@ -70,11 +86,15 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				"title":     "Khralenok - Edit Comment",
 				"isComment": true,
 				"content":   content,
+				"user":      user,
+				"is_auth":   isAuth,
 			})
 		} else {
 			c.HTML(http.StatusOK, "workshop.html", gin.H{
 				"title":     "Khralenok - Create Comment",
 				"isComment": true,
+				"user":      user,
+				"is_auth":   isAuth,
 			})
 		}
 	case "reply":
@@ -103,11 +123,15 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				"title":   "Khralenok - Edit Reply",
 				"isReply": true,
 				"content": content,
+				"user":    user,
+				"is_auth": isAuth,
 			})
 		} else {
 			c.HTML(http.StatusOK, "workshop.html", gin.H{
 				"title":   "Khralenok - Create Reply",
 				"isReply": true,
+				"user":    user,
+				"is_auth": isAuth,
 			})
 		}
 

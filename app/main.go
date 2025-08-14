@@ -50,13 +50,14 @@ func main() {
 	// Endpoints
 	r.POST("/signin", handlers.CreateUser)
 	r.POST("/login", handlers.LoginUser)
-	r.POST("/post", handlers.CreatePost)
-	r.PUT("/post/:id", handlers.UpdatePost)
-	r.PUT("/post/delete/:id", handlers.DeletePost)
-	r.POST("/comment/:post_id", handlers.CreateComment)
-	r.POST("/reply/:comment_id", handlers.CreateReply)
-	r.POST("/like/:post_id", handlers.LikePost)
-	r.PUT("/like/:post_id", handlers.UnlikePost)
+	r.GET("/revoke", middleware.AuthSession(true), handlers.Logout)
+	r.POST("/post", middleware.AuthSession(true), handlers.CreatePost)
+	r.PUT("/post/:id", middleware.AuthSession(true), handlers.UpdatePost)
+	r.PUT("/post/delete/:id", middleware.AuthSession(true), handlers.DeletePost)
+	r.POST("/comment/:post_id", middleware.AuthSession(true), handlers.CreateComment)
+	r.POST("/reply/:comment_id", middleware.AuthSession(true), handlers.CreateReply)
+	r.POST("/like/:post_id", middleware.AuthSession(true), handlers.LikePost)
+	r.PUT("/like/:post_id", middleware.AuthSession(true), handlers.UnlikePost)
 
 	log.Println("Server running at http:localhost:" + port)
 

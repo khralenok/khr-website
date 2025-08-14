@@ -12,7 +12,7 @@ import (
 func GetComments(postId int) ([]models.Comment, error) {
 	var comments []models.Comment
 
-	query := "SELECT * FROM comments WHERE post_id = $1 ORDER BY created_at DESC"
+	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE c.post_id = $1 ORDER BY c.created_at DESC"
 
 	rows, err := db.DB.Query(query, postId)
 
@@ -43,7 +43,7 @@ func GetComments(postId int) ([]models.Comment, error) {
 func GetComment(commentId int) (models.Comment, error) {
 	var comment models.Comment
 
-	query := "SELECT * FROM comments WHERE id=$1"
+	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE c.id=$1"
 
 	rows, err := db.DB.Query(query, commentId)
 
@@ -69,10 +69,10 @@ func GetComment(commentId int) (models.Comment, error) {
 }
 
 // This function insert new comment to database
-func AddComment(content string, postId, commentator_id int) error {
+func AddComment(content string, postId, commentatorId int) error {
 	query := "INSERT INTO comments(content, post_id, commentator_id) VALUES ($1, $2, $3)"
 
-	_, err := db.DB.Exec(query, content, postId, commentator_id)
+	_, err := db.DB.Exec(query, content, postId, commentatorId)
 
 	if err != nil {
 		return err
@@ -101,7 +101,7 @@ func newComment(row *sql.Rows) (models.Comment, error) {
 	var newComment models.Comment
 	var rawTime time.Time
 
-	err := row.Scan(&newComment.ID, &newComment.Content, &newComment.PostId, &newComment.CommentatorId, &rawTime)
+	err := row.Scan(&newComment.ID, &newComment.Content, &newComment.PostId, &newComment.CommentatorId, &rawTime, &newComment.CommentatorUsername)
 
 	if err != nil {
 		return models.Comment{}, err

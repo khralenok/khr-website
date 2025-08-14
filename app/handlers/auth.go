@@ -109,6 +109,35 @@ func LoginUser(c *gin.Context) {
 	})
 }
 
+func Logout(c *gin.Context) {
+	raw, err := c.Cookie("sid")
+
+	if err != nil || raw == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "You should log in to log out",
+		})
+		c.Abort()
+		return
+	}
+
+	tokenHash := utilities.TokenHash(raw)
+
+	err = store.RevokeSession(tokenHash)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Can't revoke current session",
+		})
+		return
+	}
+
+	c.SetCookie("sid", "", -1, "/", "", true, true)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "You have successfully log out",
+	})
+}
+
 // This function add new user in database or cause an http error
 func CreateUser(c *gin.Context) {
 	var input AuthInputs
