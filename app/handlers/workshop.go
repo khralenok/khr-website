@@ -24,6 +24,13 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 
 	switch contentType {
 	case "post":
+		if !store.IsAdmin(userId) {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"message": "Only an admin or creator are permitted to delete a comment",
+			})
+			return
+		}
+
 		if isEditing {
 			postId, err := strconv.Atoi(c.Param("id"))
 
@@ -35,7 +42,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				return
 			}
 
-			content, err := store.GetPost(postId, 0) // FIX ME
+			content, err := store.GetPost(postId, userId)
 
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
@@ -62,7 +69,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 		}
 	case "comment":
 		if isEditing {
-			postId, err := strconv.Atoi(c.Param("id"))
+			commentId, err := strconv.Atoi(c.Param("id"))
 
 			if err != nil {
 				c.JSON(http.StatusBadRequest, gin.H{
@@ -72,7 +79,14 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				return
 			}
 
-			content, err := store.GetPost(postId, 0) // FIX ME
+			if !store.IsCommentCreator(userId, commentId) {
+				c.JSON(http.StatusUnauthorized, gin.H{
+					"message": "Only creator are permitted to edit a comment",
+				})
+				return
+			}
+
+			content, err := store.GetComment(commentId)
 
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{

@@ -7,7 +7,13 @@
             {{ if eq .user.Id .comment.CommentatorId }}
             <div class="mol h">
                 <a class="btn secondary" href="/workshop/comment/{{ .comment.ID }}">Edit</a>
+                <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
             </div>
+            {{ end }}
+            {{ if eq .user.Role "admin" }}
+            <div class="mol h">
+                <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
+            </div>            
             {{ end }}
         </div>
   

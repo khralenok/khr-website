@@ -81,6 +81,19 @@ func AddComment(content string, postId, commentatorId int) error {
 	return nil
 }
 
+// This function update comment with specific ID
+func UpdateComment(content string, commentId int) error {
+	query := "UPDATE comments SET content=$1 WHERE id = $2"
+
+	_, err := db.DB.Exec(query, content, commentId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // This function return total amount of comments which belongs to the particular post
 func CountPostComments(postID int) int {
 	var numOfComments int

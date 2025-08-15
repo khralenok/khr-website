@@ -45,7 +45,9 @@ func main() {
 	r.GET("/workshop/post", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("post", false, c) })
 	r.GET("/workshop/post/:id", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("post", true, c) })
 	r.GET("workshop/comment", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("comment", false, c) })
+	r.GET("workshop/comment/:id", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("comment", true, c) })
 	r.GET("workshop/reply", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("reply", false, c) })
+	r.GET("workshop/reply/:id", middleware.AuthSession(true), func(c *gin.Context) { handlers.ShowWorkshop("reply", true, c) })
 
 	// Endpoints
 	r.POST("/signin", handlers.CreateUser)
@@ -55,6 +57,8 @@ func main() {
 	r.PUT("/post/:id", middleware.AuthSession(true), handlers.UpdatePost)
 	r.PUT("/post/delete/:id", middleware.AuthSession(true), handlers.DeletePost)
 	r.POST("/comment/:post_id", middleware.AuthSession(true), handlers.CreateComment)
+	r.PUT("/comment/:id", middleware.AuthSession(true), handlers.UpdateComment)
+	r.PUT("/comment/delete/:id", middleware.AuthSession(true), handlers.DeleteComment)
 	r.POST("/reply/:comment_id", middleware.AuthSession(true), handlers.CreateReply)
 	r.POST("/like/:post_id", middleware.AuthSession(true), handlers.LikePost)
 	r.PUT("/like/:post_id", middleware.AuthSession(true), handlers.UnlikePost)

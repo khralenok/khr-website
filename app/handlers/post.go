@@ -58,9 +58,19 @@ func ShowPost(c *gin.Context) {
 
 // This function handle request for creating a new post. If success, create new row in DB and store related files on the server.
 func CreatePost(c *gin.Context) {
+	userId := c.GetInt("userID")
+
+	if !store.IsAdmin(userId) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Only an admin permitted to create a post",
+		})
+		return
+	}
+
 	content := c.PostForm("content")
-	image, err := c.FormFile("image")
 	filename := ""
+
+	image, err := c.FormFile("image")
 
 	if err == nil {
 		savePath := filepath.Join("uploads", filepath.Base(image.Filename))
@@ -92,6 +102,15 @@ func CreatePost(c *gin.Context) {
 
 // This function handle request for updating a post. If success, update row in DB and store related files on the server.
 func UpdatePost(c *gin.Context) {
+	userId := c.GetInt("userID")
+
+	if !store.IsAdmin(userId) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Only an admin permitted to create a post",
+		})
+		return
+	}
+
 	postId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
@@ -133,6 +152,15 @@ func UpdatePost(c *gin.Context) {
 
 // This function handle request for deleting a post. If success, update is_deleted column value in db.
 func DeletePost(c *gin.Context) {
+	userId := c.GetInt("userID")
+
+	if !store.IsAdmin(userId) {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Only an admin permitted to create a post",
+		})
+		return
+	}
+
 	postId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {

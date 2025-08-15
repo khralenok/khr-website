@@ -47,3 +47,48 @@ func GetUserByUsername(username string) (models.User, error) {
 
 	return user, nil
 }
+
+// This function return true if user role is admin.
+func IsAdmin(userId int) bool {
+	var role string
+
+	query := "SELECT role FROM users WHERE id=$1"
+
+	err := db.DB.QueryRow(query, userId).Scan(&role)
+
+	if err != nil || role != "admin" {
+		return false
+	}
+
+	return true
+}
+
+// This function return true if user is creator of the comment.
+func IsCommentCreator(userId, commentId int) bool {
+	var IsCreator bool
+
+	query := "SELECT EXISTS (SELECT 1 FROM comments WHERE id = $1 AND commentator_id = $2)"
+
+	err := db.DB.QueryRow(query, commentId, userId).Scan(&IsCreator)
+
+	if err != nil {
+		return false
+	}
+
+	return IsCreator
+}
+
+// This function return true if user is creator of the reply.
+func IsReplyCreator(userId, replyId int) bool {
+	var IsCreator bool
+
+	query := "SELECT EXISTS (SELECT 1 FROM replies WHERE id = $1 AND commentator_id = $2)"
+
+	err := db.DB.QueryRow(query, replyId, userId).Scan(&IsCreator)
+
+	if err != nil {
+		return false
+	}
+
+	return IsCreator
+}
