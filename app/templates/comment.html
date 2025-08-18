@@ -5,12 +5,11 @@
                 <div class="author"><img width="32" height="32" src="/static/img/avatar-placeholder.jpg"><a>{{ .comment.CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .comment.CreatedAt }}</a></div>
             </div>
             {{ if eq .user.Id .comment.CommentatorId }}
-            <div class="mol h">
-                <a class="btn secondary" href="/workshop/comment/{{ .comment.ID }}">Edit</a>
-                <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
-            </div>
-            {{ end }}
-            {{ if eq .user.Role "admin" }}
+                    <div class="mol h">
+                        <a class="btn secondary" href="/workshop/comment/{{ .comment.ID }}">Edit</a>
+                        <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
+                    </div>
+            {{ else if eq .user.Role "admin" }}
             <div class="mol h">
                 <a id="delete" data-post-id="{{ .post.ID }}" class="btn delete">Delete</a>
             </div>            
