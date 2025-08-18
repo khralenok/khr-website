@@ -111,6 +111,14 @@ func DeleteComment(c *gin.Context) {
 		return
 	}
 
+	if err := store.DeleteReplies(commentId); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not delete replies",
+			"error":   err.Error(),
+		})
+		return
+	}
+
 	c.JSON(http.StatusNoContent, gin.H{
 		"message": "Post deleted successfully",
 	})

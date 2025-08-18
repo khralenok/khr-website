@@ -34,8 +34,9 @@ func ShowAuth(authType string, c *gin.Context) {
 		})
 	case "logout":
 		c.HTML(http.StatusOK, "auth.html", gin.H{
-			"title":  "Khralenok - Logout",
-			authType: true,
+			"title":   "Khralenok - Logout",
+			"heading": "You are logged out",
+			authType:  true,
 		})
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{

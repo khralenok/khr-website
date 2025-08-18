@@ -12,7 +12,7 @@ import (
 func GetComments(postId int) ([]models.Comment, error) {
 	var comments []models.Comment
 
-	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE c.post_id = $1 ORDER BY c.created_at DESC"
+	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id) AND c.post_id = $1 ORDER BY c.created_at DESC"
 
 	rows, err := db.DB.Query(query, postId)
 
@@ -43,7 +43,7 @@ func GetComments(postId int) ([]models.Comment, error) {
 func GetComment(commentId int) (models.Comment, error) {
 	var comment models.Comment
 
-	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE c.id=$1"
+	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id) AND c.id=$1"
 
 	rows, err := db.DB.Query(query, commentId)
 
@@ -98,7 +98,7 @@ func UpdateComment(content string, commentId int) error {
 func CountPostComments(postID int) int {
 	var numOfComments int
 
-	query := "SELECT COUNT(*) FROM comments WHERE post_id = $1"
+	query := "SELECT COUNT(*) FROM comments c WHERE post_id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id)"
 
 	err := db.DB.QueryRow(query, postID).Scan(&numOfComments)
 
@@ -107,6 +107,19 @@ func CountPostComments(postID int) int {
 	}
 
 	return numOfComments
+}
+
+// This function insert deleted post to deleted_posts table
+func DeleteComment(id int) error {
+	query := "INSERT INTO deleted_comments(id) VALUES ($1)"
+
+	_, err := db.DB.Exec(query, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // This function construct new Post struct from a result of database query

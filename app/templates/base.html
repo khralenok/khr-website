@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .title }}</title>
     <link rel="stylesheet" href="/static/style.css" />
-    <script defer src="/static/scripts/dates-formatter.js"></script>
+    <script defer src="/static/scripts/utilities/dates-formatter.js"></script>
     {{ if .is_auth }}
-    <script defer src="/static/scripts/likes.js"></script>
+        <script defer src="/static/scripts/likes/likes.js"></script>
+        {{if .post }}<script defer src="/static/scripts/posts/delete-post.js"></script>{{end}}
+        {{if .comment }}<script defer src="/static/scripts/threads/delete-comment.js"></script>{{end}}
     {{ end }}
-    {{if .post }}
-        <script defer src="/static/scripts/delete-post.js"></script>
-    {{end}}
+
 </head>
 <body>
     {{ template "header.html" . }}

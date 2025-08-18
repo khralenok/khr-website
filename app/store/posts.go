@@ -103,6 +103,19 @@ func UpdatePost(content, filename string, postId int) error {
 
 }
 
+// This function insert deleted post to deleted_posts table
+func DeletePost(id int) error {
+	query := "INSERT INTO deleted_posts(id) VALUES ($1)"
+
+	_, err := db.DB.Exec(query, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // This function construct new Post struct from a result of database query
 func newPost(row *sql.Rows, userId int) (models.Post, error) {
 	var newPost models.Post

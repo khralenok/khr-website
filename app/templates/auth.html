@@ -6,13 +6,13 @@
     <title>{{ .title }}</title>
     <link rel="stylesheet" href="/static/style.css" />
     {{if .signin }}
-        <script defer src="/static/scripts/signin.js"></script>
+        <script defer src="/static/scripts/auth/signin.js"></script>
     {{end}}
     {{if .login }}
-        <script defer src="/static/scripts/login.js"></script>
+        <script defer src="/static/scripts/auth/login.js"></script>
     {{end}}
     {{if .logout }}
-        <script defer src="/static/scripts/logout.js"></script>
+        <script defer src="/static/scripts/auth/logout.js"></script>
     {{end}}
 </head>
 <body>
@@ -22,13 +22,18 @@
         <div class="section-header">
             <h2>{{ .heading }}</h2>
         </div>
-        <form class="auth" id="auth">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder="Input your username" autocomplete="off" required />
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Input your password" autocomplete="off" required />
-            <input class="btn" type="submit" value="Submit" />
-        </form>
+        {{ if .logout }}
+        <div><a href="/">Back to feed &rarr; </a></div> 
+        {{ else }}
+            <form class="auth" id="auth">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Input your username" autocomplete="off" required />
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Input your password" autocomplete="off" required />
+                <input class="btn" type="submit" value="Submit" />
+            </form>
+            {{if .login }}<div><a href="/signin">I have no account yet &rarr; </a></div> {{ end }}
+        {{ end }}
     </main>
 
     {{ template "footer.html" . }}

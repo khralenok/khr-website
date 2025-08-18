@@ -60,6 +60,8 @@ func main() {
 	r.PUT("/comment/:id", middleware.AuthSession(true), handlers.UpdateComment)
 	r.PUT("/comment/delete/:id", middleware.AuthSession(true), handlers.DeleteComment)
 	r.POST("/reply/:comment_id", middleware.AuthSession(true), handlers.CreateReply)
+	r.PUT("/reply/:id", middleware.AuthSession(true), handlers.UpdateReply)
+	r.PUT("/reply/delete/:id", middleware.AuthSession(true), handlers.DeleteReply)
 	r.POST("/like/:post_id", middleware.AuthSession(true), handlers.LikePost)
 	r.PUT("/like/:post_id", middleware.AuthSession(true), handlers.UnlikePost)
 

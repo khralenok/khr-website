@@ -7,13 +7,13 @@
     <title>{{ .title }}</title>
     <link rel="stylesheet" href="/static/style.css" />
     {{ if .content }}
-        {{ if .isPost }}<script defer src="/static/scripts/edit-post.js"></script>{{ end }}
-        {{ if .isComment }}<script defer src="/static/scripts/edit-comment.js"></script>{{ end }}
-        {{ if .isReply }}<script defer src="/static/scripts/edit-reply.js"></script>{{ end }}
+        {{ if .isPost }}<script defer src="/static/scripts/posts/edit-post.js"></script>{{ end }}
+        {{ if .isComment }}<script defer src="/static/scripts/threads/edit-comment.js"></script>{{ end }}
+        {{ if .isReply }}<script defer src="/static/scripts/threads/edit-reply.js"></script>{{ end }}
     {{ else }}
-        {{ if .isPost }}<script defer src="/static/scripts/create-post.js"></script>{{ end }}
-        {{ if .isComment }}<script defer src="/static/scripts/create-comment.js"></script>{{ end }}
-        {{ if .isReply }}<script defer src="/static/scripts/create-reply.js"></script>{{ end }}
+        {{ if .isPost }}<script defer src="/static/scripts/posts/create-post.js"></script>{{ end }}
+        {{ if .isComment }}<script defer src="/static/scripts/threads/create-comment.js"></script>{{ end }}
+        {{ if .isReply }}<script defer src="/static/scripts/threads/create-reply.js"></script>{{ end }}
     {{ end }}
 
 </head>
