@@ -28,6 +28,7 @@ CREATE TABLE posts (
 
 CREATE TABLE deleted_posts (
   id INT PRIMARY KEY REFERENCES posts(id),
+  reason TEXT DEFAULT 'Deleted by admin',
   deleted_at TIMESTAMP DEFAULT now()
 );
 
@@ -41,6 +42,7 @@ CREATE TABLE comments (
 
 CREATE TABLE deleted_comments (
   id INT PRIMARY KEY REFERENCES comments(id),
+  reason TEXT DEFAULT 'Cascade deletion with post',
   deleted_at TIMESTAMP DEFAULT now()
 );
 
@@ -54,6 +56,7 @@ CREATE TABLE replies (
 
 CREATE TABLE deleted_replies (
   id INT PRIMARY KEY REFERENCES replies(id),
+  reason TEXT DEFAULT 'Cascade deletion with comment',
   deleted_at TIMESTAMP DEFAULT now()
 );
 

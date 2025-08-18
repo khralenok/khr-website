@@ -109,7 +109,7 @@ func CountPostComments(postID int) int {
 	return numOfComments
 }
 
-// This function insert deleted post to deleted_posts table
+// This function insert deleted comment to deleted_comments table
 func DeleteComment(id int) error {
 	query := "INSERT INTO deleted_comments(id) VALUES ($1)"
 
@@ -117,6 +117,43 @@ func DeleteComment(id int) error {
 
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// This function delete all comments belonging to specific post
+func DeleteComments(postId int) error {
+	query := "SELECT id FROM comments c WHERE c.post_id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id)"
+
+	rows, err := db.DB.Query(query, postId)
+
+	if err != nil {
+		return err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var commentId int
+
+		err := rows.Scan(&commentId)
+
+		if err != nil {
+			return err
+		}
+
+		err = DeleteComment(commentId)
+
+		if err != nil {
+			return err
+		}
+
+		err = DeleteReplies(commentId)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

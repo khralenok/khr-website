@@ -150,7 +150,7 @@ func UpdatePost(c *gin.Context) {
 	})
 }
 
-// This function handle request for deleting a post. If success, update is_deleted column value in db.
+// This function handle request for deleting a post. It add records about post and all nested comments and replies to corresponding tables.
 func DeletePost(c *gin.Context) {
 	userId := c.GetInt("userID")
 
@@ -171,6 +171,14 @@ func DeletePost(c *gin.Context) {
 	if err := store.DeletePost(postId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not delete post",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	if err := store.DeleteComments(postId); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not delete comments",
 			"error":   err.Error(),
 		})
 		return

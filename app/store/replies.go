@@ -111,7 +111,7 @@ func CountCommentReplies(commentID int) int {
 	return numOfReplies
 }
 
-// This function make a record about deleted reply into deleted_posts table
+// This function make a record about deleted reply into deleted_replies table
 func DeleteReply(id int) error {
 	query := "INSERT INTO deleted_replies(id) VALUES ($1)"
 
