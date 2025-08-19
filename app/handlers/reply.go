@@ -89,29 +89,33 @@ func UpdateReply(c *gin.Context) {
 func DeleteReply(c *gin.Context) {
 	userId := c.GetInt("userID")
 
-	commentId, err := strconv.Atoi(c.Param("id"))
+	replyId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad Request",
+			"message": "Id parameter should be integer",
+		})
 		return
 	}
 
-	if !store.IsAdmin(userId) && !store.IsCommentCreator(userId, commentId) {
+	if !store.IsAdmin(userId) && !store.IsReplyCreator(userId, replyId) {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Only an admin or creator are permitted to delete a comment",
+			"error":   "Forbidden",
+			"message": "Only an admin or creator are permitted to delete a reply",
 		})
 		return
 	}
 
-	if err := store.DeleteComment(commentId); err != nil {
+	if err := store.DeleteReply(replyId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not delete comment",
 			"error":   err.Error(),
+			"message": "Could not delete reply",
 		})
 		return
 	}
 
-	c.JSON(http.StatusNoContent, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"message": "Post deleted successfully",
 	})
 }

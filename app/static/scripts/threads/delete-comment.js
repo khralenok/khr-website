@@ -2,6 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function(){
     const deleteBtn = document.getElementById('delete')
+    const backwardUrl = deleteBtn.dataset.postUrl
 
     const deleteComment = async function(){
         const url = "/comment/delete/" + document.getElementById('delete').dataset.commentId;
@@ -17,11 +18,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     }); 
             }
 
-            //window.location.href = "/";
-
-            const data = await response.json();
-            console.log(data)
-
+            window.location.href = backwardUrl;
             } catch(error) {
                 console.error('Fetch error', error)
             }

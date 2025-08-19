@@ -1,36 +1,36 @@
 'use srict'
 
-/**
- * Handle post deletion request. 
- */
-const deleteThePost = async function(){
-    const url = "/post/delete/" + document.getElementById('delete').dataset.postId;
+document.addEventListener('DOMContentLoaded', function(){
+    const replies = document.getElementById('replies-box')
 
-    try{
-        const response = await fetch(url, {
-                method: "PUT",
-        });
-
-        if (!response.ok){
-                return response.json().then(errorData => {
-                    throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
-                }); 
+    const deleteReply = async function(e){
+        if (!e.target.dataset.deleteReply){
+            return
         }
 
-        window.location.href = "/";
+        const btn = e.target
+        const replyId = parseInt(btn.dataset.replyId.trim())
 
-        } catch(error) {
-            console.error('Fetch error', error)
-        }
-}
+        console.log("Deletion of reply with ID: \"" + replyId + "\" was requested")
 
-/**
- * Get elements from the page and add corresponsing event listeners to them
- */
-const registerInteracriveElements = function(){
-    const deleteBtn = document.getElementById('delete')
+        const url = "/reply/delete/" + replyId;
 
-    deleteBtn.addEventListener('click', deleteThePost)
-}
+        try{
+            const response = await fetch(url, {
+                    method: "PUT",
+            });
 
-document.addEventListener('DOMContentLoaded', registerInteracriveElements)
+            if (!response.ok){
+                    return response.json().then(errorData => {
+                        throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
+                    }); 
+            }
+
+            window.location.reload();
+            } catch(error) {
+                console.error('Fetch error', error)
+            }
+    }
+
+    replies.addEventListener('click', deleteReply)
+})

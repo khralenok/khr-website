@@ -9,7 +9,10 @@
     {{ if .is_auth }}
         <script defer src="/static/scripts/likes/likes.js"></script>
         {{if .post }}<script defer src="/static/scripts/posts/delete-post.js"></script>{{end}}
-        {{if .comment }}<script defer src="/static/scripts/threads/delete-comment.js"></script>{{end}}
+        {{if .comment }}
+            <script defer src="/static/scripts/threads/delete-comment.js"></script>
+            <script defer src="/static/scripts/threads/delete-reply.js"></script>            
+        {{end}}
     {{ end }}
 
 </head>

@@ -100,7 +100,7 @@ func CountPostReplies(postID int) int {
 func CountCommentReplies(commentID int) int {
 	var numOfReplies int
 
-	query := "SELECT COUNT(*) FROM replies r INNER JOIN comments c ON r.comment_id = c.id WHERE c.id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id)"
+	query := "SELECT COUNT(*) FROM replies r INNER JOIN comments c ON r.comment_id = c.id WHERE c.id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_replies d WHERE d.id = r.id)"
 
 	err := db.DB.QueryRow(query, commentID).Scan(&numOfReplies)
 

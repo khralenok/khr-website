@@ -92,12 +92,16 @@ func DeleteComment(c *gin.Context) {
 	commentId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad Request",
+			"message": "Id parameter should be integer",
+		})
 		return
 	}
 
 	if !store.IsAdmin(userId) && !store.IsCommentCreator(userId, commentId) {
-		c.JSON(http.StatusUnauthorized, gin.H{
+		c.JSON(http.StatusForbidden, gin.H{
+			"error":   "Forbidden",
 			"message": "Only an admin or creator are permitted to delete a comment",
 		})
 		return
@@ -105,21 +109,21 @@ func DeleteComment(c *gin.Context) {
 
 	if err := store.DeleteComment(commentId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not delete comment",
 			"error":   err.Error(),
+			"message": "Could not delete comment",
 		})
 		return
 	}
 
 	if err := store.DeleteReplies(commentId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not delete replies",
 			"error":   err.Error(),
+			"message": "Could not delete replies",
 		})
 		return
 	}
 
-	c.JSON(http.StatusNoContent, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"message": "Post deleted successfully",
 	})
 }
