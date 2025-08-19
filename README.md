@@ -8,27 +8,24 @@ This website is a microblog that mirrors my [Threads](https://www.threads.com/@k
 
 ### For Vistors
 
-– Read any posts, comments, and replies
-– Create a user account
+- Read any posts, comments, and replies
+- Create a user account
 
 ### For Users
 
-– Like posts
-– Comment and reply
-– Edit and delete your own comments and replies
-– Delete your account
+- Like posts
+- Comment and reply
+- Edit and delete your own comments and replies
+- Delete your account
 
 ### For Admin
 
-– Create, edit and delete posts
-– Delete any comments and replies
+- Create, edit, and delete posts
+- Delete any comments and replies
 
 ## Tech Stack
 
-– Go
-– JavaScript
-– PostgreSQL
-– Nginx
-
-
-
+- Go
+- JavaScript
+- PostgreSQL
+- Nginx
