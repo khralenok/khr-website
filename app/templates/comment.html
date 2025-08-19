@@ -40,12 +40,12 @@
                         </div>
                         {{ if eq $global.user.Id .CommentatorId }}
                             <div class="mol h">
-                                <a href="">✏️</a>
+                                <a href="/workshop/reply/{{ .ID }}">✏️</a>
                                 <a id="delete" data-reply-id="{{ .ID }}" data-delete-reply="1">❌</a>
                             </div>
                         {{ else if eq $global.user.Role "admin" }}
                             <div class="mol h">
-                                <a id="delete" data-comment-id="">❌</a>
+                                <a id="delete" data-reply-id="{{ .ID }}" data-delete-reply="1">❌</a>
                             </div>            
                         {{ end }}
                     </div>
@@ -60,7 +60,7 @@
 {{ end }}
 
 {{define "comment_workshop"}}
-    <form class="workshop" id="workshop" {{ if .content }} data-post-id="{{ .content.ID }}" {{ end }} >
+    <form class="workshop" id="workshop" {{ if .content }} data-comment-id="{{ .content.ID }}" {{ end }} >
         <label for="content">Type comment text here:</label>
         <textarea id="content" name="content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         <input class="btn" type="submit" value="Submit" />

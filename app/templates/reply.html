@@ -1,6 +1,6 @@
 {{define "reply_workshop"}}
-    <form class="workshop" id="workshop" {{ if .content }} data-post-id="{{ .content.ID }}" {{ end }} >
-        <label for="content">Type comment text here:</label>
+    <form class="workshop" id="workshop" {{ if .content }} data-reply-id="{{ .content.ID }}" data-comment-id="{{ .content.CommentId }}"{{ end }} >
+        <label for="content">Type reply text here:</label>
         <textarea id="content" name="content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         <input class="btn" type="submit" value="Submit" />
     </form>

@@ -124,6 +124,19 @@ func DeleteReply(id int) error {
 	return nil
 }
 
+// This function update reply with specific ID
+func UpdateReply(content string, replyId int) error {
+	query := "UPDATE replies SET content=$1 WHERE id = $2"
+
+	_, err := db.DB.Exec(query, content, replyId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // This function delete all replies belonging to specific comment
 func DeleteReplies(commentId int) error {
 	query := "SELECT id FROM replies r WHERE r.comment_id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_replies d WHERE d.id = r.id)"

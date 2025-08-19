@@ -49,10 +49,10 @@ func CreateReply(c *gin.Context) {
 	})
 }
 
-// This function handle request for updating a post. If success, update row in DB and store related files on the server.
+// This function handle request for updating a reply.
 func UpdateReply(c *gin.Context) {
 	userId := c.GetInt("userID")
-	commentId, err := strconv.Atoi(c.Param("id"))
+	replyId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -62,26 +62,37 @@ func UpdateReply(c *gin.Context) {
 		return
 	}
 
-	if !store.IsCommentCreator(userId, commentId) {
+	if !store.IsReplyCreator(userId, replyId) {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Only author permitted to edit a comment",
+			"error":   "Forbidden",
+			"message": "Only author permitted to edit a reply",
 		})
 		return
 	}
 
-	content := c.PostForm("content")
+	var edits NewReplyRequest
 
-	if err := store.UpdateComment(content, commentId); err != nil {
+	err = c.ShouldBindJSON(&edits)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad Request",
+			"message": "Can't parse input data",
+		})
+		return
+	}
+
+	if err := store.UpdateReply(edits.Content, replyId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not save new post to DB",
+			"message": "Could not update reply",
 			"error":   err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Comment updated successfully",
-		"content": content,
+		"message": "Reply updated successfully",
+		"content": edits.Content,
 	})
 }
 

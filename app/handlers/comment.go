@@ -49,7 +49,7 @@ func CreateComment(c *gin.Context) {
 	})
 }
 
-// This function handle request for updating a post. If success, update row in DB and store related files on the server.
+// This function handle request for updating a comment.
 func UpdateComment(c *gin.Context) {
 	userId := c.GetInt("userID")
 	commentId, err := strconv.Atoi(c.Param("id"))
@@ -64,24 +64,35 @@ func UpdateComment(c *gin.Context) {
 
 	if !store.IsCommentCreator(userId, commentId) {
 		c.JSON(http.StatusUnauthorized, gin.H{
+			"error":   "Forbidden",
 			"message": "Only author permitted to edit a comment",
 		})
 		return
 	}
 
-	content := c.PostForm("content")
+	var edits NewCommentRequest
 
-	if err := store.UpdateComment(content, commentId); err != nil {
+	err = c.ShouldBindJSON(&edits)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad Request",
+			"message": "Can't parse input data",
+		})
+		return
+	}
+
+	if err := store.UpdateComment(edits.Content, commentId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Could not save new post to DB",
 			"error":   err.Error(),
+			"message": "Could not update comment",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Comment updated successfully",
-		"content": content,
+		"content": edits.Content,
 	})
 }
 

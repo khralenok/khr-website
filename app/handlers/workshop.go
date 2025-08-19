@@ -113,7 +113,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 		}
 	case "reply":
 		if isEditing {
-			commentId, err := strconv.Atoi(c.Param("id"))
+			replyId, err := strconv.Atoi(c.Param("id"))
 
 			if err != nil {
 				c.JSON(http.StatusBadRequest, gin.H{
@@ -123,7 +123,7 @@ func ShowWorkshop(contentType string, isEditing bool, c *gin.Context) {
 				return
 			}
 
-			content, err := store.GetPost(commentId, 0) // FIX ME
+			content, err := store.GetReply(replyId)
 
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
