@@ -1,8 +1,34 @@
 # Khralenok Website
-My website [khralenok.com](https://khralenok.com/) is a blog where I publish short format posts with illustrations. 
 
-I working on this project to explore if Go can replace PHP and WordPress in my content distribution routine. Along the way I expect to learn deeper Nginx, Docker and the rest involved technologies.
+Welcome to my website [khralenok.com](https://khralenok.com/) repo!
 
-You can find this project useful, If decide to build selfhosted replacement for your Threads or Telegram channel. 
+This website is a microblog that mirrors my [Threads](https://www.threads.com/@khralenok_com) and [Telegram](https://t.me/khralenok_com) accounts.
 
-However, I encourage you to keep in mind this project I build this project for personal use it can contain serious security issues.
+## Features
+
+### For Vistors
+
+– Read any posts, comments, and replies
+– Create a user account
+
+### For Users
+
+– Like posts
+– Comment and reply
+– Edit and delete your own comments and replies
+– Delete your account
+
+### For Admin
+
+– Create, edit and delete posts
+– Delete any comments and replies
+
+## Tech Stack
+
+– Go
+– JavaScript
+– PostgreSQL
+– Nginx
+
+
+
