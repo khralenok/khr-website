@@ -23,8 +23,8 @@
             {{ if .is_index }}
             {{ else }}
                 <div class="breadcrumbs">
-                    {{if .post }}<a href="/">Feed</a> &rarr; <a href="{{ .post.ID }}">Post {{ .post.ID }} </a>{{ end }}
-                    {{if .comment }}<a href="/">Feed</a> &rarr; <a href="/post/{{ .comment.PostId }}">Post {{ .comment.PostId }}</a> &rarr; <a>Comment {{ .comment.ID }}</a>{{ end }}
+                    {{if .post }}<a href="/">Feed</a> &rarr; <a href="{{ .post.ID }}"><b>Post {{ .post.ID }} </b></a>{{ end }}
+                    {{if .comment }}<a href="/">Feed</a> &rarr; <a href="/post/{{ .comment.PostId }}">Post {{ .comment.PostId }}</a> &rarr; <a><b>Comment {{ .comment.ID }}</b></a>{{ end }}
                 </div>
             {{ end }}
 

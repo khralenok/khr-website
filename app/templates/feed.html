@@ -36,7 +36,7 @@
             {{end}}
 
             <div class="mol h">
-                <a class="counter comments" {{ if $global.is_auth }} href="/workshop/comment?post_id={{ .ID }}" {{ end }}>💬 {{ .NumOfComments }}</a>
+                <a class="counter comments" href="/post/{{.ID}}">💬 {{ .NumOfComments }}</a>
                 {{ if .IsLiked }}
                     <a class="counter like" data-post-id="{{ .ID }}" data-is-checked="true">❤️ {{ .NumOfLikes }}</a>
                 {{ else }}
