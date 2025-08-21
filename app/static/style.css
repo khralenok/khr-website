@@ -14,7 +14,7 @@ header{
     justify-content: center;
     align-items: center;
     height: 5rem;
-    padding: 2rem 2rem;
+    padding: 2rem;
 }
 
 nav{
@@ -89,7 +89,7 @@ main{
     border-radius: 2rem;
 }
 
-#post-content, #content{
+#post-content, #content, input[type="text"], input[type="password"]{
     flex-grow: 1;
     padding: 1rem;
     background-color: #f3f3f3;
@@ -250,6 +250,11 @@ input[type="file"]::file-selector-button{
 .counter{
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
+}
+
+.delete{
+    cursor: pointer;
 }
 
 .breadcrumbs{
