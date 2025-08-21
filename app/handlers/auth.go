@@ -11,10 +11,17 @@ import (
 	"github.com/khralenok/khr-website/utilities"
 )
 
-// This struct needed to write in json that come from a frontend
-type AuthInputs struct {
-	Username string `json:"username"`
+// This struct match json we get on login
+type LoginInputs struct {
+	Email    string `json:"email"`
 	Password string `json:"pwd"`
+}
+
+// This struct match json we get on signin
+type SigninInputs struct {
+	Email       string `json:"email"`
+	DisplayName string `json:"display_name"`
+	Password    string `json:"pwd"`
 }
 
 // This function render an HTML for auth page
@@ -48,7 +55,7 @@ func ShowAuth(authType string, c *gin.Context) {
 
 // This function get login inputs create a sign about a new session in DB and return JWT Token if authenticateion is succeed.
 func LoginUser(c *gin.Context) {
-	var input AuthInputs
+	var input LoginInputs
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -58,7 +65,7 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 
-	user, err := store.GetUserByUsername(input.Username)
+	user, err := store.GetUserByEmail(input.Email)
 
 	// 1. Examine password
 
@@ -141,7 +148,7 @@ func Logout(c *gin.Context) {
 
 // This function add new user in database or cause an http error
 func CreateUser(c *gin.Context) {
-	var input AuthInputs
+	var input SigninInputs
 
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -160,14 +167,19 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	user, err := store.AddNewUser(input.Username, pwdHash)
+	user, err := store.AddNewUser(input.Email, input.DisplayName, pwdHash)
 
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":     "Internal Server Error",
+			"message":   "Can't add a new user",
+			"raw_error": err,
+		})
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"status": "Created",
+	c.JSON(http.StatusOK, gin.H{
+		"status": "New user was successfuly created",
 		"user":   user,
 	})
 }

@@ -89,7 +89,7 @@ main{
     border-radius: 2rem;
 }
 
-#post-content, #content, input[type="text"], input[type="password"]{
+#post-content, #content, input[type="text"], input[type="password"],input[type="email"]{
     flex-grow: 1;
     padding: 1rem;
     background-color: #f3f3f3;

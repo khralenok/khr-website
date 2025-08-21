@@ -12,7 +12,7 @@ import (
 func GetComments(postId int) ([]models.Comment, error) {
 	var comments []models.Comment
 
-	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id) AND c.post_id = $1 ORDER BY c.created_at DESC"
+	query := "SELECT c.*, u.display_name, u.avatar_filename FROM comments c JOIN users u ON c.commentator_id = u.id WHERE NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id) AND c.post_id = $1 ORDER BY c.created_at DESC"
 
 	rows, err := db.DB.Query(query, postId)
 
@@ -43,7 +43,7 @@ func GetComments(postId int) ([]models.Comment, error) {
 func GetComment(commentId int) (models.Comment, error) {
 	var comment models.Comment
 
-	query := "SELECT c.*, u.username FROM comments c JOIN users u ON c.commentator_id = u.id WHERE NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id) AND c.id=$1"
+	query := "SELECT c.*, u.display_name, u.avatar_filename FROM comments c JOIN users u ON c.commentator_id = u.id WHERE NOT EXISTS (SELECT 1 FROM deleted_comments d WHERE d.id = c.id) AND c.id=$1"
 
 	rows, err := db.DB.Query(query, commentId)
 
@@ -164,7 +164,7 @@ func newComment(row *sql.Rows) (models.Comment, error) {
 	var newComment models.Comment
 	var rawTime time.Time
 
-	err := row.Scan(&newComment.ID, &newComment.Content, &newComment.PostId, &newComment.CommentatorId, &rawTime, &newComment.CommentatorUsername)
+	err := row.Scan(&newComment.ID, &newComment.Content, &newComment.PostId, &newComment.CommentatorId, &rawTime, &newComment.CommentatorUsername, &newComment.CommentatorAvatar)
 
 	if err != nil {
 		return models.Comment{}, err

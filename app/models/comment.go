@@ -6,6 +6,7 @@ type Comment struct {
 	PostId              int    `json:"post_id"`
 	CommentatorId       int    `json:"commentator_id"`
 	CommentatorUsername string `json:"commentator_username"`
+	CommentatorAvatar   string `json:"commentator_avatar"`
 	CreatedAt           string `json:"created_at"`
 	NumOfReplies        int    `json:"num_of_replies"`
 }

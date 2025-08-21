@@ -25,13 +25,13 @@
                 <path class="logo-letter" d="M77 11L72 7" stroke="white" stroke-linecap="round"></path>
             </svg>
         </a>
-        {{ if .is_auth }}
+        {{ if .user.Id }}
             <div class="user-card">
                 <div class="user-avatar">
-                    <img src="/static/img/avatar-placeholder.jpg" />
+                    <img src="/static/img/{{ .user.AvatarFilename}}" />
                 </div>
                 <div>
-                    <a class="username">{{ .user.Username }}</a><br>
+                    <a class="username">{{ .user.DisplayName }}</a><br>
                     <a>{{ .user.Role }}</a>
                 </div>
             </div>

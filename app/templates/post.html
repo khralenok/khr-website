@@ -30,7 +30,7 @@
 
     <div class="section-header">
         <h2> Comments </h2>
-        {{ if .is_auth }}
+        {{ if .user.Id }}
         <div><a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Add a comment</a></div>
         {{ end }}
     </div>
@@ -39,7 +39,7 @@
         <article class="comment">
             <div class="comment-data">
                 <div class="mol h">
-                    <div class="author"><img width="32" height="32" src="/static/img/avatar-placeholder.jpg"><a>{{ .CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .CreatedAt }}</a></div>
+                    <div class="author"><img width="32" height="32" src="/static/img/{{.CommentatorAvatar}}"><a>{{ .CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .CreatedAt }}</a></div>
                 </div>
                 <div>
                     <a href="/comment/{{.ID}}">View details &rarr;</a>

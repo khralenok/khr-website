@@ -1,67 +1,45 @@
 'use strict'
 
+document.addEventListener("DOMContentLoaded", function(){
 
-/**
- * This function take user's creds and return JWT token for user. 
- */
-const getJWT = async function(username, password){
-        try{
-        const response = await fetch("/login", {
-            method: "POST", 
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                "username": username,
-                "pwd": password})
-        });
-
-        if (!response.ok){
-            throw new Error(`Server error: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        return data.token
-        } catch (error) {
-            console.error('Fetch error', error);
-        }
-}
-
-/**
- * This function handle login request. 
- */
-const login = async function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const username = formData.get("username");
-    const password = formData.get("password");
-
-    const token = await getJWT(username, password);
-
-    if (!token) {
-        console.error('Can\'t login');
-        return;
-    };
-    
-    localStorage.setItem("token", token);
-    window.location.href = "/";
-}
-
-/**
- * Get elements from the page and add corresponsing event listeners to them
- */
-const registerInteracriveElements = function(){
-    let token = localStorage.getItem("token")
-
-    if (token != null) {
+    if (localStorage.getItem("token") != null) {
+        console.log("You're logged in already")
         window.location.href = "/"
+        return
     }
 
     const form = document.getElementById('auth');
 
-    console.log(form);
+    const login = async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        try{
+            const response = await fetch("/login", {
+                method: "POST", 
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    "email": email,
+                    "pwd": password,
+                })
+            });
+
+            if (!response.ok){
+                throw new Error(`Server error: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem("token", data.token);
+
+            window.location.href = "/";
+        } catch (error) {
+            console.error('Fetch error', error);
+        }
+    }
 
     form.addEventListener('submit', login);
-}
-
-document.addEventListener("DOMContentLoaded", registerInteracriveElements);
+});

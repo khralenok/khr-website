@@ -1,8 +1,10 @@
 CREATE TABLE users (
  id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
- username varchar(255) NOT NULL UNIQUE,
+ email varchar(255) NOT NULL UNIQUE,
+ display_name varchar(255) NOT NULL,
  pwd_hash char(60) NOT NULL,
  role varchar(5) DEFAULT 'user',
+ avatar_filename varchar(255) DEFAULT 'avatar-placeholder.jpg',
  created_at TIMESTAMP DEFAULT now(),
  CHECK(role IN ('user','admin'))
 );
@@ -22,7 +24,7 @@ CREATE TABLE sessions (
 CREATE TABLE posts (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   content TEXT NOT NULL,
-  image_url TEXT,
+  image_filename TEXT,
   created_at TIMESTAMP DEFAULT now()
 );
 

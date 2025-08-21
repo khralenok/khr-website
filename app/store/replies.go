@@ -12,7 +12,7 @@ import (
 func GetReplies(commentId int) ([]models.Reply, error) {
 	var replies []models.Reply
 
-	query := "SELECT r.*, u.username FROM replies r JOIN users u ON r.commentator_id = u.id WHERE r.comment_id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_replies d WHERE d.id = r.id) ORDER BY r.created_at DESC"
+	query := "SELECT r.*, u.display_name, u.avatar_filename FROM replies r JOIN users u ON r.commentator_id = u.id WHERE r.comment_id = $1 AND NOT EXISTS (SELECT 1 FROM deleted_replies d WHERE d.id = r.id) ORDER BY r.created_at DESC"
 
 	rows, err := db.DB.Query(query, commentId)
 
@@ -43,7 +43,7 @@ func GetReplies(commentId int) ([]models.Reply, error) {
 func GetReply(replyId int) (models.Reply, error) {
 	var comment models.Reply
 
-	query := "SELECT r.*, u.username FROM replies r JOIN users u ON r.commentator_id = u.id WHERE r.id=$1 AND NOT EXISTS (SELECT 1 FROM deleted_replies d WHERE d.id = r.id)"
+	query := "SELECT r.*, u.display_name, u.avatar_filename FROM replies r JOIN users u ON r.commentator_id = u.id WHERE r.id=$1 AND NOT EXISTS (SELECT 1 FROM deleted_replies d WHERE d.id = r.id)"
 
 	rows, err := db.DB.Query(query, replyId)
 
@@ -173,7 +173,7 @@ func newReply(row *sql.Rows) (models.Reply, error) {
 	var newReply models.Reply
 	var rawTime time.Time
 
-	err := row.Scan(&newReply.ID, &newReply.Content, &newReply.CommentId, &newReply.CommentatorId, &rawTime, &newReply.CommentatorUsername)
+	err := row.Scan(&newReply.ID, &newReply.Content, &newReply.CommentId, &newReply.CommentatorId, &rawTime, &newReply.CommentatorUsername, &newReply.CommentatorAvatar)
 
 	if err != nil {
 		return models.Reply{}, err

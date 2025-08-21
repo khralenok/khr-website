@@ -141,7 +141,6 @@ func DeleteComment(c *gin.Context) {
 
 // This function render page with single post and related comments
 func ShowComment(c *gin.Context) {
-	userId := c.GetInt("userID")
 	commentId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
@@ -149,13 +148,9 @@ func ShowComment(c *gin.Context) {
 		return
 	}
 
-	isAuth := true
+	userId := c.GetInt("userID")
 
-	user, err := store.GetUserById(userId)
-
-	if err != nil {
-		isAuth = false
-	}
+	user, userErr := store.GetUserById(userId)
 
 	comment, err := store.GetComment(commentId)
 
@@ -177,11 +172,19 @@ func ShowComment(c *gin.Context) {
 		return
 	}
 
+	if userErr != nil {
+		c.HTML(http.StatusOK, "base.html", gin.H{
+			"title":   "Khralenok - Comment",
+			"comment": comment,
+			"replies": replies,
+		})
+		return
+	}
+
 	c.HTML(http.StatusOK, "base.html", gin.H{
 		"title":   "Khralenok - Comment",
 		"comment": comment,
 		"replies": replies,
 		"user":    user,
-		"is_auth": isAuth,
 	})
 }

@@ -1,23 +1,39 @@
 package store
 
 import (
+	"database/sql"
+
 	"github.com/khralenok/khr-website/db"
 	"github.com/khralenok/khr-website/models"
 )
 
 // This function insert new user to database and return corresponding struct
-func AddNewUser(username, pwdHash string) (models.User, error) {
-	var newUser models.User
+func AddNewUser(email, displayName, pwdHash string) (models.User, error) {
+	var user models.User
 
-	query := "INSERT INTO users (username, pwd_hash) VALUES ($1, $2) RETURNING *"
+	query := "INSERT INTO users (email, display_name, pwd_hash) VALUES ($1, $2, $3) RETURNING *"
 
-	err := db.DB.QueryRow(query, username, pwdHash).Scan(&newUser.Id, &newUser.Username, &newUser.PwdHash, &newUser.Role, &newUser.CreatedAt)
+	rows, err := db.DB.Query(query, email, displayName, pwdHash)
 
 	if err != nil {
 		return models.User{}, err
 	}
 
-	return newUser, nil
+	defer rows.Close()
+
+	for rows.Next() {
+		user, err = newUser(rows)
+
+		if err == sql.ErrNoRows {
+			break
+		}
+
+		if err != nil {
+			return models.User{}, err
+		}
+	}
+
+	return user, nil
 }
 
 // This function return user sruct in case if user with such username exists.
@@ -25,24 +41,50 @@ func GetUserById(id int) (models.User, error) {
 	var user models.User
 
 	query := "SELECT * FROM users WHERE id=$1"
-	err := db.DB.QueryRow(query, id).Scan(&user.Id, &user.Username, &user.PwdHash, &user.Role, &user.CreatedAt)
+
+	rows, err := db.DB.Query(query, id)
 
 	if err != nil {
 		return models.User{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		user, err = newUser(rows)
+
+		if err != nil {
+			return models.User{}, err
+		}
 	}
 
 	return user, nil
 }
 
 // This function return user sruct in case if user with such username exists.
-func GetUserByUsername(username string) (models.User, error) {
+func GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 
-	query := "SELECT * FROM users WHERE username=$1"
-	err := db.DB.QueryRow(query, username).Scan(&user.Id, &user.Username, &user.PwdHash, &user.Role, &user.CreatedAt)
+	query := "SELECT * FROM users WHERE email=$1"
+
+	rows, err := db.DB.Query(query, email)
 
 	if err != nil {
 		return models.User{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		user, err = newUser(rows)
+
+		if err == sql.ErrNoRows {
+			break
+		}
+
+		if err != nil {
+			return models.User{}, err
+		}
 	}
 
 	return user, nil
@@ -91,4 +133,16 @@ func IsReplyCreator(userId, replyId int) bool {
 	}
 
 	return IsCreator
+}
+
+func newUser(row *sql.Rows) (models.User, error) {
+	var newUser models.User
+
+	err := row.Scan(&newUser.Id, &newUser.Email, &newUser.DisplayName, &newUser.PwdHash, &newUser.Role, &newUser.AvatarFilename, &newUser.CreatedAt)
+
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return newUser, nil
 }

@@ -3,7 +3,7 @@
     <article class="comment leader">
         <div class="comment-data">
             <div class="mol h">
-                <div class="author"><img width="32" height="32" src="/static/img/avatar-placeholder.jpg"><a>{{ .comment.CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .comment.CreatedAt }}</a></div>
+                <div class="author"><img width="32" height="32" src="/static/img/{{.comment.CommentatorAvatar}}"><a>{{ .comment.CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .comment.CreatedAt }}</a></div>
             </div>
             {{ if eq .user.Id .comment.CommentatorId }}
                     <div class="mol h">
@@ -11,9 +11,9 @@
                         <a id="delete" data-comment-id="{{ .comment.ID }}" data-post-url="/post/{{ .comment.PostId }}" class="delete">❌</a>
                     </div>
             {{ else if eq .user.Role "admin" }}
-            <div class="mol h">
-                <a id="delete" data-comment-id="{{ .comment.ID }}" class="btn delete">Delete</a>
-            </div>            
+                <div class="mol h">
+                        <a id="delete" data-comment-id="{{ .comment.ID }}" data-post-url="/post/{{ .comment.PostId }}" class="delete">❌</a>
+                </div>            
             {{ end }}
         </div>
   
@@ -27,7 +27,7 @@
     <div id="replies-box">
         <div class="section-header">
             <h2>Replies</h2>
-            {{ if .is_auth }}
+            {{ if .user.Id }}
             <div><a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Add a reply</a></div>
             {{ end }}
         </div>
@@ -36,7 +36,7 @@
                 <article class="comment">
                     <div class="comment-data">
                         <div class="mol h">
-                            <div class="author"><img width="32" height="32" src="/static/img/avatar-placeholder.jpg"><a>{{ .CommentatorUsername }}</a></div><div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+                            <div class="author"><img width="32" height="32" src="/static/img/{{ .CommentatorAvatar }}"><a>{{ .CommentatorUsername }}</a></div><div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                         </div>
                         {{ if eq $global.user.Id .CommentatorId }}
                             <div class="mol h">

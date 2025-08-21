@@ -66,7 +66,7 @@ func GetPost(postId, userId int) (models.Post, error) {
 
 // This function insert new post to DB
 func AddPost(content, filename string) error {
-	query := "INSERT INTO posts(content, image_url) VALUES ($1, $2)"
+	query := "INSERT INTO posts(content, image_filename) VALUES ($1, $2)"
 
 	_, err := db.DB.Exec(query, content, filename)
 
@@ -91,7 +91,7 @@ func UpdatePost(content, filename string, postId int) error {
 		return nil
 	}
 
-	query := "UPDATE posts SET content=$1, image_url=$2 WHERE id = $3"
+	query := "UPDATE posts SET content=$1, image_filename=$2 WHERE id = $3"
 
 	_, err := db.DB.Exec(query, content, filename, postId)
 

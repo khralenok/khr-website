@@ -12,20 +12,15 @@ import (
 // This function render page with single post and related comments
 func ShowPost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
-	userId := c.GetInt("userID")
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
 		return
 	}
 
-	isAuth := true
+	userId := c.GetInt("userID")
 
-	user, err := store.GetUserById(userId)
-
-	if err != nil {
-		isAuth = false
-	}
+	user, userErr := store.GetUserById(userId)
 
 	post, err := store.GetPost(postId, userId)
 
@@ -47,12 +42,20 @@ func ShowPost(c *gin.Context) {
 		return
 	}
 
+	if userErr != nil {
+		c.HTML(http.StatusOK, "base.html", gin.H{
+			"title":    "Khralenok - Post",
+			"post":     post,
+			"comments": comments,
+		})
+		return
+	}
+
 	c.HTML(http.StatusOK, "base.html", gin.H{
 		"title":    "Khralenok - Post",
 		"user":     user,
 		"post":     post,
 		"comments": comments,
-		"is_auth":  isAuth,
 	})
 }
 

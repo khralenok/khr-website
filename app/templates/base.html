@@ -6,7 +6,7 @@
     <title>{{ .title }}</title>
     <link rel="stylesheet" href="/static/style.css" />
     <script defer src="/static/scripts/utilities/dates-formatter.js"></script>
-    {{ if .is_auth }}
+    {{ if .user.Id }}
         <script defer src="/static/scripts/likes/likes.js"></script>
         {{if .post }}<script defer src="/static/scripts/posts/delete-post.js"></script>{{end}}
         {{if .comment }}
