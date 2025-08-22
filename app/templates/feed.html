@@ -1,13 +1,14 @@
 {{ define "feed" }}
     {{ $global := . }}
-    <div class="profile leader">
-        <div class="profile-description">
-            <h1>Grigorii Khralenok</h1>
-            <p>Hand-drawn illustrations & updates from my indie software developer journey</p>
-            <p><a href="https://github.com/khralenok">github.com/khralenok</a></p>
-
+    <div class="object parent">
+        <div class="wrapper">
+            <div class="wrapper v">
+                <h1>Grigorii Khralenok</h1>
+                <p>Hand-drawn illustrations & updates from my indie software developer journey</p>
+                <p><a href="https://github.com/khralenok">github.com/khralenok</a></p>
+            </div>
+            <img class="avatar" src="static/img/avatar.jpg">
         </div>
-        <img class="avatar" src="static/img/avatar.jpg">
     </div>
 
 
@@ -19,8 +20,8 @@
     </div>
 
     {{ range .feed }}
-        <article class="post">
-            <div class="post-data">
+        <article class="object inheritor">
+            <div class="object-header">
                 <div class="mol h">
                     <div><a><b>Published At:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                 </div>
@@ -29,10 +30,10 @@
                 </div>
             </div>
             
-            <p>{{ .Content}} </p>
+            <p>{{ .Content}}</p>
 
             {{ if .ImageURL }}
-                <img width="864" height="864" src="/uploads/{{.ImageURL}}" />
+                <img class="illustration" width="864" height="864" src="/uploads/{{.ImageURL}}" />
             {{end}}
 
             <div class="mol h">

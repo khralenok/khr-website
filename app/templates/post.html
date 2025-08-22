@@ -1,7 +1,7 @@
 {{ define "post" }}
     {{ $global := . }}
-    <article class="post leader">
-        <div class="post-data">
+    <article class="object parent">
+        <div class="object-header">
             <div class="mol h">
                 <div><a><b>Published At:</b></a><a class="date">{{ .post.CreatedAt }}</a></div>
             </div>
@@ -36,8 +36,8 @@
     </div>
 
     {{range .comments }}
-        <article class="comment">
-            <div class="comment-data">
+        <article class="object inheritor">
+            <div class="object-header">
                 <div class="mol h">
                     <div class="author"><img width="32" height="32" src="/static/img/{{.CommentatorAvatar}}"><a>{{ .CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .CreatedAt }}</a></div>
                 </div>
@@ -49,8 +49,8 @@
             <p>{{ .Content }}</p>
 
             <div class="mol h">
-            <a class="counter comments" href="/comment/{{.ID}}">💬 {{ .NumOfReplies }}</a>
-        </div>    
+                <a class="counter comments" href="/comment/{{.ID}}">💬 {{ .NumOfReplies }}</a>
+            </div>    
         </article>    
     {{ else }}
         <p>No comments yet.</p>
@@ -58,21 +58,21 @@
 {{ end }}
 
 {{define "post_workshop"}}
-    <form class="post-workshop" id="post-workshop" {{ if .content }} data-post-id="{{ .content.ID }}" {{ end }} >
-        <label for="post-content">Type post text here:</label>
-        <textarea id="post-content" name="post-content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
+    <form class="workshop" id="workshop" {{ if .content }} data-post-id="{{ .content.ID }}" {{ end }} >
+        <label for="content">Type post text here:</label>
+        <textarea id="content" name="content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         {{ if .content }}
             {{ if .content.ImageURL}}
                 <div>
                     <figure class="img-with-caption">
                         <img width="72" height="72" src="/uploads/{{ .content.ImageURL}}"/>
-                        <figcaption>Selected image</figcaption>
+                        <figcaption>Selected image:</figcaption>
                     </figure>
                 </div>
             {{end}}
         {{ end }}
-            <label for="post-image">Select an image:</label>
-            <input type="file" id="post-image" name="post-image" />
-            <input class="btn" type="submit" value="Submit" />
+        <label for="post-image">Select an image:</label>
+        <input type="file" id="post-image" name="post-image" />
+        <input class="btn" type="submit" value="Submit" />
     </form>
 {{end}}

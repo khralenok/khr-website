@@ -1,7 +1,7 @@
 {{ define "comment" }}
     {{ $global := . }}
-    <article class="comment leader">
-        <div class="comment-data">
+    <article class="object parent">
+        <div class="object-header">
             <div class="mol h">
                 <div class="author"><img width="32" height="32" src="/static/img/{{.comment.CommentatorAvatar}}"><a>{{ .comment.CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .comment.CreatedAt }}</a></div>
             </div>
@@ -33,8 +33,8 @@
         </div>
 
             {{ range .replies }}
-                <article class="comment">
-                    <div class="comment-data">
+                <article class="object inheritor">
+                    <div class="object-header">
                         <div class="mol h">
                             <div class="author"><img width="32" height="32" src="/static/img/{{ .CommentatorAvatar }}"><a>{{ .CommentatorUsername }}</a></div><div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                         </div>

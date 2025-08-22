@@ -1,0 +1,58 @@
+.object{
+    width: var(--container-width);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.object.parent{
+    border: 1px solid gray;
+    padding: 3rem;
+    border-radius: 2rem;
+}
+
+.object.inheritor{
+    /* Edit Me */
+}
+
+.avatar{
+    width: 6rem;
+    height: 6rem;
+    border-radius: 1000px;
+}
+
+.illustration{
+    border-radius: 1rem;
+    width: var(--container-width);
+    height: var(--container-width);
+}
+
+.object-header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 3rem;
+    color: grey;
+    border-bottom: 1px solid lightgray;
+}
+
+.counter{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.delete{
+    cursor: pointer;
+}
+
+.author{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.author img{
+    border-radius: 1000px;
+}

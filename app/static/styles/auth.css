@@ -1,0 +1,31 @@
+
+.auth{
+    width: var(--container-width);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    padding: 3rem;
+    gap: 2rem;
+    border-radius: 2rem;
+}
+
+input[type="text"], input[type="password"],input[type="email"]{
+    flex-grow: 1;
+    padding: 1rem;
+    background-color: #f3f3f3;
+    border: 0px;
+    border-radius: 1rem;
+}
+
+input[type="file"]::file-selector-button{
+    color: black;
+    background-color: white;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+}
+
+label:has(+ textarea:required)::after{
+    content: "*";
+    color: red;
+}
