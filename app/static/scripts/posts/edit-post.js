@@ -1,6 +1,5 @@
 'use srict'
 
-
 document.addEventListener('DOMContentLoaded', function(){
     const form = document.getElementById('workshop')
 
@@ -24,7 +23,8 @@ document.addEventListener('DOMContentLoaded', function(){
             const data = await response.json();
 
             console.log(data)
-            window.location.href = "/";
+
+            //window.location.href = "/";
         } catch(error) {
             console.error('Fetch error', error)
         }

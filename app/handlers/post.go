@@ -148,8 +148,9 @@ func UpdatePost(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Post updated successfully",
-		"content": content,
+		"message":  "Post updated successfully",
+		"content":  content,
+		"filename": filename,
 	})
 }
 
