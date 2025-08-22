@@ -16,7 +16,7 @@
         <p>{{ .post.Content }}</p>
 
         {{ if .post.ImageURL }}
-            <img width="864" height="864" src="/uploads/{{ .post.ImageURL}}" />
+            <img class="illustration" src="/uploads/{{ .post.ImageURL}}" />
         {{ end }}
         <div class="mol h">
             <a class="counter comments">💬 {{ .post.NumOfComments }}</a>

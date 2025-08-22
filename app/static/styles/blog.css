@@ -23,8 +23,7 @@
 
 .illustration{
     border-radius: 1rem;
-    width: var(--container-width);
-    height: var(--container-width);
+    width: 100%;
 }
 
 .object-header{
