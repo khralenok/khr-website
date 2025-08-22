@@ -1,36 +1,28 @@
 'use srict'
 
-/**
- * Handle post deletion request. 
- */
-const deleteThePost = async function(){
-    const url = "/post/delete/" + document.getElementById('delete').dataset.postId;
+document.addEventListener('DOMContentLoaded', function(){
+    const deleteBtn = document.getElementById('delete')
 
-    try{
-        const response = await fetch(url, {
-                method: "PUT",
-        });
+    const deleteThePost = async function(){
+        const url = "/post/delete/" + document.getElementById('delete').dataset.postId;
 
-        if (!response.ok){
-                return response.json().then(errorData => {
-                    throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
-                }); 
-        }
+        try{
+            const response = await fetch(url, {
+                    method: "PUT",
+            });
 
-        window.location.href = "/";
+            if (!response.ok){
+                    return response.json().then(errorData => {
+                        throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
+                    }); 
+            }
+
+            window.location.href = "/";
 
         } catch(error) {
             console.error('Fetch error', error)
         }
-}
-
-/**
- * Get elements from the page and add corresponsing event listeners to them
- */
-const registerInteracriveElements = function(){
-    const deleteBtn = document.getElementById('delete')
+    }
 
     deleteBtn.addEventListener('click', deleteThePost)
-}
-
-document.addEventListener('DOMContentLoaded', registerInteracriveElements)
+})
