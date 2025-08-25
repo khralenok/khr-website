@@ -15,8 +15,8 @@
   
         <p>{{ .post.Content }}</p>
 
-        {{ if .post.ImageURL }}
-            <img class="illustration" src="/uploads/{{ .post.ImageURL}}" />
+        {{ if .post.AttachmentKey }}
+            <img class="illustration" src="/uploads/{{ .post.AttachmentKey}}" />
         {{ end }}
         <div class="mol h">
             <a class="counter comments">💬 {{ .post.NumOfComments }}</a>
@@ -62,17 +62,22 @@
         <label for="content">Type post text here:</label>
         <textarea id="content" name="content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         {{ if .content }}
-            {{ if .content.ImageURL}}
+            {{ if .content.AttachmentKey}}
                 <div>
                     <figure class="img-with-caption">
-                        <img width="72" height="72" src="/uploads/{{ .content.ImageURL}}"/>
+                        <img width="72" height="72" src="/uploads/{{ .content.AttachmentKey}}"/>
                         <figcaption>Selected image:</figcaption>
                     </figure>
                 </div>
             {{end}}
         {{ end }}
-        <label for="image">Select an image:</label>
-        <input type="file" id="image" name="image" />
+        <label for="attachment-type"> Select an attachement type: </label>
+        <select name="attachment-type" id="attachement-type">
+            <option value="">None</option>
+            <option value="image">Image</option>
+            <option value="carousel">Carousel</option>
+            <option value="youtube">Youtube Link</option>
+        </select>
         <input class="btn" type="submit" value="Submit" />
     </form>
 {{end}}

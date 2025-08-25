@@ -121,7 +121,7 @@ func newPost(row *sql.Rows, userId int) (models.Post, error) {
 	var newPost models.Post
 	var rawTime time.Time
 
-	err := row.Scan(&newPost.ID, &newPost.Content, &newPost.ImageURL, &rawTime)
+	err := row.Scan(&newPost.ID, &newPost.Content, &newPost.AttachmentKey, &rawTime)
 
 	if err != nil {
 		return models.Post{}, err
