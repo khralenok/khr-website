@@ -24,14 +24,35 @@ CREATE TABLE sessions (
 CREATE TABLE posts (
   id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   content TEXT NOT NULL,
-  image_filename TEXT,
-  created_at TIMESTAMP DEFAULT now()
+  attachment_type varchar(8) DEFAULT 'none',
+  created_at TIMESTAMP DEFAULT now(),
+  CHECK(attachment_type IN ('none','image','carousel','youtube'))
 );
 
 CREATE TABLE deleted_posts (
   id INT PRIMARY KEY REFERENCES posts(id),
   reason TEXT DEFAULT 'Deleted by admin',
   deleted_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE attachment_images(
+ id INT PRIMARY KEY REFERENCES posts(id),
+ img_filename varchar(255) NOT NULL UNIQUE,
+ created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE attachment_carousels(
+  id INT PRIMARY KEY REFERENCES posts(id),
+  last_img_filename varchar(255) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE attachment_youtube_vids(
+  id INT PRIMARY KEY REFERENCES posts(id),
+  video_id varchar(255) NOT NULL,
+  title varchar(255) NOT NULL,
+  description TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT now()
 );
 
 CREATE TABLE comments (

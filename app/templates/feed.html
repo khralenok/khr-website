@@ -32,8 +32,8 @@
             
             <p>{{ .Content}}</p>
 
-            {{ if .AttachmentKey }}
-                <img class="illustration" src="/uploads/{{.AttachmentKey}}" />
+            {{ if eq .AttachmentType "image" }}
+                <img class="illustration" src="/uploads/" />
             {{end}}
 
             <div class="mol h">

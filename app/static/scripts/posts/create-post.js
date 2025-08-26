@@ -8,12 +8,8 @@ document.addEventListener('DOMContentLoaded', function(){
         e.preventDefault()
 
         const formData = new FormData(e.target);
-
-        for (const pair of formData.entries()) {
-            console.log(pair[0] + " : " + pair[1]);
-        }
                 
-/*         try{
+        try{
             const response = await fetch("/post", {
                 method: "POST",
                 body: formData,
@@ -21,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if (!response.ok){
                 return response.json().then(errorData => {
-                    throw new Error(`Server error: ${response.status} - ${errorData.message || response.statusText}`);
+                    throw new Error(`${response.status} - ${errorData.message || response.statusText} \n Error: ${errorData.error}`);
                 });  
             }
 
@@ -30,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function(){
             window.location.href = "/";
         } catch(error) {
             console.error('Fetch error', error)
-        } */
+        }
     }
 
     const attachmentInputHandler = function(){
@@ -62,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function(){
             case "youtube":
             markup = `
                 <div id="optional-part" class="mol v">
-                    <label for="video-url">Input Youtube video URL:</label>
-                    <input type="url" id="video-url" name="video-url" />
+                    <label for="video-id">Input Youtube video ID:</label>
+                    <input type="text" id="video-id" name="video-id" />
                 </div>`
             break    
         }

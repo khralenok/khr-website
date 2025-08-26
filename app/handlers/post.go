@@ -4,9 +4,11 @@ import (
 	"net/http"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/khralenok/khr-website/store"
+	"github.com/khralenok/khr-website/utilities"
 )
 
 // This function render page with single post and related comments
@@ -71,24 +73,12 @@ func CreatePost(c *gin.Context) {
 	}
 
 	content := c.PostForm("content")
-	filename := ""
+	var attachment any
+	attachmentType := c.PostForm("attachment-type")
 
-	image, err := c.FormFile("image")
+	newPost, err := store.AddPost(content, attachmentType)
 
-	if err == nil {
-		savePath := filepath.Join("uploads", filepath.Base(image.Filename))
-
-		if err := c.SaveUploadedFile(image, savePath); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Could not save file",
-				"error":   err.Error(),
-			})
-			return
-		}
-		filename = image.Filename
-	}
-
-	if err := store.AddPost(content, filename); err != nil {
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not save new post to DB",
 			"error":   err.Error(),
@@ -96,10 +86,59 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{
-		"message":  "New post added successfully",
-		"filename": filename,
-		"content":  content,
+	switch attachmentType {
+	case "none":
+		break
+	case "image":
+		// Logic to handle Image
+		// 1. Convert file
+		// 2. Resize file
+		// 3. Save file on a server
+		// 4. Make a record in DB
+	case "carousel":
+		// Logic to handle Carousel
+		// 1. Convert file
+		// 2. Resize file
+		// 3. Save file on a server
+		// 4. Make a record in DB
+	case "youtube":
+		// Logic to handle Youtube vid link
+		videoId := strings.TrimSpace(c.PostForm("video-id"))
+		// 1. Fetch the video by ID
+		title, description, err := utilities.FetchYoutubeVideo(videoId)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "There is some problem with your video",
+				"error":   err.Error(),
+			})
+			return
+		}
+
+		// 2. Make a record in DB
+		newAttachment, err := store.AddVideoAttachment(newPost.ID, videoId, title, description)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Can't record attachment into DB",
+				"error":   err.Error(),
+			})
+			return
+		}
+
+		attachment = newAttachment
+
+	default:
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "This kind of attachement doesn't supported yet.",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":    "New post added successfully",
+		"post":       newPost,
+		"attachment": attachment,
 	})
 }
 

@@ -65,16 +65,18 @@ func GetPost(postId, userId int) (models.Post, error) {
 }
 
 // This function insert new post to DB
-func AddPost(content, filename string) error {
-	query := "INSERT INTO posts(content, image_filename) VALUES ($1, $2)"
+func AddPost(content, attachmentType string) (models.PostDB, error) {
+	var newPost models.PostDB
 
-	_, err := db.DB.Exec(query, content, filename)
+	query := "INSERT INTO posts(content, attachment_type) VALUES ($1, $2) RETURNING *"
+
+	err := db.DB.QueryRow(query, content, attachmentType).Scan(&newPost.ID, &newPost.Content, &newPost.AttachementType, &newPost.CreatedAt)
 
 	if err != nil {
-		return err
+		return models.PostDB{}, err
 	}
 
-	return nil
+	return newPost, nil
 }
 
 // This function update post with specific ID
@@ -121,7 +123,7 @@ func newPost(row *sql.Rows, userId int) (models.Post, error) {
 	var newPost models.Post
 	var rawTime time.Time
 
-	err := row.Scan(&newPost.ID, &newPost.Content, &newPost.AttachmentKey, &rawTime)
+	err := row.Scan(&newPost.ID, &newPost.Content, &newPost.AttachmentType, &rawTime)
 
 	if err != nil {
 		return models.Post{}, err
