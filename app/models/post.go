@@ -1,12 +1,11 @@
 package models
 
 // This struct contain all needed data to render a post.
-//
-// For posts with attachements this struct should be used in pair with some of attachment structs.
 type Post struct {
 	ID             int    `json:"id"`
 	Content        string `json:"content"`
 	AttachmentType string `json:"attachment_type"`
+	Attachment     any    `json:"attachment"`
 	NumOfComments  int    `json:"num_of_comments"`
 	NumOfLikes     int    `json:"num_of_likes"`
 	IsLiked        bool   `json:"is_liked"`

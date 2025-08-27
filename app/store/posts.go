@@ -144,5 +144,22 @@ func newPost(row *sql.Rows, userId int) (models.Post, error) {
 
 	newPost.CreatedAt = rawTime.Format("02 Jan 2006 15:04")
 
+	switch newPost.AttachmentType {
+	case "image":
+		newPost.Attachment, err = GetImageAttachment(newPost.ID)
+
+		if err != nil {
+			return models.Post{}, err
+		}
+	case "carousel":
+	//
+	case "youtube":
+		newPost.Attachment, err = GetVideoAttachment(newPost.ID)
+
+		if err != nil {
+			return models.Post{}, err
+		}
+	}
+
 	return newPost, nil
 }

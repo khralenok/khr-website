@@ -32,9 +32,27 @@
             
             <p>{{ .Content}}</p>
 
-            {{ if eq .AttachmentType "image" }}
-                <img class="illustration" src="/uploads/" />
-            {{end}}
+            {{ if ne .AttachmentType "none"}}
+
+                {{ if eq .AttachmentType "image" }}
+                    <img class="illustration" src="/uploads/{{ .Attachment.ImageFilename }}" />
+                {{end}}
+
+                {{ if eq .AttachmentType "carousel" }}
+                    <img class="illustration" src="/uploads/" />
+                {{end}}
+
+                {{ if eq .AttachmentType "youtube" }}
+                    <a class="youtube-link" href="https://youtu.be/{{ .Attachment.VideoId }}" target="_blank">
+                        <img width="320" height="180" src="https://i.ytimg.com/vi/{{ .Attachment.VideoId }}/mqdefault.jpg"/>
+                        <div class="youtube-meta">
+                            <h3 class="youtube-title">{{ .Attachment.Title }}</h3>
+                            <p class="youtube-description">{{ .Attachment.Description }}</p>
+                        </div>
+                    </a>
+                {{end}}
+
+            {{ end }}
 
             <div class="mol h">
                 <a class="counter comments" href="/post/{{.ID}}">💬 {{ .NumOfComments }}</a>

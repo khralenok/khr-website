@@ -17,8 +17,9 @@ func ShowHome(c *gin.Context) {
 
 	if postErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error":   "Internal Server Error",
-			"message": "Can't load posts",
+			"error":     "Internal Server Error",
+			"message":   "Can't load posts",
+			"raw_error": postErr.Error(),
 		})
 		return
 	}

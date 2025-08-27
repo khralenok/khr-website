@@ -1,16 +1,20 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.24.3 AS builder
+FROM golang:1.24-alpine AS builder
 
+RUN apk add --no-cache vips-dev build-base pkgconfig
+ENV CGO_ENABLED=1 PKG_CONFIG_PATH=/usr/lib/pkgconfig
 WORKDIR /app
-ENV CGO_ENABLED=0
-COPY . .
 
-RUN go mod tidy
+COPY go.mod go.sum ./
+RUN go mod download
+
+
+COPY . .
 RUN go build -o server .
 
-FROM alpine
-
+FROM alpine:3.20
+RUN apk add --no-cache vips ca-certificates
 WORKDIR /app
 COPY --from=builder /app/server .
 COPY --from=builder /app/static ./static/

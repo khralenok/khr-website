@@ -16,7 +16,10 @@ func ShowPost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad Request", "message": "Id parameter should be integer"})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Bad Request",
+			"message": "Id parameter should be integer",
+		})
 		return
 	}
 
@@ -90,11 +93,50 @@ func CreatePost(c *gin.Context) {
 	case "none":
 		break
 	case "image":
-		// Logic to handle Image
-		// 1. Convert file
-		// 2. Resize file
-		// 3. Save file on a server
-		// 4. Make a record in DB
+		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 15<<20)
+
+		file, _, err := c.Request.FormFile("image")
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "file is required",
+			})
+			return
+		}
+
+		defer file.Close()
+
+		proccesedImg, err := utilities.ProcessImage(file)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Image processing failed",
+				"error":   err.Error(),
+			})
+			return
+		}
+
+		filename := utilities.GenerateImageFilename(newPost.ID, 0, "image")
+
+		if err := utilities.SaveImage(filename, proccesedImg); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Failed to save file",
+				"error":   err.Error(),
+			})
+			return
+		}
+
+		newAttachment, err := store.AddImageAttachment(newPost.ID, filename)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Can't record attachment into DB",
+				"error":   err.Error(),
+			})
+			return
+		}
+
+		attachment = newAttachment
 	case "carousel":
 		// Logic to handle Carousel
 		// 1. Convert file
@@ -102,9 +144,8 @@ func CreatePost(c *gin.Context) {
 		// 3. Save file on a server
 		// 4. Make a record in DB
 	case "youtube":
-		// Logic to handle Youtube vid link
 		videoId := strings.TrimSpace(c.PostForm("video-id"))
-		// 1. Fetch the video by ID
+
 		title, description, err := utilities.FetchYoutubeVideo(videoId)
 
 		if err != nil {
@@ -115,7 +156,6 @@ func CreatePost(c *gin.Context) {
 			return
 		}
 
-		// 2. Make a record in DB
 		newAttachment, err := store.AddVideoAttachment(newPost.ID, videoId, title, description)
 
 		if err != nil {
