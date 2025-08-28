@@ -29,9 +29,9 @@ type AttachementImage struct {
 
 // This struct purpose is to store multiple images post's attachment data to render Carousel.
 type AttachementCarousel struct {
-	ID                int    `json:"id"`
-	LastImageFilename string `json:"last_img_filename"`
-	CreatedAt         string `json:"created_at"`
+	ID              int      `json:"id"`
+	ImagesFilenames []string `json:"images_filenames"`
+	CreatedAt       string   `json:"created_at"`
 }
 
 // This struct purpose is to store YouTube Video data to render Video Link.

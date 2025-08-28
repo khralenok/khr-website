@@ -15,9 +15,34 @@
   
         <p>{{ .post.Content }}</p>
 
-        {{ if .post.AttachmentKey }}
-            <img class="illustration" src="/uploads/{{ .post.AttachmentKey}}" />
+        {{ if ne .post.AttachmentType "none"}}
+
+            {{ if eq .post.AttachmentType "image" }}
+                <img class="illustration" src="/uploads/{{ .post.Attachment.ImageFilename }}" />
+            {{end}}
+
+            {{ if eq .post.AttachmentType "carousel" }}
+                <div class="carousel" id="carousel">
+                    {{ range .post.Attachment.ImagesFilenames}}
+                        <div class="carousel-item">
+                            <img src="/uploads/{{ . }}" />
+                        </div>
+                    {{ end }}
+                </div>
+            {{end}}
+
+            {{ if eq .post.AttachmentType "youtube" }}
+                <a class="youtube-link" href="https://youtu.be/{{ .post.Attachment.VideoId }}" target="_blank">
+                    <img width="320" height="180" src="https://i.ytimg.com/vi/{{ .post.Attachment.VideoId }}/mqdefault.jpg"/>
+                    <div class="youtube-meta">
+                        <h3 class="youtube-title">{{ .post.Attachment.Title }}</h3>
+                        <p class="youtube-description">{{ .post.Attachment.Description }}</p>
+                    </div>
+                </a>
+            {{end}}
+
         {{ end }}
+
         <div class="mol h">
             <a class="counter comments">💬 {{ .post.NumOfComments }}</a>
             {{ if .post.IsLiked }}
@@ -62,15 +87,7 @@
         <label for="content">Type post text here:</label>
         <textarea id="content" name="content" rows="12" placeholder="Type here..." required>{{ if .content }}{{ .content.Content }}{{ end }}</textarea>
         {{ if .content }}
-            {{ if .content.AttachmentKey}}
-                <div>
-                    <figure class="img-with-caption">
-                        <img width="72" height="72" src="/uploads/{{ .content.AttachmentKey}}"/>
-                        <figcaption>Selected image:</figcaption>
-                    </figure>
-                </div>
-            {{end}}
-        {{ end }}
+        {{ else }}
         <label for="attachment-type"> Select an attachement type: </label>
         <select name="attachment-type" id="attachement-type">
             <option value="none">None</option>
@@ -78,6 +95,7 @@
             <option value="carousel">Carousel</option>
             <option value="youtube">Youtube Video</option>
         </select>
+        {{ end }}
         <input class="btn" type="submit" value="Submit" />
     </form>
 {{end}}

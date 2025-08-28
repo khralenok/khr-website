@@ -43,7 +43,7 @@ CREATE TABLE attachment_images(
 
 CREATE TABLE attachment_carousels(
   id INT PRIMARY KEY REFERENCES posts(id),
-  last_img_filename varchar(255) NOT NULL UNIQUE,
+  last_element_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT now()
 );
 

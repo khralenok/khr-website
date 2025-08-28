@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
             console.log(data)
 
-            //window.location.href = "/";
+            window.location.href = "/";
         } catch(error) {
             console.error('Fetch error', error)
         }

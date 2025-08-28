@@ -1,6 +1,8 @@
 package store
 
 import (
+	"fmt"
+
 	"github.com/khralenok/khr-website/db"
 	"github.com/khralenok/khr-website/models"
 )
@@ -56,6 +58,45 @@ func GetImageAttachment(postId int) (models.AttachementImage, error) {
 
 	if err != nil {
 		return models.AttachementImage{}, err
+	}
+
+	return attachment, nil
+}
+
+func AddCarouselAttachment(postId, lastElementId int) (models.AttachementCarousel, error) {
+	var newAttachment models.AttachementCarousel
+
+	query := "INSERT INTO attachment_carousels(id, last_element_id) VALUES ($1, $2) RETURNING id, created_at"
+
+	err := db.DB.QueryRow(query, postId, lastElementId).Scan(&newAttachment.ID, &newAttachment.CreatedAt)
+
+	if err != nil {
+		return models.AttachementCarousel{}, err
+	}
+
+	for i := 1; i <= lastElementId; i++ {
+		filename := fmt.Sprintf("%d_carousel_%d.webp", postId, i)
+		newAttachment.ImagesFilenames = append(newAttachment.ImagesFilenames, filename)
+	}
+
+	return newAttachment, nil
+}
+
+func GetCarouselAttachment(postId int) (models.AttachementCarousel, error) {
+	var attachment models.AttachementCarousel
+	var lastElementId int
+
+	query := "SELECT * FROM attachment_carousels WHERE id=$1"
+
+	err := db.DB.QueryRow(query, postId).Scan(&attachment.ID, &lastElementId, &attachment.CreatedAt)
+
+	if err != nil {
+		return models.AttachementCarousel{}, err
+	}
+
+	for i := 1; i <= lastElementId; i++ {
+		filename := fmt.Sprintf("%d_carousel_%d.webp", postId, i)
+		attachment.ImagesFilenames = append(attachment.ImagesFilenames, filename)
 	}
 
 	return attachment, nil

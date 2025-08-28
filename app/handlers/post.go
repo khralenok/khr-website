@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -64,7 +63,7 @@ func ShowPost(c *gin.Context) {
 	})
 }
 
-// This function handle request for creating a new post. If success, create new row in DB and store related files on the server.
+// This function handle request for creating a new post.
 func CreatePost(c *gin.Context) {
 	userId := c.GetInt("userID")
 
@@ -90,8 +89,6 @@ func CreatePost(c *gin.Context) {
 	}
 
 	switch attachmentType {
-	case "none":
-		break
 	case "image":
 		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 15<<20)
 
@@ -138,11 +135,67 @@ func CreatePost(c *gin.Context) {
 
 		attachment = newAttachment
 	case "carousel":
-		// Logic to handle Carousel
-		// 1. Convert file
-		// 2. Resize file
-		// 3. Save file on a server
-		// 4. Make a record in DB
+		var lastElementId int
+
+		if err := c.Request.ParseMultipartForm(100 << 20); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		form := c.Request.MultipartForm
+		images := form.File["images"]
+
+		for i, imageHeader := range images {
+			curIndex := i + 1
+
+			image, err := imageHeader.Open()
+
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"message": "Cannot open file",
+					"error":   err.Error(),
+				})
+				return
+			}
+
+			defer image.Close()
+
+			proccesedImg, err := utilities.ProcessImage(image)
+
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": "Image processing failed",
+					"error":   err.Error(),
+				})
+				return
+			}
+
+			filename := utilities.GenerateImageFilename(newPost.ID, curIndex, "carousel")
+
+			if err := utilities.SaveImage(filename, proccesedImg); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": "Failed to save file",
+					"error":   err.Error(),
+				})
+				return
+			}
+
+			lastElementId = curIndex
+		}
+
+		newAttachment, err := store.AddCarouselAttachment(newPost.ID, lastElementId)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": "Can't record attachment into DB",
+				"error":   err.Error(),
+			})
+			return
+		}
+
+		attachment = newAttachment
 	case "youtube":
 		videoId := strings.TrimSpace(c.PostForm("video-id"))
 
@@ -167,12 +220,6 @@ func CreatePost(c *gin.Context) {
 		}
 
 		attachment = newAttachment
-
-	default:
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "This kind of attachement doesn't supported yet.",
-		})
-		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -182,7 +229,7 @@ func CreatePost(c *gin.Context) {
 	})
 }
 
-// This function handle request for updating a post. If success, update row in DB and store related files on the server.
+// This function handle request for updating a post.
 func UpdatePost(c *gin.Context) {
 	userId := c.GetInt("userID")
 
@@ -201,24 +248,8 @@ func UpdatePost(c *gin.Context) {
 	}
 
 	content := c.PostForm("content")
-	filename := ""
 
-	image, err := c.FormFile("image")
-
-	if err == nil {
-		savePath := filepath.Join("uploads", filepath.Base(image.Filename))
-
-		if err := c.SaveUploadedFile(image, savePath); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Could not save file",
-				"error":   err.Error(),
-			})
-			return
-		}
-		filename = image.Filename
-	}
-
-	if err := store.UpdatePost(content, filename, postId); err != nil {
+	if err := store.UpdatePost(content, postId); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not save new post to DB",
 			"error":   err.Error(),
@@ -227,9 +258,8 @@ func UpdatePost(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":  "Post updated successfully",
-		"content":  content,
-		"filename": filename,
+		"message": "Post updated successfully",
+		"content": content,
 	})
 }
 
@@ -267,7 +297,7 @@ func DeletePost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusNoContent, gin.H{
-		"message": "Post deleted successfully",
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Post has been deleted successfully",
 	})
 }

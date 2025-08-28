@@ -80,29 +80,16 @@ func AddPost(content, attachmentType string) (models.PostDB, error) {
 }
 
 // This function update post with specific ID
-func UpdatePost(content, filename string, postId int) error {
-	if filename == "" {
-		query := "UPDATE posts SET content=$1 WHERE id = $2"
+func UpdatePost(content string, postId int) error {
+	query := "UPDATE posts SET content=$1 WHERE id = $2"
 
-		_, err := db.DB.Exec(query, content, postId)
-
-		if err != nil {
-			return err
-		}
-
-		return nil
-	}
-
-	query := "UPDATE posts SET content=$1, image_filename=$2 WHERE id = $3"
-
-	_, err := db.DB.Exec(query, content, filename, postId)
+	_, err := db.DB.Exec(query, content, postId)
 
 	if err != nil {
 		return err
 	}
 
 	return nil
-
 }
 
 // This function insert deleted post to deleted_posts table
@@ -147,18 +134,14 @@ func newPost(row *sql.Rows, userId int) (models.Post, error) {
 	switch newPost.AttachmentType {
 	case "image":
 		newPost.Attachment, err = GetImageAttachment(newPost.ID)
-
-		if err != nil {
-			return models.Post{}, err
-		}
 	case "carousel":
-	//
+		newPost.Attachment, err = GetCarouselAttachment(newPost.ID)
 	case "youtube":
 		newPost.Attachment, err = GetVideoAttachment(newPost.ID)
+	}
 
-		if err != nil {
-			return models.Post{}, err
-		}
+	if err != nil {
+		return models.Post{}, err
 	}
 
 	return newPost, nil
