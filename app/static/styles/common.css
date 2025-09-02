@@ -1,7 +1,25 @@
 
+@font-face {
+    font-family: Inter;
+    src: url(../fonts/Inter-VariableFont_opsz\,wght.ttf);
+}
+
+@font-face {
+    font-family: Inter-Italic;
+    src: url(../fonts/Inter-Italic-VariableFont_opsz\,wght.ttf);
+}
+
 :root{
-    font-family: Arial, Helvetica, sans-serif;
-    --container-width: 50rem;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    --container-w: 1440px;
+    --base-size: 28px;
+    font-size: 16px;
+    --color-black: rgba(10,10,10,1);
+    --color-gray: rgba(150,150,150,1);
+    --color-lightgray: rgba(240,240,240,1);;
+    --color-white: rgba(255,255,255,1);
+    --color-blue: rgba(0,0,240,1);
+    --color-purple: rgba(75,0,240,1);
 }
 
 *{
@@ -13,22 +31,38 @@ body{
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
-main{
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    padding: 4rem 0;
-    white-space: pre-wrap;
+h1{
+    font-size: calc(var(--base-size) * 2);
+}
+
+h2{
+    font-size: calc(var(--base-size) * 1.75);
+}
+
+h3{
+    font-size: calc(var(--base-size) * 1.5);
+}
+
+p,a,label{
+    font-size: var(--base-size)
+}
+
+a:link{
+    color: var(--color-blue);
+}
+
+a:link:visited{
+    color: var(--color-purple);
 }
 
 .mol{
     display: flex;
-    gap: 1rem;
+    gap: calc(var(--base-size) / 2);
     flex: 0 0 auto;
 }
 
@@ -45,24 +79,15 @@ main{
     justify-items: center;
 }
 
-.section-header{
-    display: flex;
-    flex-direction: row;
-    width: var(--container-width);
-    justify-content: space-between;
-    border-bottom: 2px solid gray;
-    padding-bottom: 1rem;
-    padding-top: 2rem;
-}
-
 .wrapper{
-display: flex;
-gap: 1rem;
-flex-grow: 1;
+    display: flex;
+    flex: 1 0 auto;
+    gap: var(--base-size);
 }
 
 .wrapper.v{
-flex-direction: column;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .breadcrumbs{
@@ -85,8 +110,8 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5rem;
-    padding: 2rem;
+    height: 96px;
+    padding: var(--base-size);
 }
 
 nav{
@@ -97,22 +122,32 @@ nav{
     flex-grow: 1;
 }
 
+.logo>svg{
+    width: 240px;
+    height: 48px;
+}
+
 .logo-letter{
-    stroke: white;
+    stroke: var(--color-white);
     stroke-width: 2px;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .logo-back{
-    fill: black
+    fill: var(--color-black)
 }
 
 .user-card{
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    gap: calc(var(--base-size)/2);
+}
+
+.user-meta{
+    display: flex;
+    flex-direction: column;
 }
 
 .user-card .username{
@@ -120,8 +155,8 @@ nav{
 }
 
 .user-avatar>img{
-    width: 3rem;
-    height: 3rem;
+    width: 64px;
+    height: 64px;
     border-radius: 1000px;
 }
 
@@ -134,8 +169,8 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    color: white;
+    background-color: var(--color-black);
+    color: var(--color-white);
     height: 5rem;
 }
 
@@ -143,13 +178,15 @@ footer{
 
 /* Buttons START */
 
-.btn{
-    color: white;
+.btn, .btn:link, .btn:visited{
+    display: block;
+    color: var(--color-white);
     text-decoration: none;
-    padding: 1rem;
-    background-color: black;
-    border-radius: 1rem;
-    transition: transform 250ms;
+    padding: calc(var(--base-size) * 0.75) var(--base-size) ;
+    background-color: var(--color-black);
+    border-radius: var(--base-size);
+    transform: scale(1);
+    transition: all 250ms;
 }
 
 .btn:hover{
@@ -157,16 +194,16 @@ footer{
 }
 
 .btn.secondary{
-    color: black;
-    background-color: white;
+    color: var(--color-black);
+    background-color: var(--color-white);
     padding: 0.5rem;
-    border: 1px solid black;
+    border: 1px solid var(--color-black);
     border-radius: 0.5rem;
 }
 
 .btn.secondary.ds{
     color: gray;
-    background-color: white;
+    background-color: var(--color-white);
     padding: 0;
     border: none;
     border-radius: 0.5rem;
@@ -174,10 +211,90 @@ footer{
 
 .btn.delete{
     color: red;
-    background-color: white;
+    background-color: var(--color-white);
     padding: 0.5rem;
     border: 1px solid red;
     border-radius: 0.5rem;
 }
 
 /* Buttons END */
+
+@media only screen and (max-width:1440px){
+   :root{
+        --container-w: 960px;
+        --base-size: 22px;
+    } 
+
+    .logo>svg{
+        width: 200px;
+        height: 40px;
+    }
+
+    .user-avatar>img{
+        width: 54px;
+        height: 54px;
+    }
+}
+
+@media only screen and (max-width:960px){
+    :root{
+        --container-w: 768px;
+        --base-size: 18px;
+    }
+
+    h1{
+    font-size: calc(var(--base-size) * 1.5);
+    }
+
+    h2{
+        font-size: calc(var(--base-size) * 1.35);
+    }
+
+    h3{
+        font-size: calc(var(--base-size) * 1.15);
+    }
+
+    .logo>svg{
+        width: 180px;
+        height: 36px;
+    }
+
+    .user-avatar>img{
+        width: 44px;
+        height: 44px;
+    }
+}
+
+@media only screen and (max-width:768px){
+    :root{
+        --container-w: 480px;
+        --base-size: 14px;
+    }
+
+    .logo>svg{
+        width: 160px;
+        height: 32px;
+    }
+
+    .user-avatar>img{
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media only screen and (max-width:480px){
+    :root{
+        --container-w: 320px;
+        --base-size: 12px;
+    }
+
+    .logo>svg{
+        width: 120px;
+        height: 24px;
+    }
+
+    .user-avatar>img{
+        width: 30px;
+        height: 30px;
+    }
+}

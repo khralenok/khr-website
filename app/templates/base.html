@@ -19,8 +19,7 @@
 </head>
 <body>
     {{ template "header.html" . }}
-
-    <main>
+    
             {{ if .is_index }}
             {{ else }}
                 <div class="breadcrumbs">
@@ -40,7 +39,6 @@
             {{ if .comment }}
                 {{ block "comment" . }}{{ end }}
             {{ end }}
-    </main>
 
     {{ template "footer.html" . }}
 </body>

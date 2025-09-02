@@ -1,75 +1,90 @@
 {{ define "feed" }}
     {{ $global := . }}
-    <div class="object parent">
-        <div class="wrapper">
-            <div class="wrapper v">
-                <h1>Grigorii Khralenok</h1>
-                <p>Hand-drawn illustrations & updates from my indie software developer journey</p>
-                <p><a href="https://github.com/khralenok">github.com/khralenok</a></p>
+    <main>
+        <div class="object parent" id="blog-header">
+            <div class="wrapper">
+                <div id="blog-avatar">
+                    <img src="static/img/avatar.jpg" alt="Author's avatar">
+                </div>
+
+                <div class="mol v">
+                    <div class="blog-data">
+                        <h1>Grigorii Khralenok</h1>
+                        <p>Hand-drawn illustrations & updates from my indie software developer journey</p>
+                    </div>
+                    <div class="blog-link">
+                        <a href="https://github.com/khralenok">github.com/khralenok</a>
+                    </div>
+                </div>
             </div>
-            <img class="avatar" src="static/img/avatar.jpg">
         </div>
-    </div>
+    </main>
+    <section>
+        <div class="section-header">
+            <h2> Recent Posts </h2>
+            {{ if eq .user.Role "admin" }}
+                <div><a class="btn" href="/workshop/post">Add a post</a></div>
+            {{ end }}
+        </div>
 
-
-    <div class="section-header">
-        <h2> Recent Posts </h2>
-        {{ if eq .user.Role "admin" }}
-            <div><a class="btn" href="/workshop/post">Add a post</a></div>
-        {{ end }}
-    </div>
-
-    {{ range .feed }}
-        <article class="object inheritor">
-            <div class="object-header">
-                <div class="mol h">
-                    <div><a><b>Published At:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+        {{ range .feed }}
+            <article class="object post">
+                <div class="object-header">
+                    <div class="mol h">
+                        <div><a><b>Published At:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+                    </div>
+                    <div>
+                        <a href="/post/{{.ID}}">View details &rarr;</a>
+                    </div>
                 </div>
-                <div>
-                    <a href="/post/{{.ID}}">View details &rarr;</a>
-                </div>
-            </div>
-            
-            <p>{{ .Content}}</p>
+                
+                <p>{{ .Content}}</p>
 
-            {{ if ne .AttachmentType "none"}}
+                {{ if ne .AttachmentType "none"}}
 
-                {{ if eq .AttachmentType "image" }}
-                    <img class="illustration" src="/uploads/{{ .Attachment.ImageFilename }}" />
-                {{end}}
+                    {{ if eq .AttachmentType "image" }}
+                        <div class="post-attachment image">
+                            <img src="/uploads/{{ .Attachment.ImageFilename }}" />
+                        </div>
+                    {{end}}
 
-                {{ if eq .AttachmentType "carousel" }}
-                    <div class="carousel" id="carousel">
-                        {{ range .Attachment.ImagesFilenames}}
-                            <div class="carousel-item">
-                                <img src="/uploads/{{ . }}" />
+                    {{ if eq .AttachmentType "carousel" }}
+                        <div class="post-attachment carousel">
+                            {{ range .Attachment.ImagesFilenames}}
+                                <div class="carousel-item">
+                                    <img src="/uploads/{{ . }}" />
+                                </div>
+                            {{ end }}
+                        </div>
+                    {{end}}
+
+                    {{ if eq .AttachmentType "youtube" }}
+                        <a class="post-attachment link" href="https://youtu.be/{{ .Attachment.VideoId }}" target="_blank">
+                            <div class="link-thumbnail">
+                                <img src="https://i.ytimg.com/vi/{{ .Attachment.VideoId }}/mqdefault.jpg"/>
                             </div>
+                            <div class="link-meta">
+                                <h3 class="link-title">{{ .Attachment.Title }}</h3>
+                                <p class="link-description">{{ .Attachment.Description }}</p>
+                            </div>
+                        </a>
+                    {{end}}
+
+                {{ end }}
+
+                <div class="object-footer">
+                    <div class="mol"> 
+                        <a class="counter comments" href="/post/{{.ID}}">💬 {{ .NumOfComments }}</a>
+                        {{ if .IsLiked }}
+                            <a class="counter like" data-post-id="{{ .ID }}" data-is-checked="true">❤️ {{ .NumOfLikes }}</a>
+                        {{ else }}
+                            <a class="counter like" data-post-id="{{ .ID }}">🩶 {{ .NumOfLikes }}</a>
                         {{ end }}
                     </div>
-                {{end}}
-
-                {{ if eq .AttachmentType "youtube" }}
-                    <a class="youtube-link" href="https://youtu.be/{{ .Attachment.VideoId }}" target="_blank">
-                        <img width="320" height="180" src="https://i.ytimg.com/vi/{{ .Attachment.VideoId }}/mqdefault.jpg"/>
-                        <div class="youtube-meta">
-                            <h3 class="youtube-title">{{ .Attachment.Title }}</h3>
-                            <p class="youtube-description">{{ .Attachment.Description }}</p>
-                        </div>
-                    </a>
-                {{end}}
-
-            {{ end }}
-
-            <div class="mol h">
-                <a class="counter comments" href="/post/{{.ID}}">💬 {{ .NumOfComments }}</a>
-                {{ if .IsLiked }}
-                    <a class="counter like" data-post-id="{{ .ID }}" data-is-checked="true">❤️ {{ .NumOfLikes }}</a>
-                {{ else }}
-                    <a class="counter like" data-post-id="{{ .ID }}">🩶 {{ .NumOfLikes }}</a>
-                {{ end }}
-            </div>
-        </article>
-    {{ else }}
-        <p>No posts yet. </p>
-    {{ end }}
+                </div>
+            </article>
+        {{ else }}
+            <p>No posts yet. </p>
+        {{ end }}
+    </section>
 {{ end }}

@@ -20,24 +20,33 @@
     {{ template "header.html" . }}
 
     <main>
-        <div class="section-header">
-            <h2>{{ .heading }}</h2>
+        <div class="page-header">
+            <h1>{{ .heading }}</h1>
         </div>
         {{ if .logout }}
         <div><a href="/">Back to feed &rarr; </a></div> 
         {{ else }}
             <form class="auth" id="auth">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Input your email" autocomplete="off" required />
+                <div class="mol v">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Input your email" autocomplete="off" required />
+                </div>
+
                 {{ if .signin }}
-                    <label for="display-name">Display name:</label>
-                    <input type="text" id="display-name" name="display-name" placeholder="Input your display name" autocomplete="off" required />
+                    <div class="mol v">                 
+                        <label for="display-name">Display name:</label>
+                        <input type="text" id="display-name" name="display-name" placeholder="Input your display name" autocomplete="off" required />
+                    </div>
                 {{ end }}
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Input your password" autocomplete="off" required />
+
+                <div class="mol v">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Input your password" autocomplete="off" required />
+                </div>
+
                 <input class="btn" type="submit" value="Submit" />
             </form>
-            {{if .login }}<div><a href="/signin">I have no account yet &rarr; </a></div> {{ end }}
+            {{if .login }}<div class="alt-link"><a href="/signin">I have no account yet &rarr; </a></div> {{ end }}
         {{ end }}
     </main>
 

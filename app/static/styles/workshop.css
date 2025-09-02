@@ -1,20 +1,29 @@
 
-.post-workshop, .workshop{
-    width: var(--container-width);
+main{
+    width: var(--container-w);
     display: flex;
+    flex: 2 0 auto;
+    justify-content: center;
     flex-direction: column;
-    border: 1px solid gray;
-    padding: 3rem;
-    gap: 2rem;
-    border-radius: 2rem;
+    gap: calc(var(--base-size) * 2);
+    padding-bottom: calc(var(--base-size) * 2);
 }
 
-#post-content, #content{
+.workshop{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-gray);
+    padding: calc(var(--base-size) * 1.5);
+    gap: calc(var(--base-size) * 1.5);
+    border-radius: calc(var(--base-size) * 2);
+}
+
+textarea, input[type="text"], select{
     flex-grow: 1;
-    padding: 1rem;
-    background-color: #f3f3f3;
+    padding: var(--base-size);
+    background-color: var(--color-lightgray);
     border: 0px;
-    border-radius: 1rem;
+    border-radius: calc(var(--base-size) / 2);
 }
 
 .img-with-caption{
@@ -31,4 +40,20 @@ figcaption{
 label:has(+ textarea:required)::after{
     content: "*";
     color: red;
+}
+
+@media only screen and (max-width:1440px){
+
+}
+
+@media only screen and (max-width:960px){
+    
+}
+
+@media only screen and (max-width:768px){
+    
+}
+
+@media only screen and (max-width:480px){
+    
 }
