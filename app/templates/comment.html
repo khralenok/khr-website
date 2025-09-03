@@ -1,62 +1,95 @@
 {{ define "comment" }}
     {{ $global := . }}
-    <article class="object parent">
-        <div class="object-header">
-            <div class="mol h">
-                <div class="author"><img width="32" height="32" src="/static/img/{{.comment.CommentatorAvatar}}"><a>{{ .comment.CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .comment.CreatedAt }}</a></div>
-            </div>
-            {{ if eq .user.Id .comment.CommentatorId }}
-                    <div class="mol h">
+    <main>
+        <article class="object parent" id="comment">
+            <div class="object-header">
+                <div class="object-meta">
+                    <div class="author">
+                        <img src="/static/img/{{.comment.CommentatorAvatar}}">                        
+                        <div>
+                            <div>
+                                <a>{{ .comment.CommentatorUsername }}</a> 
+                            </div>
+                            <div class="secondary-text">
+                                <a><b>at:</b></a>
+                                <a class="date">{{ .comment.CreatedAt }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{ if eq .user.Id .comment.CommentatorId }}
+                    <div class="object-actions">
                         <a href="/workshop/comment/{{ .comment.ID }}">✏️</a>
                         <a id="delete" data-comment-id="{{ .comment.ID }}" data-post-url="/post/{{ .comment.PostId }}" class="delete">❌</a>
                     </div>
-            {{ else if eq .user.Role "admin" }}
-                <div class="mol h">
+                {{ else if eq .user.Role "admin" }}
+                    <div class="object-actions">
                         <a id="delete" data-comment-id="{{ .comment.ID }}" data-post-url="/post/{{ .comment.PostId }}" class="delete">❌</a>
-                </div>            
-            {{ end }}
-        </div>
-  
-        <p>{{ .comment.Content }}</p>
+                    </div>            
+                {{ end }}
 
-        <div class="mol h">
-            <a class="counter comments">💬 {{ .comment.NumOfReplies }}</a>
-        </div>    
-    </article>
+            </div>
 
-    <div id="replies-box">
+            <div class="object-content">
+                <p>{{ .comment.Content }}</p>
+            </div>
+      
+            <div class="object-footer">
+                <div class="mol">
+                    <a class="counter comments">💬 {{ .comment.NumOfReplies }}</a>
+                </div>    
+            </div>
+        </article>
+    </main>
+
+    <section id="replies-box">
         <div class="section-header">
             <h2>Replies</h2>
             {{ if .user.Id }}
-            <div><a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Add a reply</a></div>
+            <div>
+                <a class="btn" href="/workshop/reply?comment_id={{ .comment.ID }}">Add a reply</a>
+            </div>
             {{ end }}
         </div>
 
             {{ range .replies }}
                 <article class="object inheritor">
                     <div class="object-header">
-                        <div class="mol h">
-                            <div class="author"><img width="32" height="32" src="/static/img/{{ .CommentatorAvatar }}"><a>{{ .CommentatorUsername }}</a></div><div><a><b>Created at:</b></a><a class="date">{{ .CreatedAt }}</a></div>
+                        <div class="object-meta">
+                            <div class="author">
+                                <img src="/static/img/{{ .CommentatorAvatar }}">
+                                <div>
+                                    <div>
+                                        <a>{{ .CommentatorUsername }}</a>
+                                    </div>
+                                    <div class="secondary-text">
+                                        <a><b>at:</b></a>
+                                        <a class="date">{{ .CreatedAt }}</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         {{ if eq $global.user.Id .CommentatorId }}
-                            <div class="mol h">
+                            <div class="object-actions">
                                 <a href="/workshop/reply/{{ .ID }}">✏️</a>
                                 <a id="delete" data-reply-id="{{ .ID }}" data-delete-reply="1">❌</a>
                             </div>
                         {{ else if eq $global.user.Role "admin" }}
-                            <div class="mol h">
+                            <div class="object-actions">
                                 <a id="delete" data-reply-id="{{ .ID }}" data-delete-reply="1">❌</a>
                             </div>            
                         {{ end }}
                     </div>
-                    
-                    <p>{{ .Content }}</p>
+
+                    <div class="object-content">                        
+                        <p>{{ .Content }}</p>
+                    </div>
                 </article>
             {{ else }}
                 <p>No replies yet.</p>
             {{end}}
-    </div>
-
+    </section>
 {{ end }}
 
 {{define "comment_workshop"}}

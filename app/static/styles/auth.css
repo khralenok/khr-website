@@ -17,6 +17,10 @@ main{
     border-radius: calc(var(--base-size) * 2);
 }
 
+input{
+    font-size: calc(var(--base-size)*0.75);
+}
+
 input[type="text"], input[type="password"],input[type="email"]{
     flex: 1 0 auto;
     padding: var(--base-size);

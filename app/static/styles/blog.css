@@ -8,6 +8,7 @@ main{
 
 section{
     display: flex;
+    flex: 1 0 auto;
     flex-direction: column;
     gap: calc(var(--base-size) * 2);
     padding-bottom: calc(var(--base-size) * 2);
@@ -36,8 +37,11 @@ section{
     border-radius: calc(var(--base-size) * 2);
 }
 
-.object.inheritor{
-    /* Edit Me */
+.object-content{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--base-size)
 }
 
 #blog-header>.wrapper{
@@ -152,9 +156,31 @@ section{
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: var(--base-size) 0;
     color: var(--color-gray);
     border-bottom: 1px solid var(--color-gray);
+}
+
+.object-meta{
+    display: flex;
+    gap: var(--base-size);
+    justify-content: center;
+}
+
+.object-meta>div{
+    display: flex;
+    align-items: center;
+}
+
+.object-actions{
+    display: flex;
+    gap: calc(var(--base-size) / 2);
+}
+
+.object-actions a:link, .object-actions a:link:visited{
+    text-decoration: none;
+    color: inherit;
 }
 
 .object-footer{
@@ -181,6 +207,31 @@ section{
 
 .author img{
     border-radius: 1000px;
+    width: calc(var(--base-size) * 1.5);
+    aspect-ratio: 1/1;
+}
+
+.author>div{
+    display: flex;
+    flex-direction: column;
+}
+
+.breadcrumbs{
+    display: flex;
+    width: var(--container-w);
+    padding: var(--base-size);
+    padding-bottom: 0;
+    gap: 0.5rem;
+    color: var(--color-gray)
+}
+
+.breadcrumbs *, .breadcrumbs a:link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.secondary-text{
+    font-size: calc(var(--base-size) * 0.75);
 }
 
 @media only screen and (max-width:1440px){
@@ -284,5 +335,9 @@ section{
 
     .post-attachment.image{
         height: 320px;
+    }
+
+    #post .post-attachment.image{
+        height:calc(320px - (var(--base-size) * 3));
     }
 }

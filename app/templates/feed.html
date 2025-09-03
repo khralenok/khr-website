@@ -33,44 +33,46 @@
                     <div class="mol h">
                         <div><a><b>Published At:</b></a><a class="date">{{ .CreatedAt }}</a></div>
                     </div>
-                    <div>
-                        <a href="/post/{{.ID}}">View details &rarr;</a>
+                    <div class="object-actions">
+                        <a href="/post/{{.ID}}">👁️</a>
                     </div>
                 </div>
                 
-                <p>{{ .Content}}</p>
-
-                {{ if ne .AttachmentType "none"}}
-
-                    {{ if eq .AttachmentType "image" }}
-                        <div class="post-attachment image">
-                            <img src="/uploads/{{ .Attachment.ImageFilename }}" />
-                        </div>
-                    {{end}}
-
-                    {{ if eq .AttachmentType "carousel" }}
-                        <div class="post-attachment carousel">
-                            {{ range .Attachment.ImagesFilenames}}
-                                <div class="carousel-item">
-                                    <img src="/uploads/{{ . }}" />
+                <div class="object-content">
+                    <p>{{ .Content}}</p>
+    
+                    {{ if ne .AttachmentType "none"}}
+    
+                        {{ if eq .AttachmentType "image" }}
+                            <div class="post-attachment image">
+                                <img src="/uploads/{{ .Attachment.ImageFilename }}" />
+                            </div>
+                        {{end}}
+    
+                        {{ if eq .AttachmentType "carousel" }}
+                            <div class="post-attachment carousel">
+                                {{ range .Attachment.ImagesFilenames}}
+                                    <div class="carousel-item">
+                                        <img src="/uploads/{{ . }}" />
+                                    </div>
+                                {{ end }}
+                            </div>
+                        {{end}}
+    
+                        {{ if eq .AttachmentType "youtube" }}
+                            <a class="post-attachment link" href="https://youtu.be/{{ .Attachment.VideoId }}" target="_blank">
+                                <div class="link-thumbnail">
+                                    <img src="https://i.ytimg.com/vi/{{ .Attachment.VideoId }}/mqdefault.jpg"/>
                                 </div>
-                            {{ end }}
-                        </div>
-                    {{end}}
-
-                    {{ if eq .AttachmentType "youtube" }}
-                        <a class="post-attachment link" href="https://youtu.be/{{ .Attachment.VideoId }}" target="_blank">
-                            <div class="link-thumbnail">
-                                <img src="https://i.ytimg.com/vi/{{ .Attachment.VideoId }}/mqdefault.jpg"/>
-                            </div>
-                            <div class="link-meta">
-                                <h3 class="link-title">{{ .Attachment.Title }}</h3>
-                                <p class="link-description">{{ .Attachment.Description }}</p>
-                            </div>
-                        </a>
-                    {{end}}
-
-                {{ end }}
+                                <div class="link-meta">
+                                    <h3 class="link-title">{{ .Attachment.Title }}</h3>
+                                    <p class="link-description">{{ .Attachment.Description }}</p>
+                                </div>
+                            </a>
+                        {{end}}
+    
+                    {{ end }}
+                </div>
 
                 <div class="object-footer">
                     <div class="mol"> 

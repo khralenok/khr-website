@@ -1,85 +1,111 @@
 {{ define "post" }}
     {{ $global := . }}
-    <article class="object parent">
-        <div class="object-header">
-            <div class="mol h">
-                <div><a><b>Published At:</b></a><a class="date">{{ .post.CreatedAt }}</a></div>
+    <main>
+        <article class="object parent" id="post">
+            <div class="object-header">
+                <div class="mol">
+                    <div>
+                        <a><b>Published At:</b></a>
+                        <a class="date">{{ .post.CreatedAt }}</a>
+                    </div>
+                </div>
+                {{ if eq .user.Role "admin" }}
+                <div class="object-actions">
+                    <a href="/workshop/post/{{ .post.ID }}">✏️</a>
+                    <a id="delete" data-post-id="{{ .post.ID }}" class="delete">❌</a>
+                </div>
+                {{ end }}
             </div>
-            {{ if eq .user.Role "admin" }}
-            <div class="mol h">
-                <a href="/workshop/post/{{ .post.ID }}">✏️</a>
-                <a id="delete" data-post-id="{{ .post.ID }}" class="delete">❌</a>
+
+            <div class="object-content">
+                <p>{{ .post.Content }}</p>
+        
+                {{ if ne .post.AttachmentType "none"}}
+        
+                    {{ if eq .post.AttachmentType "image" }}
+                        <div class="post-attachment image">
+                            <img class="illustration" src="/uploads/{{ .post.Attachment.ImageFilename }}" />
+                        </div>
+                    {{end}}
+        
+                    {{ if eq .post.AttachmentType "carousel" }}
+                        <div class="post-attachment carousel" id="carousel">
+                            {{ range .post.Attachment.ImagesFilenames}}
+                                <div class="carousel-item">
+                                    <img src="/uploads/{{ . }}" />
+                                </div>
+                            {{ end }}
+                        </div>
+                    {{end}}
+        
+                    {{ if eq .post.AttachmentType "youtube" }}
+                        <a class="post-attachment link" href="https://youtu.be/{{ .post.Attachment.VideoId }}" target="_blank">
+                            <div class="link-thumbnail">
+                                <img src="https://i.ytimg.com/vi/{{ .post.Attachment.VideoId }}/mqdefault.jpg"/>
+                            </div>
+                            <div class="link-meta">
+                                <h3 class="link-title">{{ .post.Attachment.Title }}</h3>
+                                <p class="link-description">{{ .post.Attachment.Description }}</p>
+                            </div>
+                        </a>
+                    {{end}}
+        
+                {{ end }}
             </div>
+      
+    
+            <div class="object-footer">
+                <div class="mol">
+                    <a class="counter comments">💬 {{ .post.NumOfComments }}</a>
+                    {{ if .post.IsLiked }}
+                        <a class="counter like" data-post-id="{{ .post.ID }}" data-is-checked="true">❤️ {{ .post.NumOfLikes }}</a>
+                    {{ else }}
+                        <a class="counter like" data-post-id="{{ .post.ID }}">🩶 {{ .post.NumOfLikes }}</a>
+                    {{ end }}
+                </div>  
+            </div>  
+        </article>
+    </main>
+
+    <section>
+        <div class="section-header">
+            <h2> Comments </h2>
+            {{ if .user.Id }}
+            <div><a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Add a comment</a></div>
             {{ end }}
         </div>
-  
-        <p>{{ .post.Content }}</p>
 
-        {{ if ne .post.AttachmentType "none"}}
-
-            {{ if eq .post.AttachmentType "image" }}
-                <img class="illustration" src="/uploads/{{ .post.Attachment.ImageFilename }}" />
-            {{end}}
-
-            {{ if eq .post.AttachmentType "carousel" }}
-                <div class="carousel" id="carousel">
-                    {{ range .post.Attachment.ImagesFilenames}}
-                        <div class="carousel-item">
-                            <img src="/uploads/{{ . }}" />
+        {{range .comments }}
+            <article class="object comment">
+                <div class="object-header">
+                    <div class="mol h">
+                        <div class="author">
+                            <img src="/static/img/{{.CommentatorAvatar}}">
+                            <a>{{ .CommentatorUsername }}</a>
                         </div>
-                    {{ end }}
-                </div>
-            {{end}}
-
-            {{ if eq .post.AttachmentType "youtube" }}
-                <a class="youtube-link" href="https://youtu.be/{{ .post.Attachment.VideoId }}" target="_blank">
-                    <img width="320" height="180" src="https://i.ytimg.com/vi/{{ .post.Attachment.VideoId }}/mqdefault.jpg"/>
-                    <div class="youtube-meta">
-                        <h3 class="youtube-title">{{ .post.Attachment.Title }}</h3>
-                        <p class="youtube-description">{{ .post.Attachment.Description }}</p>
+                        <div>
+                            <a>at:</a><a class="date">{{ .CreatedAt }}</a>
+                        </div>
                     </div>
-                </a>
-            {{end}}
-
-        {{ end }}
-
-        <div class="mol h">
-            <a class="counter comments">💬 {{ .post.NumOfComments }}</a>
-            {{ if .post.IsLiked }}
-                <a class="counter like" data-post-id="{{ .post.ID }}" data-is-checked="true">❤️ {{ .post.NumOfLikes }}</a>
-            {{ else }}
-                <a class="counter like" data-post-id="{{ .post.ID }}">🩶 {{ .post.NumOfLikes }}</a>
-            {{ end }}
-        </div>    
-    </article>
-
-    <div class="section-header">
-        <h2> Comments </h2>
-        {{ if .user.Id }}
-        <div><a class="btn" href="/workshop/comment?post_id={{ .post.ID }}">Add a comment</a></div>
-        {{ end }}
-    </div>
-
-    {{range .comments }}
-        <article class="object inheritor">
-            <div class="object-header">
-                <div class="mol h">
-                    <div class="author"><img width="32" height="32" src="/static/img/{{.CommentatorAvatar}}"><a>{{ .CommentatorUsername }}</a></div><div><a>at:</a><a class="date">{{ .CreatedAt }}</a></div>
+                    <div class="object-actions">
+                        <a href="/comment/{{.ID}}">👁️</a>
+                    </div>
                 </div>
-                <div>
-                    <a href="/comment/{{.ID}}">View details &rarr;</a>
-                </div>
-            </div>
-            
-            <p>{{ .Content }}</p>
 
-            <div class="mol h">
-                <a class="counter comments" href="/comment/{{.ID}}">💬 {{ .NumOfReplies }}</a>
-            </div>    
-        </article>    
-    {{ else }}
-        <p>No comments yet.</p>
-    {{ end }}
+                <div class="object-content">
+                    <p>{{ .Content }}</p>
+                </div>
+                
+                <div class="object-footer">
+                    <div class="mol">
+                        <a class="counter comments" href="/comment/{{.ID}}">💬 {{ .NumOfReplies }}</a>
+                    </div>    
+                </div>
+            </article>    
+        {{ else }}
+            <p>No comments yet.</p>
+        {{ end }}
+    </section>
 {{ end }}
 
 {{define "post_workshop"}}
