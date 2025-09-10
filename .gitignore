@@ -8,3 +8,4 @@
 vendor/
 /app/uploads/*
 *.bkp
+/certs/*

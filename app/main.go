@@ -29,6 +29,8 @@ func main() {
 
 	r := gin.Default()
 
+	r.SetTrustedProxies(nil)
+
 	r.LoadHTMLGlob("templates/*.html")
 	r.Static("/static/", "./static")
 	r.Static("/uploads/", "./uploads")
