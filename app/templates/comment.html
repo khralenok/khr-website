@@ -8,11 +8,10 @@
                         <img src="/static/img/{{.comment.CommentatorAvatar}}">                        
                         <div>
                             <div>
-                                <a>{{ .comment.CommentatorUsername }}</a> 
+                                <a><b>{{ .comment.CommentatorUsername }}</b></a> 
                             </div>
                             <div class="secondary-text">
-                                <a><b>at:</b></a>
-                                <a class="date">{{ .comment.CreatedAt }}</a>
+                                <a>at:<span class="date">{{ .comment.CreatedAt }}</span></a>
                             </div>
                         </div>
                     </div>
@@ -36,7 +35,7 @@
             </div>
       
             <div class="object-footer">
-                <div class="mol">
+                <div class="object-counters">
                     <a class="counter comments">💬 {{ .comment.NumOfReplies }}</a>
                 </div>    
             </div>
@@ -61,11 +60,10 @@
                                 <img src="/static/img/{{ .CommentatorAvatar }}">
                                 <div>
                                     <div>
-                                        <a>{{ .CommentatorUsername }}</a>
+                                        <a><b>{{ .CommentatorUsername }}</b></a>
                                     </div>
                                     <div class="secondary-text">
-                                        <a><b>at:</b></a>
-                                        <a class="date">{{ .CreatedAt }}</a>
+                                        <a>at:<span class="date">{{ .CreatedAt }}</span></a>
                                     </div>
                                 </div>
                             </div>

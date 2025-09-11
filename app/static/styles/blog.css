@@ -175,6 +175,7 @@ section{
 
 .object-actions{
     display: flex;
+    align-items: center;
     gap: calc(var(--base-size) / 2);
 }
 
@@ -189,10 +190,21 @@ section{
     justify-content: space-between;
 }
 
+.object-counters{
+    display: flex;
+    gap: calc(var(--base-size) / 2);
+    align-items: center;
+    flex: 0 0 auto;
+}
+
 .counter{
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+}
+
+.counter:link, .counter:link:visited{
+    color: var(--color-black);
 }
 
 .delete{
@@ -207,7 +219,7 @@ section{
 
 .author img{
     border-radius: 1000px;
-    width: calc(var(--base-size) * 1.5);
+    width: calc(var(--base-size) * 2.25);
     aspect-ratio: 1/1;
 }
 
@@ -231,7 +243,8 @@ section{
 }
 
 .secondary-text{
-    font-size: calc(var(--base-size) * 0.75);
+    font-size: calc(var(--base-size) * 0.6);
+    opacity: 0.6;
 }
 
 @media only screen and (max-width:1440px){

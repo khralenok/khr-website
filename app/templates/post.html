@@ -3,7 +3,7 @@
     <main>
         <article class="object parent" id="post">
             <div class="object-header">
-                <div class="mol">
+                <div class="object-meta">
                     <div>
                         <a><b>Published At:</b></a>
                         <a class="date">{{ .post.CreatedAt }}</a>
@@ -55,7 +55,7 @@
       
     
             <div class="object-footer">
-                <div class="mol">
+                <div class="object-counters">
                     <a class="counter comments">💬 {{ .post.NumOfComments }}</a>
                     {{ if .post.IsLiked }}
                         <a class="counter like" data-post-id="{{ .post.ID }}" data-is-checked="true">❤️ {{ .post.NumOfLikes }}</a>
@@ -78,13 +78,17 @@
         {{range .comments }}
             <article class="object comment">
                 <div class="object-header">
-                    <div class="mol h">
+                    <div class="object-meta">
                         <div class="author">
                             <img src="/static/img/{{.CommentatorAvatar}}">
-                            <a>{{ .CommentatorUsername }}</a>
-                        </div>
-                        <div>
-                            <a>at:</a><a class="date">{{ .CreatedAt }}</a>
+                            <div>
+                                <div>
+                                    <a><b>{{ .CommentatorUsername }}</b></a>
+                                </div>
+                                <div class="secondary-text">
+                                    <a>at:<span class="date">{{ .CreatedAt }}</span></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="object-actions">
@@ -97,7 +101,7 @@
                 </div>
                 
                 <div class="object-footer">
-                    <div class="mol">
+                    <div class="object-counters">
                         <a class="counter comments" href="/comment/{{.ID}}">💬 {{ .NumOfReplies }}</a>
                     </div>    
                 </div>
