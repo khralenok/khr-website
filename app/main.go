@@ -16,7 +16,8 @@ func main() {
 		log.Printf("No .env file found, relying on environment: %v", err)
 	}
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("APP_PORT")
+
 	if port == "" {
 		port = "3000"
 	}
